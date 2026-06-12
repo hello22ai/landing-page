@@ -1,4 +1,4 @@
-import { PhoneCall, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 
 const footerLinks = {
   Company: [
@@ -31,11 +31,12 @@ export function Footer() {
       <div className="container-site py-16">
         <div className="grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <a href="#" className="flex items-center gap-2.5" aria-label="hello22 home">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
-                <PhoneCall className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <span className="text-lg font-bold text-white">hello22</span>
+            <a href="#" className="inline-flex items-center" aria-label="hello22 home">
+              <img
+                src="/images/hello22-logo-white.svg"
+                alt="hello22"
+                className="h-9 w-auto"
+              />
             </a>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-400">
               Your 24/7 AI Receptionist — answering every call, capturing every

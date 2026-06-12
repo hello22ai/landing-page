@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
-import { PhoneCall, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Why It Matters", href: "#problem" },
@@ -36,17 +36,16 @@ export function Navbar() {
         className="container-site flex h-[4.5rem] items-center justify-between"
         aria-label="Main navigation"
       >
-        <a href="#" className="flex items-center gap-2.5" aria-label="hello22 home">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/30">
-            <PhoneCall className="h-5 w-5" aria-hidden="true" />
-          </span>
-          <span
-            className={`font-display text-lg font-bold tracking-tight ${
-              scrolled ? "text-navy" : "text-white"
-            }`}
-          >
-            hello22
-          </span>
+        <a href="#" className="flex items-center" aria-label="hello22 home">
+          <img
+            src={
+              scrolled
+                ? "/images/hello22-logo.svg"
+                : "/images/hello22-logo-white.svg"
+            }
+            alt="hello22"
+            className="h-9 w-auto"
+          />
         </a>
 
         <div className="hidden items-center gap-8 lg:flex">
