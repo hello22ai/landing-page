@@ -13,20 +13,20 @@ const GREETS = ["hola", "你好", "bonjour", "こんにちは", "नमस्त
 
 const TRUST = ["Northwind Health", "CALDRICK", "Lumen Realty", "Pulsewave", "Sterling & Co.", "Vertex Auto", "Mercato", "Helix Bank"];
 
-type V = { id: string; letter: string; flag: string; loc: string; desc: string };
+type V = { id: string; letter: string; flag: string; loc: string; desc: string; sample: string; audio: string };
 const VOICES: V[] = [
-  { id: "Emma", letter: "E", flag: "🇦🇺", loc: "en-AU", desc: "Warm & Friendly" },
-  { id: "Jack", letter: "J", flag: "🇦🇺", loc: "en-AU", desc: "Friendly & Professional" },
-  { id: "Bruce", letter: "B", flag: "🇦🇺", loc: "en-AU", desc: "Classic Aussie" },
-  { id: "Jordan", letter: "J", flag: "🇦🇺", loc: "en-AU", desc: "Smooth & Modern" },
-  { id: "Aimee", letter: "A", flag: "🇦🇺", loc: "en-AU", desc: "Bright & Bubbly" },
-  { id: "Alice", letter: "A", flag: "🇬🇧", loc: "en-GB", desc: "Warm & Conversational" },
-  { id: "Charlie", letter: "C", flag: "🇬🇧", loc: "en-GB", desc: "Rich Accent" },
-  { id: "Joseph", letter: "J", flag: "🇺🇸", loc: "en-US", desc: "Authoritative & Clear" },
-  { id: "Tyler", letter: "T", flag: "🇺🇸", loc: "en-US", desc: "Casual & Confident" },
-  { id: "Lilian", letter: "L", flag: "🇺🇸", loc: "en-US", desc: "Warm & Professional" },
-  { id: "Ayana", letter: "A", flag: "🇺🇸", loc: "en-US", desc: "Friendly & Articulate" },
-  { id: "Aria", letter: "A", flag: "🇺🇸", loc: "en-US", desc: "Signature · Studio v3.2" },
+  { id: "Emma", letter: "E", flag: "🇦🇺", loc: "en-AU", desc: "Warm & Friendly", audio: "/audio/voices/emma.mp3", sample: "Hi there! Thanks for calling — I'd be happy to help you book that in." },
+  { id: "Jack", letter: "J", flag: "🇦🇺", loc: "en-AU", desc: "Friendly & Professional", audio: "/audio/voices/jack.mp3", sample: "G'day, you've reached the front desk. How can I help you today?" },
+  { id: "Bruce", letter: "B", flag: "🇦🇺", loc: "en-AU", desc: "Classic Aussie", audio: "/audio/voices/bruce.mp3", sample: "No worries, mate. Let me get that sorted for you right now." },
+  { id: "Jordan", letter: "J", flag: "🇦🇺", loc: "en-AU", desc: "Smooth & Modern", audio: "/audio/voices/jordan.mp3", sample: "Hey, great to hear from you. I can take care of that booking in a moment." },
+  { id: "Aimee", letter: "A", flag: "🇦🇺", loc: "en-AU", desc: "Bright & Bubbly", audio: "/audio/voices/aimee.mp3", sample: "Hi! Lovely to hear from you — let's get you all set up." },
+  { id: "Alice", letter: "A", flag: "🇬🇧", loc: "en-GB", desc: "Warm & Conversational", audio: "/audio/voices/alice.mp3", sample: "Hello, thank you for calling. How may I assist you this afternoon?" },
+  { id: "Charlie", letter: "C", flag: "🇬🇧", loc: "en-GB", desc: "Rich Accent", audio: "/audio/voices/charlie.mp3", sample: "Good afternoon. I'd be delighted to help you with your enquiry." },
+  { id: "Joseph", letter: "J", flag: "🇺🇸", loc: "en-US", desc: "Authoritative & Clear", audio: "/audio/voices/joseph.mp3", sample: "Thanks for calling. I can confirm your appointment and answer any questions." },
+  { id: "Tyler", letter: "T", flag: "🇺🇸", loc: "en-US", desc: "Casual & Confident", audio: "/audio/voices/tyler.mp3", sample: "Hey, what's up! I can get you booked in real quick — no problem at all." },
+  { id: "Lilian", letter: "L", flag: "🇺🇸", loc: "en-US", desc: "Warm & Professional", audio: "/audio/voices/lilian.mp3", sample: "Hi, thanks so much for reaching out. Let me help you with that today." },
+  { id: "Ayana", letter: "A", flag: "🇺🇸", loc: "en-US", desc: "Friendly & Articulate", audio: "/audio/voices/ayana.mp3", sample: "Hello! I'd be glad to assist. Let me pull up your details now." },
+  { id: "Aria", letter: "A", flag: "🇺🇸", loc: "en-US", desc: "Signature · Studio v3.2", audio: "/audio/voices/aria.mp3", sample: "Hi, I'm Aria — your AI voice agent. I answer calls and book appointments around the clock." },
 ];
 
 type UC = { name: string; icon: string; kpi: string; title: string; body: string; stats: { v: string; l: string }[]; tags: string[] };
@@ -131,8 +131,44 @@ export default function Hello22Site() {
   const bigRef = useRef<HTMLDivElement | null>(null);
   const demoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
+  const [playingVoice, setPlayingVoice] = useState<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const demoAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useReveal(rootRef);
+
+  useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); if (demoAudioRef.current) demoAudioRef.current.pause(); }, []);
+
+  function stopVoice() {
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  }
+  function fallbackSpeak(i: number) {
+    if (!("speechSynthesis" in window)) { setPlayingVoice(null); return; }
+    window.speechSynthesis.cancel();
+    const v = VOICES[i];
+    const list = voicesRef.current;
+    const m = list.find((x) => x.lang === v.loc) || list.find((x) => x.lang.startsWith(v.loc.slice(0, 2))) || list.find((x) => x.lang.startsWith("en"));
+    const u = new SpeechSynthesisUtterance(v.sample);
+    if (m) { u.voice = m; u.lang = m.lang; }
+    u.onend = () => setPlayingVoice((p) => (p === i ? null : p));
+    u.onerror = () => setPlayingVoice((p) => (p === i ? null : p));
+    window.speechSynthesis.speak(u);
+  }
+  function toggleVoice(i: number) {
+    setVoice(i);
+    if (playingVoice === i) { stopVoice(); setPlayingVoice(null); return; }
+    stopVoice();
+    setPlayingVoice(i);
+    // Prefer a real recorded voice file; fall back to the browser engine if it's missing.
+    const audio = new Audio(VOICES[i].audio);
+    audioRef.current = audio;
+    let handled = false;
+    const fb = () => { if (handled) return; handled = true; audioRef.current = null; fallbackSpeak(i); };
+    audio.onended = () => setPlayingVoice((p) => (p === i ? null : p));
+    audio.onerror = fb;
+    audio.play().catch(fb);
+  }
 
   // greeting cycle
   useEffect(() => {
@@ -170,17 +206,16 @@ export default function Hello22Site() {
 
   function stopDemo() {
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    if (demoAudioRef.current) { demoAudioRef.current.pause(); demoAudioRef.current = null; }
     if (demoTimer.current) clearTimeout(demoTimer.current);
     setDemoPlaying(false);
   }
-  function speakFrom(i: number) {
-    if (i >= TRANSCRIPT.length) { setDemoPlaying(false); return; }
-    setDemoStep(i + 1);
+  function advanceDemo(i: number) {
+    demoTimer.current = setTimeout(() => speakFrom(i + 1), 320);
+  }
+  function ttsLine(i: number) {
     const line = TRANSCRIPT[i];
-    if (!("speechSynthesis" in window)) {
-      demoTimer.current = setTimeout(() => speakFrom(i + 1), 1500);
-      return;
-    }
+    if (!("speechSynthesis" in window)) { advanceDemo(i); return; }
     const pool = voicesRef.current.filter((v) => /^en/i.test(v.lang));
     const list = pool.length ? pool : voicesRef.current;
     const femaleRe = /samantha|jenny|aria|zira|karen|tessa|fiona|moira|serena|victoria|ava|female/i;
@@ -194,10 +229,21 @@ export default function Hello22Site() {
     if (vv) { u.voice = vv; u.lang = vv.lang; }
     if (same) { u.rate = isAgent ? 0.96 : 1.08; u.pitch = isAgent ? 0.85 : 1.3; }
     else { u.rate = isAgent ? 1.0 : 1.05; u.pitch = isAgent ? 1.0 : 1.12; }
-    const next = () => { demoTimer.current = setTimeout(() => speakFrom(i + 1), 380); };
-    u.onend = next;
-    u.onerror = next;
+    u.onend = () => advanceDemo(i);
+    u.onerror = () => advanceDemo(i);
     window.speechSynthesis.speak(u);
+  }
+  function speakFrom(i: number) {
+    if (i >= TRANSCRIPT.length) { setDemoPlaying(false); return; }
+    setDemoStep(i + 1);
+    // Prefer a real recorded line; fall back to the browser engine if missing.
+    const audio = new Audio(`/audio/demo/line-${i}.mp3`);
+    demoAudioRef.current = audio;
+    let handled = false;
+    const fb = () => { if (handled) return; handled = true; demoAudioRef.current = null; ttsLine(i); };
+    audio.onended = () => { if (handled) return; handled = true; demoAudioRef.current = null; advanceDemo(i); };
+    audio.onerror = fb;
+    audio.play().catch(fb);
   }
   function playDemo() {
     if (demoPlaying) { stopDemo(); return; }
@@ -366,17 +412,24 @@ export default function Hello22Site() {
         <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}>32+ studio-grade voices, drawn from a live library — not a hardcoded list. Preview any voice free, then go live in one click. Every voice handles interruptions, emotion, and natural multi-language switching.</p>
         <div className="voices-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginTop: 38 }}>
           {VOICES.map((v, i) => {
-            const active = i === voice;
+            const playing = i === playingVoice;
+            const hl = i === voice || playing;
             const pals = [["rgba(44,118,237,.14)", "#2c76ed"], ["rgba(86,224,224,.14)", "#56e0e0"], ["rgba(157,139,255,.16)", "#9d8bff"]][i % 3];
             return (
-              <div key={v.id} data-rv onClick={() => setVoice(i)} style={{ display: "flex", alignItems: "center", gap: 14, padding: 16, borderRadius: 16, cursor: "pointer", transition: "all .25s ease", background: active ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "#12121d", border: active ? "1px solid rgba(44,118,237,.5)" : "1px solid rgba(255,255,255,.08)", boxShadow: active ? "0 18px 40px -22px rgba(44,118,237,.5)" : "none" }}>
-                <div style={{ position: "relative", width: 50, height: 50, borderRadius: 14, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISP, fontWeight: 600, fontSize: 20, background: pals[0], color: pals[1] }}>{v.letter}<span style={{ position: "absolute", bottom: -4, right: -4, fontSize: 15 }}>{v.flag}</span></div>
+              <div key={v.id} data-rv onClick={() => toggleVoice(i)} style={{ display: "flex", alignItems: "center", gap: 14, padding: 16, borderRadius: 16, cursor: "pointer", transition: "all .25s ease", background: hl ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "#12121d", border: hl ? "1px solid rgba(44,118,237,.5)" : "1px solid rgba(255,255,255,.08)", boxShadow: hl ? "0 18px 40px -22px rgba(44,118,237,.5)" : "none" }}>
+                <div style={{ position: "relative", width: 50, height: 50, borderRadius: 14, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISP, fontWeight: 600, fontSize: 20, background: pals[0], color: pals[1] }}>
+                  {playing && <span style={{ position: "absolute", inset: 0, borderRadius: 14, background: "var(--lime)", opacity: .35, animation: "h22ring 1.6s ease-out infinite" }} />}
+                  <span style={{ position: "relative" }}>{v.letter}</span><span style={{ position: "absolute", bottom: -4, right: -4, fontSize: 15 }}>{v.flag}</span>
+                </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ fontWeight: 700, fontSize: 15.5 }}>{v.id}</span><span style={{ fontSize: 11, color: "#7a7a8c", background: "rgba(255,255,255,.06)", padding: "2px 7px", borderRadius: 6 }}>{v.loc}</span></div>
                   <div style={{ fontSize: 13, color: "#9594a6", marginTop: 3 }}>{v.desc}</div>
                 </div>
-                {active ? (
-                  <div style={{ display: "flex", alignItems: "center", gap: 2.5, height: 26 }}>{Array.from({ length: 7 }).map((_, j) => <span key={j} style={{ width: 3, borderRadius: 3, background: "#2c76ed", height: 8 + (j % 3) * 7, transformOrigin: "center", animation: `h22eq ${0.5 + (j % 3) * 0.15}s ease-in-out ${(j * 0.08).toFixed(2)}s infinite` }} />)}</div>
+                {playing ? (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
+                    <span style={{ display: "flex", alignItems: "center", gap: 2.5, height: 26 }}>{Array.from({ length: 7 }).map((_, j) => <span key={j} style={{ width: 3, borderRadius: 3, background: "#2c76ed", height: 8 + (j % 3) * 7, transformOrigin: "center", animation: `h22eq ${0.5 + (j % 3) * 0.15}s ease-in-out ${(j * 0.08).toFixed(2)}s infinite` }} />)}</span>
+                    <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-stop" /></span>
+                  </span>
                 ) : (
                   <span style={{ width: 24, height: 24, borderRadius: "50%", border: "1px solid rgba(255,255,255,.16)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: "#7a7a8c" }}><i className="fa-solid fa-play" /></span>
                 )}
