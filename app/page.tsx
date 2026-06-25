@@ -1,5 +1,5 @@
-import Landing from "@/components/hello22/Landing";
+import Hello22Site from "@/components/site22/Hello22Site";
 
 export default function HomePage() {
-  return <Landing />;
+  return <Hello22Site />;
 }
