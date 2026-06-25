@@ -1,38 +1,14 @@
 "use client";
 
-import { PhoneIncoming, Bot, ClipboardCheck, Send } from "lucide-react";
+import { Check, Phone, Sparkles } from "lucide-react";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Stagger, StaggerItem } from "./ui/Reveal";
+import { EqualizerBars } from "./ui/Waveform";
 
-const steps = [
-  {
-    icon: PhoneIncoming,
-    step: "01",
-    title: "Customer calls your business",
-    description:
-      "A customer dials your existing business number — nothing changes on their end.",
-  },
-  {
-    icon: Bot,
-    step: "02",
-    title: "AI Receptionist answers instantly",
-    description:
-      "The call is answered on the first ring with a warm, professional greeting in your business name.",
-  },
-  {
-    icon: ClipboardCheck,
-    step: "03",
-    title: "Customer information is collected",
-    description:
-      "The receptionist asks the right questions, answers theirs, and gathers everything you need.",
-  },
-  {
-    icon: Send,
-    step: "04",
-    title: "Appointment or lead is delivered to you",
-    description:
-      "Bookings land on your calendar and lead details arrive by text or email — instantly.",
-  },
+const flowItems = [
+  "Capture: name · address · issue",
+  "Leads → Google Calendar / webhook",
+  "Notify → Email · SMS · WhatsApp",
 ];
 
 export function HowItWorks() {
@@ -46,42 +22,124 @@ export function HowItWorks() {
 
       <div className="container-site relative">
         <SectionHeading
-          eyebrow="Simple Process"
-          title="From first ring to booked appointment"
-          description="Handled in seconds, without you lifting a finger."
-          dark
+          eyebrow="How it works"
+          title={<>From signup to your <em>first answered call — fast.</em></>}
+          description="No phone trees. No code. Just describe what your receptionist should do — hello22 handles the rest."
         />
 
-        <Stagger className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" staggerDelay={0.12}>
-          {steps.map((step, i) => (
-            <StaggerItem key={step.step} className="relative">
-              <div className="group relative h-full rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/30 hover:bg-white/[0.07]">
-                <div className="flex items-center justify-between">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-lg shadow-primary/30 transition-transform duration-300 group-hover:scale-110">
-                    <step.icon className="h-6 w-6" aria-hidden="true" />
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="font-display text-4xl font-bold text-white/10 transition-colors duration-300 group-hover:text-accent/30"
-                  >
-                    {step.step}
-                  </span>
-                </div>
-                <h3 className="mt-6 font-display text-lg font-bold text-white">
-                  {step.title}
-                </h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-slate-400">
-                  {step.description}
-                </p>
-                {i < steps.length - 1 && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute -right-4 top-1/2 hidden h-px w-3 bg-primary/40 lg:block"
-                  />
-                )}
+        <Stagger className="mt-16 grid gap-8 lg:grid-cols-3" staggerDelay={0.12}>
+          {/* STEP 01 — SETUP */}
+          <StaggerItem className="border-t border-white/10 pt-8">
+            <div className="flex items-baseline gap-3">
+              <span className="font-serif text-5xl italic leading-none text-primary lg:text-6xl">
+                01
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+                — Build your AI Brain
+              </span>
+            </div>
+            <h3 className="mt-5 text-xl font-semibold text-white">
+              Build your AI Brain
+            </h3>
+            <p className="mt-2 text-slate-400">
+              Paste your website URL or fill in your details. Set your business
+              name, voice, greeting, services, and rules.
+            </p>
+
+            <div className="mt-6 rounded-2xl bg-card p-4 ring-1 ring-white/[0.08]">
+              <div className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+                <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                brain.config
               </div>
-            </StaggerItem>
-          ))}
+              <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-slate-400">
+                <code>
+                  <span className="block">
+                    url: <span className="text-primary">&quot;yourbusiness.com.au&quot;</span>
+                  </span>
+                  <span className="block">name: &quot;Rapid Plumbing Co.&quot;</span>
+                  <span className="block">voice: &quot;Emma · AU&quot;</span>
+                  <span className="block">hours: &quot;24/7&quot;</span>
+                </code>
+              </pre>
+            </div>
+          </StaggerItem>
+
+          {/* STEP 02 — CONNECT */}
+          <StaggerItem className="border-t border-white/10 pt-8">
+            <div className="flex items-baseline gap-3">
+              <span className="font-serif text-5xl italic leading-none text-primary lg:text-6xl">
+                02
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+                — Connect your flow
+              </span>
+            </div>
+            <h3 className="mt-5 text-xl font-semibold text-white">
+              Connect your flow
+            </h3>
+            <p className="mt-2 text-slate-400">
+              Choose what to capture, where leads go (Google Calendar / webhook),
+              and how you get notified (email · SMS · WhatsApp).
+            </p>
+
+            <div className="mt-6 rounded-2xl bg-card p-4 ring-1 ring-white/[0.08]">
+              <ul className="space-y-2.5">
+                {flowItems.map((label) => (
+                  <li
+                    key={label}
+                    className="flex items-center gap-2.5 rounded-xl bg-navy-800 px-3 py-2.5 ring-1 ring-white/[0.06]"
+                  >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30">
+                      <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                    </span>
+                    <span className="font-mono text-xs text-white">{label}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </StaggerItem>
+
+          {/* STEP 03 — GO LIVE */}
+          <StaggerItem className="border-t border-white/10 pt-8">
+            <div className="flex items-baseline gap-3">
+              <span className="font-serif text-5xl italic leading-none text-primary lg:text-6xl">
+                03
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+                — Get your number &amp; go live
+              </span>
+            </div>
+            <h3 className="mt-5 text-xl font-semibold text-white">
+              Get your number &amp; go live
+            </h3>
+            <p className="mt-2 text-slate-400">
+              Pick a number from our pool or keep your existing one. Your
+              receptionist starts answering 24/7.
+            </p>
+
+            <div className="mt-6 rounded-2xl bg-card p-4 ring-1 ring-white/[0.08]">
+              <div className="flex items-center justify-between gap-3 rounded-xl bg-navy-800 px-3 py-3 ring-1 ring-white/[0.06]">
+                <span className="flex items-center gap-2.5">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/15 text-primary ring-1 ring-primary/30">
+                    <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+                  </span>
+                  <span className="font-mono text-sm text-white">
+                    +61 2 5550 2210
+                  </span>
+                </span>
+                <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-emerald-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+                  Active
+                </span>
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-3 px-1">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+                  Live line
+                </span>
+                <EqualizerBars bars={7} height={16} className="text-primary" />
+              </div>
+            </div>
+          </StaggerItem>
         </Stagger>
       </div>
     </section>

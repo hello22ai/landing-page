@@ -36,7 +36,7 @@ export function MobileCTA() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 80, opacity: 0 }}
           transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 backdrop-blur-lg lg:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-base/90 p-3 backdrop-blur lg:hidden"
         >
           <a href="#consultation" className="btn-primary w-full !py-3.5 !text-sm">
             Get Free Consultation

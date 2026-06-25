@@ -38,11 +38,11 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="section-padding bg-white">
+    <section id="faq" className="section-padding bg-navy">
       <div className="container-site">
         <SectionHeading
           eyebrow="Common Questions"
-          title="Frequently asked questions"
+          title={<>Questions, <em>all answered here.</em></>}
           description="Everything you need to know about your new AI Receptionist."
         />
 
@@ -53,10 +53,10 @@ export function FAQ() {
               return (
                 <div
                   key={faq.question}
-                  className={`overflow-hidden rounded-3xl ring-1 transition-all duration-300 ${
+                  className={`overflow-hidden rounded-[20px] ring-1 transition-all duration-300 ${
                     isOpen
-                      ? "bg-surface shadow-card ring-primary/25"
-                      : "bg-white ring-slate-900/[0.08] hover:ring-primary/20"
+                      ? "bg-card shadow-card ring-primary/30"
+                      : "bg-card ring-white/[0.08] hover:ring-primary/20"
                   }`}
                 >
                   <button
@@ -66,7 +66,7 @@ export function FAQ() {
                     aria-controls={`faq-answer-${index}`}
                     className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                   >
-                    <span className="font-display text-base font-bold text-navy sm:text-lg">
+                    <span className="font-display text-base font-bold text-white sm:text-lg">
                       {faq.question}
                     </span>
                     <motion.span
@@ -86,7 +86,7 @@ export function FAQ() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                       >
-                        <p className="px-6 pb-6 text-[15px] leading-relaxed text-slate-600">
+                        <p className="px-6 pb-6 text-[15px] leading-relaxed text-slate-400">
                           {faq.answer}
                         </p>
                       </motion.div>

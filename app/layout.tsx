@@ -1,48 +1,28 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Fraunces, Inter_Tight } from "next/font/google";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 
-const inter = Inter({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-inter",
+  style: ["normal", "italic"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-fraunces",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-display",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter-tight",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.aireceptionist.example.com"),
-  title: {
-    default: "hello22 — Never Miss Another Customer Call",
-    template: "%s | hello22",
-  },
+  metadataBase: new URL("https://www.hello22.ai"),
+  title: "hello22 — AI Voice Agents That Sound Human",
   description:
-    "Our AI Receptionist answers calls 24/7, captures customer information, books appointments, and ensures every opportunity is handled professionally — even when you're unavailable.",
-  keywords: [
-    "AI receptionist",
-    "AI call answering service",
-    "24/7 call answering",
-    "appointment booking",
-    "lead capture",
-    "virtual receptionist",
-  ],
-  openGraph: {
-    type: "website",
-    title: "hello22 — Never Miss Another Customer Call",
-    description:
-      "Answer every call 24/7, capture more leads, and book appointments automatically with your AI Receptionist.",
-    siteName: "hello22",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "hello22 — Never Miss Another Customer Call",
-    description:
-      "Answer every call 24/7, capture more leads, and book appointments automatically with your AI Receptionist.",
-  },
+    "hello22 builds voice AI agents that answer calls, book appointments, and resolve customer issues in 22+ languages. Deploy in 22 minutes.",
   robots: { index: true, follow: true },
 };
 
@@ -50,8 +30,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <body className="font-sans">{children}</body>
+    <html lang="en" className={`${fraunces.variable} ${interTight.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

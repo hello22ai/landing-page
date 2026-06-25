@@ -1,11 +1,12 @@
+import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
 type SectionHeadingProps = {
   eyebrow?: string;
-  title: string;
+  /** Plain string or JSX. Wrap the accent phrase in <em>…</em> for the italic blue treatment. */
+  title: ReactNode;
   description?: string;
   align?: "center" | "left";
-  dark?: boolean;
 };
 
 export function SectionHeading({
@@ -13,7 +14,6 @@ export function SectionHeading({
   title,
   description,
   align = "center",
-  dark = false,
 }: SectionHeadingProps) {
   return (
     <Reveal
@@ -21,22 +21,16 @@ export function SectionHeading({
     >
       {eyebrow && (
         <span
-          className={`eyebrow ${
+          className={`eyebrow text-primary ${
             align === "center" ? "justify-center" : ""
-          } ${dark ? "text-accent" : "text-primary"}`}
+          }`}
         >
           {eyebrow}
         </span>
       )}
-      <h2 className={`heading-lg ${dark ? "text-white" : "text-navy"}`}>
-        {title}
-      </h2>
+      <h2 className="heading-lg text-white">{title}</h2>
       {description && (
-        <p
-          className={`mt-6 text-lg leading-relaxed ${
-            dark ? "text-slate-400" : "text-slate-600"
-          }`}
-        >
+        <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-400">
           {description}
         </p>
       )}
