@@ -31,11 +31,11 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="section-padding bg-surface">
+    <section id="testimonials" className="section-padding bg-navy">
       <div className="container-site">
         <SectionHeading
           eyebrow="Customer Stories"
-          title="Trusted by business owners like you"
+          title={<>Trusted at <em>real-world scale.</em></>}
           description="See how service businesses are capturing more leads and booking more appointments — automatically."
         />
 
@@ -45,9 +45,9 @@ export function Testimonials() {
               <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
             ))}
           </span>
-          <span className="text-sm font-semibold text-navy">
+          <span className="text-sm font-semibold text-white">
             5.0 average
-            <span className="font-normal text-slate-500"> from 120+ service businesses</span>
+            <span className="font-normal text-slate-400"> from 120+ service businesses</span>
           </span>
         </Reveal>
 
@@ -59,13 +59,13 @@ export function Testimonials() {
                 <figure
                   className={`relative flex h-full flex-col rounded-3xl p-8 ring-1 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover ${
                     featured
-                      ? "bg-navy ring-white/10 lg:scale-[1.03]"
-                      : "bg-white ring-slate-900/[0.06] hover:ring-primary/20"
+                      ? "bg-navy-700 ring-white/[0.12] lg:scale-[1.03]"
+                      : "bg-card ring-white/[0.08] hover:ring-primary/30"
                   }`}
                 >
                   <Quote
                     className={`absolute right-7 top-7 h-8 w-8 ${
-                      featured ? "text-white/10" : "text-primary-100"
+                      featured ? "text-white/10" : "text-primary/25"
                     }`}
                     aria-hidden="true"
                   />
@@ -80,16 +80,12 @@ export function Testimonials() {
                   </div>
                   <blockquote
                     className={`mt-5 flex-1 text-[15px] leading-relaxed ${
-                      featured ? "text-slate-300" : "text-slate-600"
+                      featured ? "text-slate-300" : "text-slate-400"
                     }`}
                   >
                     &ldquo;{testimonial.quote}&rdquo;
                   </blockquote>
-                  <figcaption
-                    className={`mt-7 flex items-center gap-3.5 border-t pt-6 ${
-                      featured ? "border-white/10" : "border-slate-100"
-                    }`}
-                  >
+                  <figcaption className="mt-7 flex items-center gap-3.5 border-t border-white/10 pt-6">
                     <Image
                       src={testimonial.image}
                       alt={testimonial.name}
@@ -98,10 +94,10 @@ export function Testimonials() {
                       className="h-11 w-11 rounded-full object-cover ring-2 ring-primary/30"
                     />
                     <div>
-                      <p className={`text-sm font-bold ${featured ? "text-white" : "text-navy"}`}>
+                      <p className="text-sm font-bold text-white">
                         {testimonial.name}
                       </p>
-                      <p className={`text-xs ${featured ? "text-slate-400" : "text-slate-500"}`}>
+                      <p className="text-xs text-slate-400">
                         {testimonial.role}
                       </p>
                     </div>

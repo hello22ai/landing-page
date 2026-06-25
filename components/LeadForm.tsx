@@ -52,19 +52,19 @@ const initialFormData: LeadFormData = {
 };
 
 const inputClasses =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-navy placeholder:text-slate-400 transition-all duration-200 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10";
+  "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 transition-all duration-200 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/40";
 
-const selectClasses = `${inputClasses} appearance-none pr-10`;
+const selectClasses = `${inputClasses} appearance-none pr-10 [&>option]:bg-navy-800 [&>option]:text-white`;
 
 const selectChevronStyle: React.CSSProperties = {
   backgroundImage:
-    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "right 0.875rem center",
   backgroundSize: "1rem",
 };
 
-const labelClasses = "mb-1.5 block text-sm font-semibold text-navy";
+const labelClasses = "mb-1.5 block text-sm font-semibold text-slate-300";
 
 export function LeadForm() {
   const [formData, setFormData] = useState<LeadFormData>(initialFormData);
@@ -112,7 +112,7 @@ export function LeadForm() {
         </Reveal>
 
         <Reveal delay={0.15} className="mx-auto mt-12 max-w-3xl">
-          <div className="rounded-3xl border border-white/10 bg-white p-7 shadow-2xl sm:p-10">
+          <div className="rounded-3xl border border-white/10 bg-card p-7 shadow-2xl sm:p-10">
             <AnimatePresence mode="wait">
               {status === "success" ? (
                 <motion.div
@@ -123,13 +123,13 @@ export function LeadForm() {
                   className="flex flex-col items-center py-12 text-center"
                   role="status"
                 >
-                  <span className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50">
+                  <span className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/10">
                     <CheckCircle2 className="h-10 w-10 text-emerald-500" aria-hidden="true" />
                   </span>
-                  <h3 className="mt-6 text-2xl font-bold text-navy">
+                  <h3 className="mt-6 text-2xl font-bold text-white">
                     Thank You! Your Request Has Been Received
                   </h3>
-                  <p className="mt-3 max-w-md text-slate-600">
+                  <p className="mt-3 max-w-md text-slate-400">
                     Our team will review your details and contact you within one
                     business day to schedule your free consultation.
                   </p>

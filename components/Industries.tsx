@@ -1,110 +1,85 @@
-"use client";
-
-import Image from "next/image";
 import {
-  Stethoscope,
-  Smile,
-  Globe,
-  Scale,
-  Home,
-  Scissors,
-  UtensilsCrossed,
   Wrench,
+  Stethoscope,
+  Scissors,
+  Home,
+  Scale,
+  BellRing,
 } from "lucide-react";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Stagger, StaggerItem } from "./ui/Reveal";
 
-const industries = [
+type UseCase = {
+  icon: typeof Wrench;
+  title: string;
+  description: string;
+};
+
+const useCases: UseCase[] = [
+  {
+    icon: Wrench,
+    title: "Trades & home services",
+    description:
+      "Never miss an after-hours emergency. Book jobs, capture the address and issue, and text yourself the details instantly.",
+  },
   {
     icon: Stethoscope,
-    image: "/images/industry-medical.jpg",
-    title: "Medical Clinics",
-    description: "Book patient appointments and answer common questions around the clock.",
-  },
-  {
-    icon: Smile,
-    image: "/images/industry-dental.jpg",
-    title: "Dental Practices",
-    description: "Fill your chair time with automatic scheduling and reminders for callers.",
-  },
-  {
-    icon: Globe,
-    image: "/images/industry-immigration.jpg",
-    title: "Immigration Consultants",
-    description: "Capture every inquiry and schedule consultations — even across time zones.",
-  },
-  {
-    icon: Scale,
-    image: "/images/industry-law.jpg",
-    title: "Law Firms",
-    description: "Screen potential clients professionally and route urgent matters to you.",
-  },
-  {
-    icon: Home,
-    image: "/images/industry-realestate.jpg",
-    title: "Real Estate Agencies",
-    description: "Respond to listing inquiries instantly and book showings while you're out.",
+    title: "Clinics & practices",
+    description:
+      "Handle appointment requests, FAQs, and intake — politely transferring the calls that need a human.",
   },
   {
     icon: Scissors,
-    image: "/images/industry-salon.jpg",
-    title: "Salons & Spas",
-    description: "Take bookings while your stylists stay focused on the clients in the chair.",
+    title: "Salons & spas",
+    description:
+      "Take bookings and answer 'are you open / how much' questions while you're with a client.",
   },
   {
-    icon: UtensilsCrossed,
-    image: "/images/industry-restaurant.jpg",
-    title: "Restaurants",
-    description: "Handle reservations, hours, and menu questions during your busiest rush.",
+    icon: Home,
+    title: "Real estate",
+    description: "Capture every property enquiry and book viewings, even at 2 AM.",
   },
   {
-    icon: Wrench,
-    image: "/images/industry-homeservices.jpg",
-    title: "Home Services",
-    description: "Win the job by answering first — capture details and schedule estimates.",
+    icon: Scale,
+    title: "Legal & professional services",
+    description:
+      "Screen and qualify new enquiries, then route the right ones to you.",
+  },
+  {
+    icon: BellRing,
+    title: "Hospitality",
+    description:
+      "Reservations, hours, and guest questions answered around the clock.",
   },
 ];
 
 export function Industries() {
   return (
-    <section id="industries" className="section-padding bg-white">
+    <section id="use-cases" className="section-padding bg-base">
       <div className="container-site">
         <SectionHeading
-          eyebrow="Built For You"
-          title="Perfect for any service-based business"
-          description="If your customers call to ask questions or book appointments, your AI Receptionist is ready on day one."
+          eyebrow="Use cases"
+          title={<>Built for every <em>business that takes calls.</em></>}
+          description="If your customers call to book, ask, or enquire, hello22 is ready on day one."
         />
 
-        <Stagger
-          className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
-          staggerDelay={0.07}
-        >
-          {industries.map((industry) => (
-            <StaggerItem key={industry.title}>
-              <div className="card-soft group h-full overflow-hidden">
-                <div className="relative h-40 overflow-hidden">
-                  <Image
-                    src={industry.image}
-                    alt={industry.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 text-primary shadow-md">
-                    <industry.icon className="h-5 w-5" aria-hidden="true" />
+        <Stagger className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {useCases.map((useCase) => {
+            const Icon = useCase.icon;
+            return (
+              <StaggerItem key={useCase.title}>
+                <div className="card-soft group h-full rounded-[20px] bg-card p-7 ring-1 ring-white/[0.08] transition-transform duration-300 hover:-translate-y-1">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
                   </span>
-                </div>
-                <div className="p-6">
-                  <h3 className="font-display text-base font-bold text-navy">
-                    {industry.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {industry.description}
+                  <h3 className="mt-6 font-semibold text-white">{useCase.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                    {useCase.description}
                   </p>
                 </div>
-              </div>
-            </StaggerItem>
-          ))}
+              </StaggerItem>
+            );
+          })}
         </Stagger>
       </div>
     </section>

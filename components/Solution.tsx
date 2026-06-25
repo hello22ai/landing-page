@@ -15,18 +15,18 @@ import { Stagger, StaggerItem } from "./ui/Reveal";
 
 export function Solution() {
   return (
-    <section id="solution" className="section-padding bg-white">
+    <section id="solution" className="section-padding bg-base">
       <div className="container-site">
         <SectionHeading
           eyebrow="The Solution"
-          title="Meet your 24/7 AI Receptionist"
+          title={<>Meet your <em>always-on receptionist.</em></>}
           description="A professional, friendly receptionist that never takes a break, never puts customers on hold, and never lets an opportunity slip away."
         />
 
         <Stagger className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {/* Feature: large card with mini visual */}
           <StaggerItem className="sm:col-span-2">
-            <div className="card-soft group relative h-full overflow-hidden bg-navy p-8 !ring-white/10 sm:p-10">
+            <div className="card-soft group relative h-full overflow-hidden bg-navy-800 p-8 !ring-white/10 sm:p-10">
               <div
                 aria-hidden="true"
                 className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/25 opacity-70 blur-[90px] transition-opacity duration-500 group-hover:opacity-100"
@@ -102,20 +102,20 @@ export function Solution() {
               />
               <div className="relative flex h-full flex-col justify-between gap-8 sm:flex-row sm:items-center">
                 <div className="max-w-sm">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-accent">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy-700 text-accent">
                     <MoonStar className="h-6 w-6" aria-hidden="true" />
                   </span>
-                  <h3 className="mt-6 font-display text-2xl font-bold text-navy">
+                  <h3 className="mt-6 font-display text-2xl font-bold text-white">
                     Works day and night
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  <p className="mt-3 text-sm leading-relaxed text-slate-400">
                     Evenings, weekends, holidays — your business stays open to
                     new customers around the clock.
                   </p>
                 </div>
                 <a
                   href="#consultation"
-                  className="group/link inline-flex shrink-0 items-center gap-2 rounded-full bg-navy px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary"
+                  className="group/link inline-flex shrink-0 items-center gap-2 rounded-full bg-white/10 ring-1 ring-white/15 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary"
                 >
                   See it in action
                   <ArrowRight
@@ -143,11 +143,11 @@ function FeatureCard({
 }) {
   return (
     <div className="card-soft group h-full p-8">
-      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
         <Icon className="h-6 w-6" aria-hidden="true" />
       </span>
-      <h3 className="mt-6 font-display text-lg font-bold text-navy">{title}</h3>
-      <p className="mt-2.5 text-sm leading-relaxed text-slate-600">{description}</p>
+      <h3 className="mt-6 font-display text-lg font-bold text-white">{title}</h3>
+      <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{description}</p>
     </div>
   );
 }

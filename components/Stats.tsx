@@ -1,87 +1,62 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { Star } from "lucide-react";
 import { Stagger, StaggerItem } from "./ui/Reveal";
+import { SectionHeading } from "./ui/SectionHeading";
 
-type StatValue =
-  | { type: "count"; to: number; prefix?: string; suffix?: string }
-  | { type: "static"; text: string };
+type Stat = {
+  value: string;
+  label: string;
+  star?: boolean;
+};
 
-const stats: { value: StatValue; label: string; sub: string }[] = [
+const stats: Stat[] = [
   {
-    value: { type: "count", to: 100, suffix: "%" },
-    label: "of calls answered",
-    sub: "no voicemail, ever",
+    value: "24/7",
+    label: "Answers nights, weekends & holidays",
   },
   {
-    value: { type: "static", text: "< 1s" },
-    label: "average pickup time",
-    sub: "faster than any front desk",
+    value: "4.9",
+    label: "from 67 reviews",
+    star: true,
   },
   {
-    value: { type: "static", text: "24/7" },
-    label: "availability",
-    sub: "nights, weekends & holidays",
+    value: "8",
+    label: "dashboard languages",
   },
   {
-    value: { type: "count", to: 38, prefix: "+", suffix: "%" },
-    label: "more leads captured",
-    sub: "average across customers",
+    value: "11",
+    label: "studio voices · AU / UK / US",
   },
 ];
 
-function CountUp({ to, prefix = "", suffix = "" }: { to: number; prefix?: string; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const prefersReducedMotion = useReducedMotion();
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    if (prefersReducedMotion) {
-      setValue(to);
-      return;
-    }
-    let start: number | null = null;
-    let raf: number;
-    const duration = 1600;
-    const step = (t: number) => {
-      if (start === null) start = t;
-      const progress = Math.min((t - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(eased * to));
-      if (progress < 1) raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, to, prefersReducedMotion]);
-
-  return (
-    <span ref={ref}>
-      {prefix}
-      {value}
-      {suffix}
-    </span>
-  );
-}
-
 export function Stats() {
   return (
-    <section className="border-y border-slate-100 bg-white py-16 lg:py-20" aria-label="Results">
+    <section className="border-y border-white/10 bg-base py-16 lg:py-20" aria-label="Stats">
       <div className="container-site">
+        <div className="mb-12">
+          <SectionHeading
+            eyebrow="Why hello22"
+            title={
+              <>
+                Always on, <em>every call.</em>
+              </>
+            }
+          />
+        </div>
         <Stagger className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4" staggerDelay={0.1}>
           {stats.map((stat) => (
             <StaggerItem key={stat.label} className="text-center">
-              <p className="font-display text-5xl font-bold tracking-tight text-primary lg:text-6xl">
-                {stat.value.type === "count" ? (
-                  <CountUp to={stat.value.to} prefix={stat.value.prefix} suffix={stat.value.suffix} />
-                ) : (
-                  stat.value.text
-                )}
+              {stat.star && (
+                <Star
+                  className="mx-auto mb-2 h-5 w-5 fill-amber-400 text-amber-400"
+                  aria-hidden="true"
+                />
+              )}
+              <p className="font-mono text-5xl font-bold tracking-tight text-white lg:text-6xl">
+                {stat.value}
               </p>
-              <p className="mt-3 text-sm font-semibold text-navy">{stat.label}</p>
-              <p className="mt-1 text-xs text-slate-500">{stat.sub}</p>
+              <p className="mt-3 text-xs text-muted">{stat.label}</p>
             </StaggerItem>
           ))}
         </Stagger>

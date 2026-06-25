@@ -5,11 +5,11 @@ import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Why It Matters", href: "#problem" },
-  { label: "Features", href: "#solution" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Industries", href: "#industries" },
-  { label: "FAQ", href: "#faq" },
+  { label: "How it works", href: "/#how-it-works" },
+  { label: "Voices", href: "/#voices" },
+  { label: "Features", href: "/#features" },
+  { label: "Use cases", href: "/#use-cases" },
+  { label: "Pricing", href: "/#pricing" },
 ];
 
 export function Navbar() {
@@ -28,7 +28,7 @@ export function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-lg"
+          ? "border-b border-white/10 bg-base/85 shadow-lg shadow-black/30 backdrop-blur-lg"
           : "bg-transparent"
       }`}
     >
@@ -36,13 +36,9 @@ export function Navbar() {
         className="container-site flex h-[4.5rem] items-center justify-between"
         aria-label="Main navigation"
       >
-        <a href="#" className="flex items-center" aria-label="hello22 home">
+        <a href="/" className="flex items-center" aria-label="hello22 home">
           <img
-            src={
-              scrolled
-                ? "/images/hello22-logo.svg"
-                : "/images/hello22-logo-white.svg"
-            }
+            src="/images/hello22-logo-white.svg"
             alt="hello22"
             className="h-9 w-auto"
           />
@@ -53,24 +49,28 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className={`relative text-sm font-medium transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform after:duration-300 hover:text-primary hover:after:scale-x-100 ${
-                scrolled ? "text-slate-600" : "text-slate-300"
-              }`}
+              className="relative text-sm font-medium text-slate-300 transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:transition-transform after:duration-300 hover:text-white hover:after:scale-x-100"
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        <div className="hidden lg:block">
-          <a href="#consultation" className="btn-primary !px-5 !py-2.5 !text-sm">
-            Get Free Consultation
+        <div className="hidden items-center gap-5 lg:flex">
+          <a
+            href="#"
+            className="text-sm font-medium text-slate-300 transition-colors hover:text-white"
+          >
+            Sign In
+          </a>
+          <a href="/#consultation" className="btn-primary !px-5 !py-2.5 !text-sm">
+            Get Started
           </a>
         </div>
 
         <button
           type="button"
-          className={`lg:hidden ${scrolled ? "text-navy" : "text-white"}`}
+          className="text-white lg:hidden"
           onClick={() => setMobileOpen((v) => !v)}
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
@@ -95,7 +95,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="overflow-hidden border-b border-slate-200 bg-white shadow-xl lg:hidden"
+            className="overflow-hidden border-b border-white/10 bg-navy shadow-xl shadow-black/40 lg:hidden"
           >
             <div className="container-site flex flex-col gap-1 py-4">
               {navLinks.map((link) => (
@@ -103,17 +103,17 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-lg px-3 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-surface hover:text-primary"
+                  className="rounded-lg px-3 py-3 text-base font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-primary"
                 >
                   {link.label}
                 </a>
               ))}
               <a
-                href="#consultation"
+                href="/#consultation"
                 onClick={() => setMobileOpen(false)}
                 className="btn-primary mt-3"
               >
-                Get Free Consultation
+                Get Started
               </a>
             </div>
           </motion.div>
