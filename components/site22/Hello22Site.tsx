@@ -12,22 +12,31 @@ const APP_URL = "https://agent.hello22.ai";
 
 const GREETS = ["hola", "你好", "bonjour", "こんにちは", "नमस्ते", "olá", "안녕", "hallo", "مرحبا", "hej"];
 
-const TRUST = ["Twilio", "Stripe", "ElevenLabs", "OpenAI", "Anthropic", "Google Calendar", "WhatsApp", "AWS"];
+const TRUST = ["Twilio", "Stripe", "AWS (S3)", "Google Calendar", "ElevenLabs", "OpenAI", "WhatsApp"];
 
-type V = { id: string; letter: string; flag: string; loc: string; desc: string; sample: string; audio: string };
+type V = { id: string; letter: string; flag: string; loc: string; desc: string; sample: string; audio: string; vid?: string };
 const VOICES: V[] = [
-  { id: "Emma", letter: "E", flag: "🇦🇺", loc: "en-AU", desc: "Warm & Friendly", audio: "/audio/voices/emma.mp3", sample: "Hi there! Thanks for calling — I'd be happy to help you book that in." },
-  { id: "Jack", letter: "J", flag: "🇦🇺", loc: "en-AU", desc: "Friendly & Professional", audio: "/audio/voices/jack.mp3", sample: "G'day, you've reached the front desk. How can I help you today?" },
-  { id: "Bruce", letter: "B", flag: "🇦🇺", loc: "en-AU", desc: "Classic Aussie", audio: "/audio/voices/bruce.mp3", sample: "No worries, mate. Let me get that sorted for you right now." },
-  { id: "Jordan", letter: "J", flag: "🇦🇺", loc: "en-AU", desc: "Smooth & Modern", audio: "/audio/voices/jordan.mp3", sample: "Hey, great to hear from you. I can take care of that booking in a moment." },
-  { id: "Aimee", letter: "A", flag: "🇦🇺", loc: "en-AU", desc: "Bright & Bubbly", audio: "/audio/voices/aimee.mp3", sample: "Hi! Lovely to hear from you — let's get you all set up." },
-  { id: "Alice", letter: "A", flag: "🇬🇧", loc: "en-GB", desc: "Warm & Conversational", audio: "/audio/voices/alice.mp3", sample: "Hello, thank you for calling. How may I assist you this afternoon?" },
-  { id: "Charlie", letter: "C", flag: "🇬🇧", loc: "en-GB", desc: "Rich Accent", audio: "/audio/voices/charlie.mp3", sample: "Good afternoon. I'd be delighted to help you with your enquiry." },
-  { id: "Joseph", letter: "J", flag: "🇺🇸", loc: "en-US", desc: "Authoritative & Clear", audio: "/audio/voices/joseph.mp3", sample: "Thanks for calling. I can confirm your appointment and answer any questions." },
-  { id: "Tyler", letter: "T", flag: "🇺🇸", loc: "en-US", desc: "Casual & Confident", audio: "/audio/voices/tyler.mp3", sample: "Hey, what's up! I can get you booked in real quick — no problem at all." },
-  { id: "Lilian", letter: "L", flag: "🇺🇸", loc: "en-US", desc: "Warm & Professional", audio: "/audio/voices/lilian.mp3", sample: "Hi, thanks so much for reaching out. Let me help you with that today." },
-  { id: "Ayana", letter: "A", flag: "🇺🇸", loc: "en-US", desc: "Friendly & Articulate", audio: "/audio/voices/ayana.mp3", sample: "Hello! I'd be glad to assist. Let me pull up your details now." },
-  { id: "Aria", letter: "A", flag: "🇺🇸", loc: "en-US", desc: "Signature · Studio v3.2", audio: "/audio/voices/aria.mp3", sample: "Hi, I'm Aria — your AI voice agent. I answer calls and book appointments around the clock." },
+  { id: "Sarah", letter: "S", flag: "🇺🇸", loc: "en-US", desc: "Signature · Mature, Reassuring, Confident", vid: "EXAVITQu4vr4xnSDxMaL", audio: "/audio/voices/sarah.mp3", sample: "Hello, thank you for calling. You're in good hands — let's sort this out together." },
+  { id: "Aria", letter: "A", flag: "🇺🇸", loc: "en-US", desc: "Expressive", vid: "9BWtsMINqrJLrRacOk9x", audio: "/audio/voices/aria.mp3", sample: "Hi there! I'd love to help you get that booked in right away." },
+  { id: "Roger", letter: "R", flag: "🇺🇸", loc: "en-US", desc: "Laid-Back, Casual, Resonant", vid: "CwhRBWXzGAHq8TQ4Fs17", audio: "/audio/voices/roger.mp3", sample: "Hey, no rush at all. I can take care of that for you right now." },
+  { id: "Laura", letter: "L", flag: "🇺🇸", loc: "en-US", desc: "Enthusiast, Quirky Attitude", vid: "FGY2WhTYpPnrIDTdsKH5", audio: "/audio/voices/laura.mp3", sample: "Oh, great timing! I can absolutely get that set up for you." },
+  { id: "Charlie", letter: "C", flag: "🇦🇺", loc: "en-AU", desc: "Deep, Confident, Energetic", vid: "IKne3meq5aSn9XLyUdCD", audio: "/audio/voices/charlie.mp3", sample: "G'day! You've reached the front desk — happy to help however I can." },
+  { id: "George", letter: "G", flag: "🇬🇧", loc: "en-GB", desc: "Warm, Mature, Storyteller", vid: "JBFqnCBsd6RMkjVDRZzb", audio: "/audio/voices/george.mp3", sample: "Good afternoon. Let me walk you through everything, step by step." },
+  { id: "Callum", letter: "C", flag: "🌐", loc: "en", desc: "Husky Trickster", vid: "N2lVS1w4EtoT3dr4eOWO", audio: "/audio/voices/callum.mp3", sample: "Well now, you've called the right place. Let's get this handled." },
+  { id: "River", letter: "R", flag: "🇺🇸", loc: "en-US", desc: "Relaxed, Neutral, Informative", vid: "SAz9YHcvj6GT2YYXdXww", audio: "/audio/voices/river.mp3", sample: "Hi, thanks for reaching out. I can look that up for you in just a moment." },
+  { id: "Liam", letter: "L", flag: "🇺🇸", loc: "en-US", desc: "Energetic, Social Creator", vid: "TX3LPaxmHKxFdv7VOQHJ", audio: "/audio/voices/liam.mp3", sample: "Hey! Awesome to hear from you — let's get you taken care of fast." },
+  { id: "Charlotte", letter: "C", flag: "🇸🇪", loc: "en-SE", desc: "Seductive, Warm", vid: "XB0fDUnXU5powFXDhCwa", audio: "/audio/voices/charlotte.mp3", sample: "Hello, lovely to hear from you. Let me take care of that right away." },
+  { id: "Alice", letter: "A", flag: "🇬🇧", loc: "en-GB", desc: "Clear, Professional", vid: "Xb7hH8MSUJpSbSDYk0k2", audio: "/audio/voices/alice.mp3", sample: "Hello, thank you for calling. How may I assist you this afternoon?" },
+  { id: "Matilda", letter: "M", flag: "🇺🇸", loc: "en-US", desc: "Knowledgable, Professional", vid: "XrExE9yKIg1WjnnlVkGX", audio: "/audio/voices/matilda.mp3", sample: "Hi! I can answer that for you — and book you in while we're at it." },
+  { id: "Will", letter: "W", flag: "🇺🇸", loc: "en-US", desc: "Relaxed Optimist", vid: "bIHbv24MWmeRgasZH58o", audio: "/audio/voices/will.mp3", sample: "Hey, good to hear from you. We'll get this sorted, no worries." },
+  { id: "Jessica", letter: "J", flag: "🇺🇸", loc: "en-US", desc: "Playful, Bright, Warm", vid: "cgSgspJ2msm6clMCkdW9", audio: "/audio/voices/jessica.mp3", sample: "Hi! So glad you called — let's get you all set up." },
+  { id: "Eric", letter: "E", flag: "🇺🇸", loc: "en-US", desc: "Smooth, Trustworthy", vid: "cjVigY5qzO86Huf0OWal", audio: "/audio/voices/eric.mp3", sample: "Thanks for calling. I'll make sure this is handled properly for you." },
+  { id: "Harry", letter: "H", flag: "🇺🇸", loc: "en-US", desc: "Fierce Warrior", vid: "SOYHLrjzK2X1ezoPC6cr", audio: "/audio/voices/harry.mp3", sample: "You've reached the front desk. Tell me what you need — I'm on it." },
+  { id: "Chris", letter: "C", flag: "🇺🇸", loc: "en-US", desc: "Casual, Natural", vid: "iP95p4xoKVk53GoZ742B", audio: "/audio/voices/chris.mp3", sample: "Hey, what's up! I can get that booked for you real quick." },
+  { id: "Brian", letter: "B", flag: "🇺🇸", loc: "en-US", desc: "Deep, Resonant", vid: "nPczCjzI2devNBz1zQrb", audio: "/audio/voices/brian.mp3", sample: "Hello there. I'd be glad to help you with that today." },
+  { id: "Daniel", letter: "D", flag: "🇬🇧", loc: "en-GB", desc: "Authoritative, News", vid: "onwK4e9ZLuTAKqWW03F9", audio: "/audio/voices/daniel.mp3", sample: "Good day. I can confirm your appointment and answer any questions." },
+  { id: "Lily", letter: "L", flag: "🇬🇧", loc: "en-GB", desc: "Warm, Soft", vid: "pFZP5JQG7iQjIQuC4Bku", audio: "/audio/voices/lily.mp3", sample: "Hello, thanks so much for calling. Let me help you with that." },
+  { id: "Bill", letter: "B", flag: "🇺🇸", loc: "en-US", desc: "Trustworthy, Mature", vid: "pqHfZKP75CvOlQylNhV4", audio: "/audio/voices/bill.mp3", sample: "Hi, thanks for calling. Rest assured, I'll take good care of this." },
 ];
 
 type UC = { name: string; icon: string; kpi: string; title: string; body: string; stats: { v: string; l: string }[]; tags: string[] };
@@ -40,7 +49,7 @@ const USECASES: UC[] = [
   { name: "Logistics", icon: "fa-truck", kpi: "12,000+ calls per hour", title: "Coordinate drivers, dispatch, and customers in real time.", body: "Delivery confirmations, address changes, ETA inquiries, dispatch coordination — hello22 handles thousands of simultaneous calls without breaking a sweat.", stats: [{ v: "12,000+", l: "Calls per hour" }, { v: "92%", l: "Resolution rate" }, { v: "+18%", l: "On-time delivery" }], tags: ["TMS integration", "Dispatch routing", "ETA updates", "Address changes", "POD capture", "Driver coordination"] },
 ];
 
-const INTEGRATIONS = ["Google Calendar", "Salesforce", "HubSpot", "Slack", "Shopify", "Stripe", "Twilio", "Zapier", "Intercom", "Notion", "AWS", "120+ more"];
+const INTEGRATIONS = ["Google Calendar", "Twilio", "Stripe", "AWS (S3)"];
 
 type Line = { role: "caller" | "agent"; name: string; text: string };
 const TRANSCRIPT: Line[] = [
@@ -60,6 +69,23 @@ const SHOTS: Shot[] = [
   { src: "/images/screenshots/call-logs.png", title: "Call inbox", desc: "Every call transcribed, summarised, and analysed — filter by outcome or time and search summaries instantly." },
   { src: "/images/screenshots/ai-brain.png", title: "AI Brain — agent builder", desc: "Build your receptionist step by step: identity, knowledge, rules, automations, and voice — no code." },
   { src: "/images/screenshots/plans-billing.png", title: "Plans & billing", desc: "Track minutes, switch plans, and control auto-renew — full visibility over your usage and costs." },
+];
+
+// FAQ — edit/add questions here. `a` supports **bold** markup (rendered below).
+type Faq = { q: string; a: string };
+const FAQS: Faq[] = [
+  { q: "What is hello22.ai?", a: "hello22.ai is a 24/7 AI voice receptionist that answers your business phone calls, captures caller details, books appointments or jobs, and sends you a call summary via email, SMS, and WhatsApp (depending on your plan) — so you never miss a lead." },
+  { q: "How does the AI receptionist work?", a: "When a customer calls your assigned number, your AI receptionist answers in a natural voice, asks questions based on your business, captures the caller's details, and sends you a complete call summary as soon as the call ends." },
+  { q: "Can I customise what the AI says?", a: "Yes. Go to the **AI Brain** section in your dashboard to customise your receptionist's name, greeting, business information, services, business hours, and call-handling rules. Changes take effect instantly." },
+  { q: "What happens after a call ends?", a: "As soon as a call finishes, you'll receive a summary that includes the caller's name, call duration, and a transcript or summary of the conversation. Notifications are delivered via email, SMS, and WhatsApp, depending on your plan." },
+  { q: "Will I receive SMS and WhatsApp notifications after every call?", a: "Yes, on eligible paid plans. To receive SMS and WhatsApp notifications, make sure your mobile number is added in **Account Settings**." },
+  { q: "How does the CRM integration work?", a: "After each call, the caller's details are automatically sent to your connected CRM as a new lead. You can connect supported CRMs or configure a custom webhook from the **Connect CRM** section of your dashboard." },
+  { q: "What voices are available?", a: "Choose from a range of natural-sounding AI voices with multiple accents. Free trials include a limited selection of voices, while paid plans unlock the full voice library." },
+  { q: "What happens if I run out of minutes?", a: "If you use all of your included minutes, your subscription will automatically renew, and the payment method on file will be charged for the next billing cycle so your AI receptionist continues answering calls without interruption.\n\nYou can monitor your remaining minutes anytime from the **Plans & Billing** page in your dashboard.\n\n**Free Trial:** Your trial ends when you reach **10 minutes of usage** or **14 days**, whichever comes first. At that point, your selected plan will begin automatically unless you cancel before the trial ends." },
+  { q: "Can I change or upgrade my plan?", a: "Yes. You can change your plan at any time from the **Plans & Billing** page in your dashboard. If you're on a free trial, your newly selected plan will start when the trial ends. If you're already on a paid subscription, you can switch to a different plan at any time." },
+  { q: "Is my data secure?", a: "Yes. Your data is encrypted both in transit and at rest. We never share your call recordings, transcripts, or customer information with third parties." },
+  { q: "Can I listen to call recordings?", a: "Yes. When call recording is enabled, recordings are available in the **Call Inbox** section of your dashboard." },
+  { q: "How do I update my mobile number or email address?", a: "Go to **Account Settings** in your dashboard to update your mobile number, email address, or password at any time." },
 ];
 
 type Cap = { icon: string; label: string; blue?: boolean };
@@ -98,6 +124,19 @@ const CSS = `
 @media(max-width:620px){.h22 .voices-grid,.h22 .feat-grid,.h22 .stat4,.h22 .tcol{grid-template-columns:1fr!important}}
 `;
 
+// Renders FAQ answers: "\n\n" => paragraphs, **text** => bold.
+function renderAnswer(text: string) {
+  return text.split("\n\n").map((para, pi) => (
+    <p key={pi} style={{ margin: pi === 0 ? 0 : "12px 0 0", fontSize: 15, lineHeight: 1.65, color: "#9594a6" }}>
+      {para.split(/(\*\*[^*]+\*\*)/g).map((seg, si) =>
+        seg.startsWith("**") && seg.endsWith("**")
+          ? <strong key={si} style={{ color: "#e4e4ec", fontWeight: 700 }}>{seg.slice(2, -2)}</strong>
+          : <span key={si}>{seg}</span>
+      )}
+    </p>
+  ));
+}
+
 function useReveal(rootRef: React.RefObject<HTMLDivElement | null>) {
   useEffect(() => {
     const root = rootRef.current;
@@ -133,7 +172,7 @@ function useCounter(to: number, fmt: (v: number) => string, run: boolean, dur = 
 export default function Hello22Site() {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [greet, setGreet] = useState(0);
-  const [voice, setVoice] = useState(11);
+  const [voice, setVoice] = useState(0);
   const [useCase, setUseCase] = useState(0);
   const [demoPlaying, setDemoPlaying] = useState(false);
   const [demoStarted, setDemoStarted] = useState(false);
@@ -144,6 +183,7 @@ export default function Hello22Site() {
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
   const [playingVoice, setPlayingVoice] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const [faqOpen, setFaqOpen] = useState<number | null>(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const demoAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -303,7 +343,7 @@ export default function Hello22Site() {
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
           <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 30, width: "auto", display: "block" }} /></a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
-            {["Demo", "Product", "Voices", "Features", "Use cases", "Pricing", "Docs"].map((l) => (
+            {["Demo", "Product", "Voices", "Features", "Use cases", "Pricing", "FAQ"].map((l) => (
               <a key={l} className="nl" href={l === "Docs" ? "#" : "#" + l.toLowerCase().replace(" ", "")}>{l}</a>
             ))}
           </nav>
@@ -486,9 +526,8 @@ export default function Hello22Site() {
             );
           })}
         </div>
-        <div data-rv style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", marginTop: 22 }}>
+        <div data-rv style={{ marginTop: 22 }}>
           <p style={{ fontSize: 13, color: "#6f6f80", margin: 0 }}>Production voices sound significantly better than this preview.</p>
-          <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "var(--lime)", fontWeight: 600, fontSize: 15 }}>Browse the full voice library →</a>
         </div>
       </section>
 
@@ -511,6 +550,8 @@ export default function Hello22Site() {
             <div><div style={featIcon("rgba(86,224,224,.14)", "rgba(86,224,224,.3)", "var(--cyan)")}><i className="fa-solid fa-chart-line" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>Call analytics &amp; transcripts</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Every call transcribed, tagged, and analyzed. Get the summary by email, SMS, and WhatsApp the second the caller hangs up.</p></div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 18 }}>{["Transcripts", "Sentiment", "Intent tags", "Webhooks"].map((t) => <span key={t} style={{ fontSize: 12, padding: "6px 11px", borderRadius: 8, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" }}>{t}</span>)}</div>
           </div>
+          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(44,118,237,.12)", "rgba(44,118,237,.28)", "var(--lime)")}><i className="fa-solid fa-user-plus" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>Lead capture &amp; CRM</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Every caller&apos;s name, number, and intent captured automatically and pushed to your CRM — so no lead ever slips through.</p></div>
+          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(157,139,255,.16)", "rgba(157,139,255,.32)", "var(--violet)")}><i className="fa-solid fa-phone" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>Your own AI number</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Claim a dedicated number or forward your existing line. Your AI receptionist picks up instantly, every time, 24/7.</p></div>
         </div>
       </section>
 
@@ -577,9 +618,9 @@ export default function Hello22Site() {
           <div data-rv>
             <div style={eyebrow}>Integrations</div>
             <h2 style={{ ...h2, fontSize: "clamp(34px,4.2vw,48px)", lineHeight: 1.06 }}>Connects to your whole stack.</h2>
-            <p style={{ fontSize: 17, color: "#9594a6", lineHeight: 1.65, margin: "18px 0 0", maxWidth: 440 }}>120+ native integrations plus a REST API for everything else. Your agent reads and writes the systems you already run — triggering workflows and updating records live, mid-call.</p>
+            <p style={{ fontSize: 17, color: "#9594a6", lineHeight: 1.65, margin: "18px 0 0", maxWidth: 440 }}>Native integrations with the tools that run your front desk — your agent reads and writes them live, mid-call, so calls turn into booked appointments and updated records automatically.</p>
           </div>
-          <div data-rv style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+          <div data-rv style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12 }}>
             {INTEGRATIONS.map((ig) => <div key={ig} className="lift" style={{ background: "var(--surface)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 14, padding: "18px 14px", textAlign: "center", fontSize: 14, fontWeight: 600, color: "#c9c9d4" }}>{ig}</div>)}
           </div>
         </div>
@@ -656,6 +697,33 @@ export default function Hello22Site() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" style={{ position: "relative", zIndex: 1, maxWidth: 880, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+        <div data-rv style={{ textAlign: "center" }}>
+          <div style={eyebrow}>FAQ</div>
+          <h2 style={{ ...h2 }}>Frequently asked questions.</h2>
+          <p style={{ fontSize: 18, color: "#9594a6", margin: "16px auto 0", maxWidth: 520, lineHeight: 1.6 }}>Everything you need to know about hello22. Can&apos;t find your answer? <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--lime)", textDecoration: "none", fontWeight: 600 }}>Get in touch →</a></p>
+        </div>
+        <div data-rv style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 42 }}>
+          {FAQS.map((f, i) => {
+            const open = faqOpen === i;
+            return (
+              <div key={i} style={{ ...card, overflow: "hidden", borderColor: open ? "rgba(44,118,237,.35)" : "rgba(255,255,255,.09)", transition: "border-color .25s ease" }}>
+                <button onClick={() => setFaqOpen(open ? null : i)} aria-expanded={open} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, width: "100%", textAlign: "left", cursor: "pointer", background: "transparent", border: "none", color: "#f4f4f7", fontFamily: "inherit", padding: "20px 24px" }}>
+                  <span style={{ fontSize: 16.5, fontWeight: 600 }}>{f.q}</span>
+                  <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: "50%", background: open ? "var(--lime)" : "rgba(255,255,255,.06)", border: open ? "none" : "1px solid rgba(255,255,255,.14)", color: open ? "#fff" : "#9594a6", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12, transition: "all .25s ease", transform: open ? "rotate(180deg)" : "none" }}><i className="fa-solid fa-chevron-down" /></span>
+                </button>
+                <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .3s ease" }}>
+                  <div style={{ overflow: "hidden" }}>
+                    <div style={{ padding: "0 24px 22px" }}>{renderAnswer(f.a)}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
       {/* FINAL CTA */}
       <section id="cta" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
         <div data-rv style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#14141f,#0c0c15)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 30, padding: "70px 40px", textAlign: "center" }}>
@@ -679,7 +747,19 @@ export default function Hello22Site() {
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 28, width: "auto", display: "block" }} />
             <p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "18px 0 0", maxWidth: 260 }}>A native AI voice receptionist that answers every call, books every appointment, and sounds unmistakably human — built for teams who never want to miss a customer.</p>
-            <div style={{ display: "flex", gap: 10, marginTop: 20 }}>{["fa-linkedin-in", "fa-x-twitter", "fa-youtube", "fa-github"].map((s) => <span key={s} style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "#9594a6", fontSize: 14, cursor: "pointer" }}><i className={`fa-brands ${s}`} /></span>)}</div>
+            <div style={{ display: "flex", gap: 10, marginTop: 20 }}>{[
+              { ic: "fa-facebook-f", href: "https://www.facebook.com/hello22ai" },
+              { ic: "fa-instagram", href: "https://www.instagram.com/hello22.ai" },
+              { ic: "fa-pinterest-p", href: "https://www.pinterest.com/hello22_ai" },
+              { ic: "fa-linkedin-in", href: "https://www.linkedin.com/company/hello22-ai" },
+              { ic: "fa-x-twitter", href: null },
+              { ic: "fa-youtube", href: null },
+            ].map((s) => {
+              const st: React.CSSProperties = { width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "#9594a6", fontSize: 14, cursor: "pointer", textDecoration: "none" };
+              return s.href
+                ? <a key={s.ic} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.ic} style={st}><i className={`fa-brands ${s.ic}`} /></a>
+                : <span key={s.ic} style={st}><i className={`fa-brands ${s.ic}`} /></span>;
+            })}</div>
           </div>
           {[
             { t: "Product", l: ["Features", "Voices", "Integrations", "Pricing", "Live demo"] },
