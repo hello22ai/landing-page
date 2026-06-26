@@ -9,6 +9,10 @@ const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600", 
 const DISP = "var(--font-space), 'Space Grotesk', sans-serif";
 const LOGO = "/hello22-logo.png";
 const APP_URL = "https://agent.hello22.ai";
+// Web3Forms access key — get a free one at https://web3forms.com (sign up with
+// connect@hello22.ai so demo requests land in that inbox), then paste it below.
+// This key is safe to expose client-side; that's how Web3Forms is designed.
+const WEB3FORMS_ACCESS_KEY = "42827426-7f8f-4a99-98a9-7aabe3ed8000";
 
 const GREETS = ["hola", "你好", "bonjour", "こんにちは", "नमस्ते", "olá", "안녕", "hallo", "مرحبا", "hej"];
 
@@ -41,12 +45,12 @@ const VOICES: V[] = [
 
 type UC = { name: string; icon: string; kpi: string; title: string; body: string; stats: { v: string; l: string }[]; tags: string[] };
 const USECASES: UC[] = [
-  { name: "Healthcare", icon: "fa-stethoscope", kpi: "2m 18s avg call duration", title: "Front-desk automation patients actually trust.", body: "Appointment scheduling, triage intake, prescription refills, and post-visit follow-ups — HIPAA-compliant, with eligibility checks and calendar booking handled live on the call.", stats: [{ v: "2m 18s", l: "Avg call" }, { v: "87%", l: "Auto-resolved" }, { v: "4.8/5", l: "Patient rating" }], tags: ["HIPAA", "EHR integration", "Insurance verification", "Telehealth routing"] },
-  { name: "E-commerce", icon: "fa-bag-shopping", kpi: "84% self-serve resolution", title: "Turn every support call into a retention moment.", body: "Order tracking, returns, product questions, refund processing — all handled live without putting customers on hold. Integrates with Shopify, Stripe, and your fulfillment stack.", stats: [{ v: "84%", l: "Self-serve resolution" }, { v: "1m 52s", l: "Avg handle time" }, { v: "4.7/5", l: "CSAT score" }], tags: ["Shopify", "Order tracking", "Returns & RMA", "Product recs", "Loyalty programs", "Refund processing"] },
-  { name: "Real estate", icon: "fa-house", kpi: "96% lead capture rate", title: "Never miss a lead — even at 2 AM.", body: "Property inquiries, tour booking, mortgage pre-qualification, agent routing. hello22 captures every lead and books tours directly into your calendar.", stats: [{ v: "96%", l: "Lead capture rate" }, { v: "34%", l: "Tour conversion" }, { v: "+42%", l: "After-hours leads" }], tags: ["MLS sync", "Tour booking", "Lead qualification", "Property Q&A", "Agent routing", "CRM sync"] },
-  { name: "Hospitality", icon: "fa-hotel", kpi: "73% booking rate", title: "A 24/7 concierge that knows your property.", body: "Reservations, room service, amenity questions, local recommendations, and guest complaints — all with the warmth of your best front-desk agent.", stats: [{ v: "73%", l: "Booking rate" }, { v: "2m 04s", l: "Avg handle time" }, { v: "4.9/5", l: "Guest CSAT" }], tags: ["PMS integration", "Reservations", "Concierge", "Multi-property", "Loyalty program", "Group bookings"] },
-  { name: "Financial services", icon: "fa-building-columns", kpi: "79% containment rate", title: "Compliant voice automation for sensitive calls.", body: "Account inquiries, fraud alerts, payment reminders, and collections — PCI-DSS compliant with full audit trails and seamless human handoff.", stats: [{ v: "79%", l: "Containment rate" }, { v: "100%", l: "Compliance score" }, { v: "−72%", l: "Cost per call" }], tags: ["PCI-DSS", "Fraud detection", "Payments", "Account verification", "Collections", "Human handoff"] },
-  { name: "Logistics", icon: "fa-truck", kpi: "12,000+ calls per hour", title: "Coordinate drivers, dispatch, and customers in real time.", body: "Delivery confirmations, address changes, ETA inquiries, dispatch coordination — hello22 handles thousands of simultaneous calls without breaking a sweat.", stats: [{ v: "12,000+", l: "Calls per hour" }, { v: "92%", l: "Resolution rate" }, { v: "+18%", l: "On-time delivery" }], tags: ["TMS integration", "Dispatch routing", "ETA updates", "Address changes", "POD capture", "Driver coordination"] },
+  { name: "HVAC Business", icon: "fa-fan", kpi: "4m 12s avg call duration", title: "Never miss another emergency service call.", body: "Answer every incoming call, schedule installations, book repair appointments, qualify emergency requests, and dispatch technicians instantly — 24/7, even after business hours.", stats: [{ v: "4m 12s", l: "Avg call" }, { v: "91%", l: "Appointments booked" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Emergency Dispatch", "Maintenance Booking", "Service Scheduling", "Quote Requests"] },
+  { name: "Cleaning Business", icon: "fa-broom", kpi: "2m 56s avg call duration", title: "Book more cleaning jobs without hiring more staff.", body: "Capture every enquiry, schedule residential and commercial cleaning, provide instant quotes, answer common questions, and send confirmations automatically.", stats: [{ v: "2m 56s", l: "Avg call" }, { v: "89%", l: "Leads captured" }, { v: "4.8/5", l: "Customer rating" }], tags: ["Instant Quotes", "Recurring Cleaning", "Booking Confirmation", "Lead Qualification"] },
+  { name: "Electrical Services", icon: "fa-bolt", kpi: "3m 28s avg call duration", title: "Every urgent electrical call answered instantly.", body: "Handle emergency service requests, schedule inspections, qualify electrical issues, route priority jobs, and keep customers informed without missing a single call.", stats: [{ v: "3m 28s", l: "Avg call" }, { v: "93%", l: "Calls answered" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Emergency Callouts", "Inspection Booking", "Service Dispatch", "Customer Updates"] },
+  { name: "Plumbing Business", icon: "fa-faucet-drip", kpi: "3m 47s avg call duration", title: "Turn plumbing emergencies into booked jobs automatically.", body: "Answer urgent plumbing enquiries, schedule repairs, prioritize emergency leaks, collect customer details, and dispatch technicians immediately.", stats: [{ v: "3m 47s", l: "Avg call" }, { v: "95%", l: "Jobs scheduled" }, { v: "4.9/5", l: "Customer rating" }], tags: ["Emergency Plumbing", "Leak Detection", "Appointment Booking", "Technician Dispatch"] },
+  { name: "Painting Services", icon: "fa-paint-roller", kpi: "3m 05s avg call duration", title: "Convert more quote requests into paying customers.", body: "Qualify painting enquiries, collect project details, schedule site inspections, send estimates, and book consultations automatically with every incoming call.", stats: [{ v: "3m 05s", l: "Avg call" }, { v: "88%", l: "Quotes booked" }, { v: "4.8/5", l: "Client satisfaction" }], tags: ["Quote Requests", "Site Visits", "Residential Painting", "Commercial Projects"] },
+  { name: "Flooring Services", icon: "fa-ruler-combined", kpi: "3m 34s avg call duration", title: "Capture every flooring enquiry before your competitors do.", body: "Book flooring consultations, collect room measurements, answer product questions, schedule on-site estimates, and follow up automatically with potential customers.", stats: [{ v: "3m 34s", l: "Avg call" }, { v: "90%", l: "Consultations booked" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Floor Estimates", "Installation Booking", "Product Enquiries", "Site Measurement"] },
 ];
 
 const INTEGRATIONS = ["Google Calendar", "Twilio", "Stripe", "AWS (S3)"];
@@ -115,7 +119,7 @@ const CSS = `
 .h22 .btnp:hover{transform:translateY(-2px)}
 @media(max-width:920px){
  .h22 .nav-links{display:none!important}
- .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid,.h22 .shots-grid{grid-template-columns:1fr!important}
+ .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid,.h22 .shots-grid,.h22 .cta-grid{grid-template-columns:1fr!important}
  .h22 .feat-grid{grid-template-columns:1fr 1fr!important}
  .h22 .feat-grid>div{grid-column:auto!important}
  .h22 .tcol{grid-column:span 2!important}
@@ -135,6 +139,30 @@ function renderAnswer(text: string) {
       )}
     </p>
   ));
+}
+
+// Scroll parallax: translates the element on Y as it moves through the viewport.
+function useParallax<T extends HTMLElement>(speed: number) {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const prog = (rect.top + rect.height / 2 - vh / 2) / vh; // ~ -1 (below) .. +1 (above)
+      el.style.transform = `translate3d(0, ${(prog * speed).toFixed(1)}px, 0)`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); if (raf) cancelAnimationFrame(raf); };
+  }, [speed]);
+  return ref;
 }
 
 function useReveal(rootRef: React.RefObject<HTMLDivElement | null>) {
@@ -184,6 +212,27 @@ export default function Hello22Site() {
   const [playingVoice, setPlayingVoice] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const ucListRef = useParallax<HTMLDivElement>(34);
+  const ucCardRef = useParallax<HTMLDivElement>(-34);
+  const [demoStatus, setDemoStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
+
+  async function submitDemo(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setDemoStatus("sending");
+    try {
+      const data = new FormData(form);
+      data.append("access_key", WEB3FORMS_ACCESS_KEY);
+      data.append("subject", "New demo request — hello22.ai");
+      data.append("from_name", "hello22.ai website");
+      const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: data });
+      const json = await res.json();
+      if (json.success) { setDemoStatus("ok"); form.reset(); }
+      else setDemoStatus("err");
+    } catch {
+      setDemoStatus("err");
+    }
+  }
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const demoAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -324,6 +373,8 @@ export default function Hello22Site() {
   const card: React.CSSProperties = { background: "var(--surface)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 22 };
   const featIcon = (bg: string, bd: string, col: string): React.CSSProperties => ({ width: 44, height: 44, borderRadius: 12, background: bg, border: `1px solid ${bd}`, display: "flex", alignItems: "center", justifyContent: "center", color: col, fontSize: 18 });
   const pill: React.CSSProperties = { fontSize: 13, padding: "8px 13px", borderRadius: 999, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" };
+  const inp: React.CSSProperties = { width: "100%", background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 10, padding: "12px 14px", color: "#f4f4f7", fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" };
+  const opt: React.CSSProperties = { background: "#12121d", color: "#f4f4f7" };
 
   return (
     <div
@@ -343,7 +394,7 @@ export default function Hello22Site() {
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
           <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 30, width: "auto", display: "block" }} /></a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
-            {["Demo", "Product", "Voices", "Features", "Use cases", "Pricing", "FAQ"].map((l) => (
+            {["Demo", "Product", "Voices", "Features", "Industries", "Pricing", "FAQ"].map((l) => (
               <a key={l} className="nl" href={l === "Docs" ? "#" : "#" + l.toLowerCase().replace(" ", "")}>{l}</a>
             ))}
           </nav>
@@ -550,8 +601,8 @@ export default function Hello22Site() {
             <div><div style={featIcon("rgba(86,224,224,.14)", "rgba(86,224,224,.3)", "var(--cyan)")}><i className="fa-solid fa-chart-line" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>Call analytics &amp; transcripts</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Every call transcribed, tagged, and analyzed. Get the summary by email, SMS, and WhatsApp the second the caller hangs up.</p></div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 18 }}>{["Transcripts", "Sentiment", "Intent tags", "Webhooks"].map((t) => <span key={t} style={{ fontSize: 12, padding: "6px 11px", borderRadius: 8, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" }}>{t}</span>)}</div>
           </div>
-          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(44,118,237,.12)", "rgba(44,118,237,.28)", "var(--lime)")}><i className="fa-solid fa-user-plus" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>Lead capture &amp; CRM</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Every caller&apos;s name, number, and intent captured automatically and pushed to your CRM — so no lead ever slips through.</p></div>
-          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(157,139,255,.16)", "rgba(157,139,255,.32)", "var(--violet)")}><i className="fa-solid fa-phone" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>Your own AI number</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Claim a dedicated number or forward your existing line. Your AI receptionist picks up instantly, every time, 24/7.</p></div>
+          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(44,118,237,.12)", "rgba(44,118,237,.28)", "var(--lime)")}><i className="fa-solid fa-arrows-rotate" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>CRM &amp; Calendar Integrations</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Keep your business in sync. hello22 updates calendars, creates CRM records, logs call notes, and triggers automations across your favourite business tools — without manual work.</p></div>
+          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(157,139,255,.16)", "rgba(157,139,255,.32)", "var(--violet)")}><i className="fa-solid fa-route" /></div><h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20, margin: "16px 0 0" }}>Intelligent Call Routing</h3><p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 0" }}>Every caller reaches the right person faster. Route calls based on intent, location, availability, or business hours to deliver a seamless customer experience.</p></div>
         </div>
       </section>
 
@@ -583,10 +634,11 @@ export default function Hello22Site() {
       </section>
 
       {/* USE CASES */}
-      <section id="usecases" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
-        <div data-rv style={eyebrow}>Use cases</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 640 }}>Built for every voice touchpoint.</h2>
+      <section id="industries" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+        <div data-rv style={eyebrow}>Industries</div>
+        <h2 data-rv style={{ ...h2, maxWidth: 640 }}>Built for the trades that run on phone calls.</h2>
         <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 24, marginTop: 40, alignItems: "start" }}>
+          <div ref={ucListRef} style={{ willChange: "transform" }}>
           <div data-rv style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {USECASES.map((t, i) => {
               const active = i === useCase;
@@ -599,6 +651,8 @@ export default function Hello22Site() {
               );
             })}
           </div>
+          </div>
+          <div ref={ucCardRef} style={{ willChange: "transform" }}>
           <div data-rv style={{ background: "linear-gradient(155deg,#16161f,#0f0f18)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 24, padding: 34, minHeight: 380 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
               <div style={{ width: 50, height: 50, borderRadius: 14, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 22 }}><i className={`fa-solid ${uc.icon}`} /></div>
@@ -608,6 +662,7 @@ export default function Hello22Site() {
             <p style={{ fontSize: 16, color: "#9594a6", lineHeight: 1.65, margin: "14px 0 0", maxWidth: 600 }}>{uc.body}</p>
             <div style={{ display: "flex", gap: 14, marginTop: 28, flexWrap: "wrap" }}>{uc.stats.map((st) => <div key={st.l} style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 16, padding: "16px 20px", minWidth: 130 }}><div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 26, color: "#fff" }}>{st.v}</div><div style={{ fontSize: 13, color: "#9594a6", marginTop: 3 }}>{st.l}</div></div>)}</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 9, marginTop: 24 }}>{uc.tags.map((tg) => <span key={tg} style={{ ...pill, color: "#c9c9d4" }}>{tg}</span>)}</div>
+          </div>
           </div>
         </div>
       </section>
@@ -726,17 +781,62 @@ export default function Hello22Site() {
 
       {/* FINAL CTA */}
       <section id="cta" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
-        <div data-rv style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#14141f,#0c0c15)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 30, padding: "70px 40px", textAlign: "center" }}>
-          <div style={{ position: "absolute", top: -120, left: "50%", transform: "translateX(-50%)", width: 520, height: 340, background: "radial-gradient(circle,rgba(44,118,237,.18),transparent 70%)", filter: "blur(20px)", pointerEvents: "none", animation: "h22glowpulse 5.5s ease-in-out infinite" }} />
-          <h2 style={{ position: "relative", fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", fontSize: "clamp(48px,7vw,92px)", lineHeight: .95, margin: 0 }}>say hello<span style={{ color: "var(--lime)" }}>.</span></h2>
-          <p style={{ position: "relative", fontFamily: DISP, fontSize: "clamp(20px,2.4vw,28px)", fontWeight: 500, color: "#e4e4ec", margin: "12px 0 0" }}>to your new voice agent.</p>
-          <p style={{ position: "relative", fontSize: 17, color: "#9594a6", maxWidth: 480, margin: "20px auto 0", lineHeight: 1.6 }}>Deploy your first voice agent in 22 minutes. 1,000 free minutes — no credit card required.</p>
-          <div style={{ position: "relative", display: "flex", gap: 14, justifyContent: "center", marginTop: 30, flexWrap: "wrap" }}>
-            <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 28px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free trial</a>
-            <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", background: "rgba(255,255,255,.06)", color: "#f4f4f7", fontWeight: 600, fontSize: 16, padding: "16px 26px", borderRadius: 999, border: "1px solid rgba(255,255,255,.14)" }}>Book a live demo</a>
-          </div>
-          <div style={{ position: "relative", display: "flex", gap: 24, justifyContent: "center", marginTop: 28, flexWrap: "wrap", fontSize: 13.5, color: "#9594a6" }}>
-            {["No credit card", "1,000 free minutes", "SOC 2 compliant"].map((x) => <span key={x} style={{ display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ color: "var(--lime)" }}><i className="fa-solid fa-check" /></span>{x}</span>)}
+        <div data-rv style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#14141f,#0c0c15)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 30, padding: "56px 48px" }}>
+          <div style={{ position: "absolute", top: -120, left: "20%", width: 520, height: 340, background: "radial-gradient(circle,rgba(44,118,237,.18),transparent 70%)", filter: "blur(20px)", pointerEvents: "none", animation: "h22glowpulse 5.5s ease-in-out infinite" }} />
+          <div className="cta-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
+            {/* LEFT — say hello */}
+            <div>
+              <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", fontSize: "clamp(44px,6vw,80px)", lineHeight: .95, margin: 0 }}>say hello<span style={{ color: "var(--lime)" }}>.</span></h2>
+              <p style={{ fontFamily: DISP, fontSize: "clamp(20px,2.2vw,26px)", fontWeight: 500, color: "#e4e4ec", margin: "12px 0 0" }}>to your new voice agent.</p>
+              <p style={{ fontSize: 17, color: "#9594a6", maxWidth: 440, margin: "20px 0 0", lineHeight: 1.6 }}>Deploy your first voice agent in 22 minutes. 1,000 free minutes — no credit card required.</p>
+              <div style={{ display: "flex", gap: 14, marginTop: 30, flexWrap: "wrap" }}>
+                <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "15px 26px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free trial</a>
+              </div>
+              <div style={{ display: "flex", gap: 22, marginTop: 26, flexWrap: "wrap", fontSize: 13.5, color: "#9594a6" }}>
+                {["No credit card", "1,000 free minutes", "SOC 2 compliant"].map((x) => <span key={x} style={{ display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ color: "var(--lime)" }}><i className="fa-solid fa-check" /></span>{x}</span>)}
+              </div>
+            </div>
+            {/* RIGHT — demo form */}
+            <div style={{ background: "rgba(8,8,14,.55)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 22, padding: 26 }}>
+              <h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 24, margin: 0 }}>Book a <span style={{ color: "var(--violet)" }}>Free Demo</span></h3>
+              {demoStatus === "ok" ? (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, textAlign: "center", padding: "40px 10px" }}>
+                  <span style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(44,118,237,.16)", color: "var(--lime)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}><i className="fa-solid fa-check" /></span>
+                  <div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 20 }}>Thanks — request received!</div>
+                  <p style={{ fontSize: 14.5, color: "#9594a6", margin: 0, maxWidth: 320 }}>Our team will get back to you within 30 minutes. Keep an eye on your inbox.</p>
+                </div>
+              ) : (
+                <form onSubmit={submitDemo} style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 12 }}>
+                  {/* honeypot — hidden from users, catches bots */}
+                  <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" style={{ display: "none" }} />
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <input name="name" required placeholder="Full Name" style={inp} />
+                    <input name="business" required placeholder="Business Name" style={inp} />
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <input name="email" type="email" required placeholder="Business Email" style={inp} />
+                    <input name="phone" type="tel" required placeholder="Phone Number" style={inp} />
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <select name="industry" required defaultValue="" style={inp}>
+                      <option value="" disabled style={opt}>Industry</option>
+                      {["HVAC", "Cleaning", "Electrical", "Plumbing", "Painting", "Flooring", "Other"].map((x) => <option key={x} value={x} style={opt}>{x}</option>)}
+                    </select>
+                    <select name="monthly_calls" defaultValue="" style={inp}>
+                      <option value="" disabled style={opt}>Monthly Calls (Approx)</option>
+                      {["Under 100", "100–500", "500–1,000", "1,000–5,000", "5,000+"].map((x) => <option key={x} value={x} style={opt}>{x}</option>)}
+                    </select>
+                  </div>
+                  <textarea name="message" rows={3} placeholder="How can we help your business? (optional)" style={{ ...inp, resize: "vertical" }} />
+                  <button type="submit" disabled={demoStatus === "sending"} className="btnp" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10, border: "none", cursor: demoStatus === "sending" ? "wait" : "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 15.5, color: "#fff", padding: "14px 18px", borderRadius: 12, background: "linear-gradient(90deg,var(--lime),var(--violet))", opacity: demoStatus === "sending" ? 0.7 : 1, boxShadow: "0 16px 38px -16px rgba(157,139,255,.7)" }}>
+                    {demoStatus === "sending" ? "Sending…" : <>Book My Demo <i className="fa-solid fa-calendar-check" /></>}
+                  </button>
+                  {demoStatus === "err"
+                    ? <p style={{ fontSize: 13, color: "#ff8585", textAlign: "center", margin: 0 }}>Something went wrong. Please try again or email connect@hello22.ai.</p>
+                    : <p style={{ fontSize: 13, color: "var(--lime)", textAlign: "center", margin: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}><i className="fa-regular fa-clock" /> We&apos;ll respond within 30 minutes</p>}
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -775,7 +875,7 @@ export default function Hello22Site() {
         </div>
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "24px 28px", borderTop: "1px solid rgba(255,255,255,.07)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <span style={{ fontSize: 13.5, color: "#6f6f80" }}>© 2026 hello22.ai</span>
-          <div style={{ display: "flex", gap: 20, fontSize: 13.5, flexWrap: "wrap" }}>{["Privacy", "Terms", "Security", "DPA"].map((l) => <a key={l} className="nl" href="#">{l}</a>)}</div>
+          <div style={{ display: "flex", gap: 20, fontSize: 13.5, flexWrap: "wrap" }}>{["Privacy", "Terms"].map((l) => <a key={l} className="nl" href="#">{l}</a>)}</div>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "#9594a6" }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--lime)", animation: "h22pulse 1.6s infinite" }} />All systems operational</span>
         </div>
       </footer>
