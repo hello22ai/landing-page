@@ -709,7 +709,7 @@ export default function Hello22Site() {
           <div className="stat4" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 40, maxWidth: 820, marginLeft: "auto", marginRight: "auto" }}>
             {[
               { ic: "fa-phone-volume", t: "Answers 24/7", d: "Never sends a caller to voicemail again — day, night, weekends, holidays." },
-              { ic: "fa-calendar-check", t: "Books jobs live", d: "Schedules appointments and captures leads right on the call, hands-free." },
+              { ic: "fa-user-plus", t: "Captures every lead", d: "Gets the caller's name, number, and what they need on every call — so you never lose a lead." },
               { ic: "fa-comment-dots", t: "Summary every call", d: "Texts and emails you the caller's details and a summary the moment they hang up." },
             ].map((x) => (
               <div key={x.t} style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 18, padding: "26px 22px" }}>
