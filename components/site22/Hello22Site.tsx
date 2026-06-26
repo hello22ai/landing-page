@@ -894,7 +894,7 @@ export default function Hello22Site() {
           ].map((col) => (
             <div key={col.t}>
               <div style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".1em", color: "#6f6f80", marginBottom: 16 }}>{col.t}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14.5 }}>{col.l.map((l) => <a key={l} className="nl" href="#">{l}</a>)}</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14.5 }}>{col.l.map((l) => <a key={l} className="nl" href={l === "Privacy" ? "/privacy" : l === "Terms" ? "/terms" : "#"}>{l}</a>)}</div>
             </div>
           ))}
         </div>
