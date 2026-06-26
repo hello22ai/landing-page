@@ -8,10 +8,11 @@ const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600", 
 
 const DISP = "var(--font-space), 'Space Grotesk', sans-serif";
 const LOGO = "/hello22-logo.png";
+const APP_URL = "https://agent.hello22.ai";
 
 const GREETS = ["hola", "你好", "bonjour", "こんにちは", "नमस्ते", "olá", "안녕", "hallo", "مرحبا", "hej"];
 
-const TRUST = ["Northwind Health", "CALDRICK", "Lumen Realty", "Pulsewave", "Sterling & Co.", "Vertex Auto", "Mercato", "Helix Bank"];
+const TRUST = ["Twilio", "Stripe", "ElevenLabs", "OpenAI", "Anthropic", "Google Calendar", "WhatsApp", "AWS"];
 
 type V = { id: string; letter: string; flag: string; loc: string; desc: string; sample: string; audio: string };
 const VOICES: V[] = [
@@ -51,6 +52,16 @@ const TRANSCRIPT: Line[] = [
   { role: "agent", name: "Aria · hello22", text: "Booked! Table for four under Sarah Chen, Friday at 7 PM, booth 4. You'll get a confirmation text shortly. Anything else?" },
 ];
 
+// Product screenshots — apni software ki images yahan add/remove karein.
+// File ko public/images/screenshots/ mein daalein, fir niche ek entry bana dein.
+type Shot = { src: string; title: string; desc: string };
+const SHOTS: Shot[] = [
+  { src: "/images/screenshots/dashboard.png", title: "Voice agent analytics", desc: "Live performance at a glance — calls handled, success rate, leads captured, minutes used, and peak call times." },
+  { src: "/images/screenshots/call-logs.png", title: "Call inbox", desc: "Every call transcribed, summarised, and analysed — filter by outcome or time and search summaries instantly." },
+  { src: "/images/screenshots/ai-brain.png", title: "AI Brain — agent builder", desc: "Build your receptionist step by step: identity, knowledge, rules, automations, and voice — no code." },
+  { src: "/images/screenshots/plans-billing.png", title: "Plans & billing", desc: "Track minutes, switch plans, and control auto-renew — full visibility over your usage and costs." },
+];
+
 type Cap = { icon: string; label: string; blue?: boolean };
 type Feat = { t: string; on: boolean };
 type Plan = { name: string; blurb: string; price: string; caps: Cap[]; feats: Feat[]; popular?: boolean };
@@ -78,7 +89,7 @@ const CSS = `
 .h22 .btnp:hover{transform:translateY(-2px)}
 @media(max-width:920px){
  .h22 .nav-links{display:none!important}
- .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid{grid-template-columns:1fr!important}
+ .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid,.h22 .shots-grid{grid-template-columns:1fr!important}
  .h22 .feat-grid{grid-template-columns:1fr 1fr!important}
  .h22 .feat-grid>div{grid-column:auto!important}
  .h22 .tcol{grid-column:span 2!important}
@@ -132,12 +143,21 @@ export default function Hello22Site() {
   const demoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
   const [playingVoice, setPlayingVoice] = useState<number | null>(null);
+  const [lightbox, setLightbox] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const demoAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useReveal(rootRef);
 
   useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); if (demoAudioRef.current) demoAudioRef.current.pause(); }, []);
+
+  // close lightbox on Escape
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setLightbox(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightbox]);
 
   function stopVoice() {
     if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
@@ -283,13 +303,13 @@ export default function Hello22Site() {
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
           <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 30, width: "auto", display: "block" }} /></a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
-            {["Demo", "Voices", "Features", "Use cases", "Pricing", "Docs"].map((l) => (
+            {["Demo", "Product", "Voices", "Features", "Use cases", "Pricing", "Docs"].map((l) => (
               <a key={l} className="nl" href={l === "Docs" ? "#" : "#" + l.toLowerCase().replace(" ", "")}>{l}</a>
             ))}
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
-            <a href="#" style={{ color: "#f4f4f7", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
-            <a href="#cta" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 14.5, padding: "11px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ color: "#f4f4f7", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 14.5, padding: "11px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
           </div>
         </div>
       </header>
@@ -314,7 +334,7 @@ export default function Hello22Site() {
             <p data-rv style={{ fontFamily: DISP, fontSize: "clamp(22px,2.4vw,30px)", fontWeight: 500, color: "#e4e4ec", margin: "14px 0 0", letterSpacing: "-.01em" }}>I&apos;m your AI voice agent — ready to talk.</p>
             <p data-rv style={{ fontSize: 18, lineHeight: 1.6, color: "#9594a6", maxWidth: 520, margin: "20px 0 0" }}>hello22 answers every call, books appointments, qualifies leads, and resolves questions — sounding unmistakably human, in 22+ languages, 24/7.</p>
             <div data-rv style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
-              <a href="#cta" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free — 20 min setup</a>
+              <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free — 20 min setup</a>
               <a href="#demo" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,.06)", color: "#f4f4f7", fontWeight: 600, fontSize: 16, padding: "16px 24px", borderRadius: 999, border: "1px solid rgba(255,255,255,.14)" }}>
                 <span style={{ display: "inline-flex", width: 22, height: 22, borderRadius: "50%", background: "var(--lime)", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-play" /></span>Hear a live call
               </a>
@@ -355,7 +375,7 @@ export default function Hello22Site() {
 
       {/* TRUST MARQUEE */}
       <section style={{ position: "relative", zIndex: 1, padding: "34px 0 14px" }}>
-        <p style={{ textAlign: "center", fontSize: 13, letterSpacing: ".16em", textTransform: "uppercase", color: "#6f6f80", margin: "0 0 26px" }}>Trusted by 2,200+ teams talking to their customers</p>
+        <p style={{ textAlign: "center", fontSize: 13, letterSpacing: ".16em", textTransform: "uppercase", color: "#6f6f80", margin: "0 0 26px" }}>Built on best-in-class voice & infrastructure</p>
         <div style={{ position: "relative", overflow: "hidden", WebkitMaskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)", maskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)" }}>
           <div className="h22marquee" style={{ display: "flex", gap: 60, width: "max-content", animation: "h22marq 32s linear infinite", paddingRight: 60 }}>
             {[...TRUST, ...TRUST].map((n, i) => <span key={i} style={{ fontFamily: DISP, fontSize: 22, fontWeight: 600, color: "#5d5d70", whiteSpace: "nowrap", letterSpacing: "-.01em" }}>{n}</span>)}
@@ -405,6 +425,35 @@ export default function Hello22Site() {
         </div>
       </section>
 
+      {/* PRODUCT SCREENSHOTS */}
+      <section id="product" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+        <div data-rv style={eyebrow}>Inside the product</div>
+        <h2 data-rv style={{ ...h2, maxWidth: 700 }}>See hello22 in action.</h2>
+        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}>A real look at the dashboard your team works in every day — live calls, agent setup, and analytics, all in one place.</p>
+        <div className="shots-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 18, marginTop: 42 }}>
+          {SHOTS.map((s) => (
+            <div key={s.src} data-rv className="lift" style={{ ...card, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 14px", borderBottom: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)" }}>
+                {["#ff5f57", "#febc2e", "#28c840"].map((c) => <span key={c} style={{ width: 11, height: 11, borderRadius: "50%", background: c, opacity: .85 }} />)}
+                <span style={{ marginLeft: 8, fontSize: 12, color: "#7a7a8c", fontVariantNumeric: "tabular-nums" }}>agent.hello22.ai</span>
+              </div>
+              <div style={{ position: "relative", minHeight: 180, background: "linear-gradient(150deg,#16161f,#101019)" }}>
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, color: "#5d5d70" }}>
+                  <i className="fa-solid fa-image" style={{ fontSize: 34 }} />
+                  <span style={{ fontSize: 13 }}>Screenshot coming soon</span>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.src} alt={s.title} loading="lazy" onClick={() => setLightbox(s.src)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} style={{ position: "relative", width: "100%", height: "auto", display: "block", cursor: "zoom-in" }} />
+              </div>
+              <div style={{ padding: "18px 20px" }}>
+                <div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 17 }}>{s.title}</div>
+                <div style={{ fontSize: 14, color: "#9594a6", lineHeight: 1.55, marginTop: 6 }}>{s.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* VOICES */}
       <section id="voices" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
         <div data-rv style={eyebrow}>Voice library</div>
@@ -439,7 +488,7 @@ export default function Hello22Site() {
         </div>
         <div data-rv style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", marginTop: 22 }}>
           <p style={{ fontSize: 13, color: "#6f6f80", margin: 0 }}>Production voices sound significantly better than this preview.</p>
-          <a href="#cta" style={{ textDecoration: "none", color: "var(--lime)", fontWeight: 600, fontSize: 15 }}>Browse the full voice library →</a>
+          <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "var(--lime)", fontWeight: 600, fontSize: 15 }}>Browse the full voice library →</a>
         </div>
       </section>
 
@@ -468,21 +517,25 @@ export default function Hello22Site() {
       {/* HOW IT WORKS */}
       <section style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px" }}>
         <div data-rv style={eyebrow}>How it works</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 640 }}>From signup to first call in 22 minutes.</h2>
-        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}>No telephony code. No state machines. No flowcharts. Just describe what your agent should do — hello22 handles the rest.</p>
+        <h2 data-rv style={{ ...h2, maxWidth: 640 }}>Set up, sign up, go live — with hello22.</h2>
+        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}>No code, no telephony setup, no flowcharts. Emma walks you through every step — confirm your business, create your account, and take your first real call.</p>
         <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42 }}>
           {[
-            { n: "01", c: "var(--lime)", t: "Describe", h: "Tell your agent what to do", d: "Write it in plain language: greeting, tone, what to book, who to escalate to." },
-            { n: "02", c: "var(--violet)", t: "Connect", h: "Hook up your tools", d: "Link your calendar, CRM, knowledge docs, and inbox so the agent can act, not just talk." },
-            { n: "03", c: "var(--cyan)", t: "Launch", h: "Pick a number & go live", d: "Claim a number from the pool and take your first real call in minutes." },
+            { n: "01", c: "var(--lime)", t: "Set up", h: "Emma builds your agent", d: "hello22 finds your business and sets up your AI receptionist with you — just review the details and confirm.", img: "/images/screenshots/step-1.png" },
+            { n: "02", c: "var(--violet)", t: "Account", h: "Create your account", d: "Add your name, email, and mobile so hello22 can route your calls and text you a summary after every one.", img: "/images/screenshots/step-2.png" },
+            { n: "03", c: "var(--cyan)", t: "Go live", h: "Pick a number & go live", d: "Claim your dedicated AI number, point your calls to it, and start handling real conversations in minutes.", img: "/images/screenshots/step-3.png" },
           ].map((s) => (
             <div key={s.n} data-rv className="lift" style={{ ...card, padding: 28 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}><span style={{ fontFamily: DISP, fontSize: 32, fontWeight: 600, color: s.c }}>{s.n}</span><span style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: ".12em", color: "#9594a6" }}>{s.t}</span></div>
               <h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 19, margin: "18px 0 0" }}>{s.h}</h3>
               <p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "10px 0 16px" }}>{s.d}</p>
-              {s.n === "01" && <div style={{ background: "#0a0a12", border: "1px solid rgba(255,255,255,.08)", borderRadius: 12, padding: 14, fontFamily: "ui-monospace,monospace", fontSize: 12.5, color: "#b9b9c8", lineHeight: 1.6 }}><span style={{ color: "var(--lime)" }}>prompt:</span> &quot;You&apos;re the front desk at Acme Dental. Book cleanings, answer FAQs, transfer emergencies to Dr. Patel. Be warm, concise.&quot;</div>}
-              {s.n === "02" && <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>{[["Google Calendar", "var(--lime)"], ["Salesforce CRM", "var(--cyan)"], ["Notion KB", "var(--violet)"]].map(([l, c]) => <div key={l} style={{ display: "flex", alignItems: "center", gap: 10, background: "#0a0a12", border: "1px solid rgba(255,255,255,.08)", borderRadius: 10, padding: "11px 14px", fontSize: 13.5 }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: c }} />{l}</div>)}</div>}
-              {s.n === "03" && <div style={{ background: "#0a0a12", border: "1px solid rgba(255,255,255,.08)", borderRadius: 12, padding: 16 }}><div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}><span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 17 }}>+1 (415) 555-0142</span><span style={{ fontSize: 11, fontWeight: 700, color: "var(--lime)", background: "rgba(44,118,237,.12)", padding: "4px 9px", borderRadius: 6 }}>ACTIVE</span></div><div style={{ fontSize: 13, color: "#9594a6", marginTop: 10 }}>Calls today: 1,247 · Resolution: 92%</div></div>}
+              <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,.08)", background: "linear-gradient(150deg,#16161f,#101019)", minHeight: 120 }}>
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, color: "#5d5d70" }}>
+                  <i className="fa-solid fa-image" style={{ fontSize: 24 }} /><span style={{ fontSize: 12 }}>Screenshot coming soon</span>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.img} alt={s.h} loading="lazy" onClick={() => setLightbox(s.img)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} style={{ position: "relative", width: "100%", height: "auto", display: "block", cursor: "zoom-in" }} />
+              </div>
             </div>
           ))}
         </div>
@@ -547,17 +600,19 @@ export default function Hello22Site() {
 
       {/* TESTIMONIALS */}
       <section style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px" }}>
-        <div data-rv style={eyebrow}>Loved by teams</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 640, margin: "14px 0 34px" }}>What customers say after going live.</h2>
+        <div data-rv style={eyebrow}>Early access</div>
+        <h2 data-rv style={{ ...h2, maxWidth: 640, margin: "14px 0 12px" }}>What you get from day one.</h2>
+        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 600, margin: "0 0 34px", lineHeight: 1.6 }}>hello22 is in early access. Here&apos;s exactly what your AI receptionist does the moment you go live — no inflated claims.</p>
         <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }}>
           {[
-            { q: "hello22 replaced our entire night-shift call center. Within three weeks it was outperforming human agents on booking conversion — and the voice is indistinguishable.", i: "RS", n: "Dr. Rachel Stevens", r: "Clinic Director", bg: "rgba(44,118,237,.16)", c: "var(--lime)" },
-            { q: "We integrated hello22 with Salesforce in an afternoon. It now handles 4,000 inbound leads a month without us touching it. ROI in week one.", i: "JW", n: "James Whitaker", r: "VP Sales, SaaS", bg: "rgba(86,224,224,.16)", c: "var(--cyan)" },
-            { q: "Customers genuinely can't tell they're talking to AI. The barge-in handling is the closest thing to magic I've seen in a decade of CX work.", i: "SK", n: "Sofia Kowalski", r: "Head of CX", bg: "rgba(157,139,255,.16)", c: "var(--violet)" },
+            { ic: "fa-phone-volume", t: "Answers every call", d: "24/7 — no missed calls, no hold music, no voicemail. Every caller gets a real, natural conversation.", bg: "rgba(44,118,237,.16)", c: "var(--lime)" },
+            { ic: "fa-bolt", t: "Live in 22 minutes", d: "Describe your agent, connect your tools, pick a number. No code, no telephony setup, no flowcharts.", bg: "rgba(86,224,224,.16)", c: "var(--cyan)" },
+            { ic: "fa-file-lines", t: "Every call captured", d: "Transcribed, summarised, and analysed automatically — delivered by SMS, WhatsApp, and email the moment the call ends.", bg: "rgba(157,139,255,.16)", c: "var(--violet)" },
           ].map((t) => (
-            <div key={t.i} data-rv className="lift" style={{ ...card, padding: 28, display: "flex", flexDirection: "column" }}>
-              <p style={{ fontSize: 17, lineHeight: 1.6, color: "#e4e4ec", margin: 0, flex: 1 }}>&quot;{t.q}&quot;</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 24 }}><div style={{ width: 42, height: 42, borderRadius: "50%", background: t.bg, color: t.c, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontFamily: DISP }}>{t.i}</div><div><div style={{ fontWeight: 700, fontSize: 14.5 }}>{t.n}</div><div style={{ fontSize: 13, color: "#9594a6" }}>{t.r}</div></div></div>
+            <div key={t.t} data-rv className="lift" style={{ ...card, padding: 28, display: "flex", flexDirection: "column" }}>
+              <div style={{ width: 46, height: 46, borderRadius: 13, background: t.bg, color: t.c, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 19 }}><i className={`fa-solid ${t.ic}`} /></div>
+              <h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 19, margin: "18px 0 0" }}>{t.t}</h3>
+              <p style={{ fontSize: 15, lineHeight: 1.6, color: "#9594a6", margin: "10px 0 0" }}>{t.d}</p>
             </div>
           ))}
         </div>
@@ -584,7 +639,7 @@ export default function Hello22Site() {
                   <span key={c.label} style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 12.5, fontWeight: 600, padding: "6px 11px", borderRadius: 999, background: c.blue ? "rgba(44,118,237,.14)" : "rgba(255,255,255,.05)", border: c.blue ? "1px solid rgba(44,118,237,.3)" : "1px solid rgba(255,255,255,.1)", color: c.blue ? "var(--lime)" : "#c9c9d4" }}><i className={c.icon} />{c.label}</span>
                 ))}
               </div>
-              <a href="#cta" className={p.popular ? "btnp" : ""} style={p.popular
+              <a href={APP_URL} target="_blank" rel="noopener noreferrer" className={p.popular ? "btnp" : ""} style={p.popular
                 ? { display: "block", textAlign: "center", textDecoration: "none", margin: "0 0 22px", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: 13, borderRadius: 12, boxShadow: "0 14px 30px -14px rgba(44,118,237,.7)" }
                 : { display: "block", textAlign: "center", textDecoration: "none", margin: "0 0 22px", background: "rgba(255,255,255,.07)", color: "#f4f4f7", fontWeight: 600, fontSize: 15, padding: 13, borderRadius: 12, border: "1px solid rgba(255,255,255,.14)" }}>Get started</a>
               <div style={{ height: 1, background: "rgba(255,255,255,.08)", marginBottom: 18 }} />
@@ -609,8 +664,8 @@ export default function Hello22Site() {
           <p style={{ position: "relative", fontFamily: DISP, fontSize: "clamp(20px,2.4vw,28px)", fontWeight: 500, color: "#e4e4ec", margin: "12px 0 0" }}>to your new voice agent.</p>
           <p style={{ position: "relative", fontSize: 17, color: "#9594a6", maxWidth: 480, margin: "20px auto 0", lineHeight: 1.6 }}>Deploy your first voice agent in 22 minutes. 1,000 free minutes — no credit card required.</p>
           <div style={{ position: "relative", display: "flex", gap: 14, justifyContent: "center", marginTop: 30, flexWrap: "wrap" }}>
-            <a href="#" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 28px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free trial</a>
-            <a href="#" style={{ textDecoration: "none", background: "rgba(255,255,255,.06)", color: "#f4f4f7", fontWeight: 600, fontSize: 16, padding: "16px 26px", borderRadius: 999, border: "1px solid rgba(255,255,255,.14)" }}>Book a live demo</a>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 28px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free trial</a>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", background: "rgba(255,255,255,.06)", color: "#f4f4f7", fontWeight: 600, fontSize: 16, padding: "16px 26px", borderRadius: 999, border: "1px solid rgba(255,255,255,.14)" }}>Book a live demo</a>
           </div>
           <div style={{ position: "relative", display: "flex", gap: 24, justifyContent: "center", marginTop: 28, flexWrap: "wrap", fontSize: 13.5, color: "#9594a6" }}>
             {["No credit card", "1,000 free minutes", "SOC 2 compliant"].map((x) => <span key={x} style={{ display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ color: "var(--lime)" }}><i className="fa-solid fa-check" /></span>{x}</span>)}
@@ -644,6 +699,15 @@ export default function Hello22Site() {
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "#9594a6" }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--lime)", animation: "h22pulse 1.6s infinite" }} />All systems operational</span>
         </div>
       </footer>
+
+      {/* LIGHTBOX */}
+      {lightbox && (
+        <div onClick={() => setLightbox(null)} style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(5,5,10,.88)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 28, cursor: "zoom-out" }}>
+          <button onClick={() => setLightbox(null)} aria-label="Close" style={{ position: "absolute", top: 22, right: 26, width: 42, height: 42, borderRadius: "50%", background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.18)", color: "#fff", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><i className="fa-solid fa-xmark" /></button>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={lightbox} alt="Product screenshot" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "94vw", maxHeight: "90vh", width: "auto", height: "auto", borderRadius: 12, border: "1px solid rgba(255,255,255,.14)", boxShadow: "0 40px 100px -30px rgba(0,0,0,.9)", cursor: "default" }} />
+        </div>
+      )}
     </div>
   );
 }
