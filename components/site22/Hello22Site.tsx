@@ -428,7 +428,7 @@ export default function Hello22Site() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 13, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 18 }}><i className="fa-solid fa-phone" /></div>
-                  <div><div style={{ fontSize: 11, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em" }}>Inbound call</div><div style={{ fontWeight: 700, fontSize: 16 }}>Acme Dental</div></div>
+                  <div><div style={{ fontSize: 11, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em" }}>Inbound call</div><div style={{ fontWeight: 700, fontSize: 16 }}>Apex Plumbing</div></div>
                 </div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", borderRadius: 999, background: "rgba(255,75,75,.14)", border: "1px solid rgba(255,75,75,.3)", fontSize: 12, fontWeight: 700, color: "#ff8585" }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ff5b5b", animation: "h22pulse 1.4s infinite" }} />Live</div>
               </div>
@@ -479,7 +479,7 @@ export default function Hello22Site() {
                 <button onClick={playDemo} style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 14, padding: "11px 18px", borderRadius: 999, boxShadow: "0 12px 28px -14px rgba(44,118,237,.7)" }}>
                   <i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-play"}`} />{demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Play sample call"}
                 </button>
-                <div><div style={{ fontWeight: 700, fontSize: 14 }}>Acme Dental · New booking</div><div style={{ fontSize: 12, color: "#9594a6", fontVariantNumeric: "tabular-nums" }}>{demoTime} · EN</div></div>
+                <div><div style={{ fontWeight: 700, fontSize: 14 }}>Apex Plumbing · New booking</div><div style={{ fontSize: 12, color: "#9594a6", fontVariantNumeric: "tabular-nums" }}>{demoTime} · EN</div></div>
               </div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", borderRadius: 999, background: "rgba(44,118,237,.12)", border: "1px solid rgba(44,118,237,.3)", fontSize: 12, fontWeight: 700, color: "var(--lime)" }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--lime)", animation: "h22pulse 1.4s infinite" }} />{demoState}</div>
             </div>
