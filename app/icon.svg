@@ -1,3 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- broken ring (gap on the left) -->
+  <path d="M20 22.5 A21 21 0 1 1 20 43.5" stroke="#2c76ed" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- waveform -->
+  <g stroke="#2c76ed" stroke-width="2.6" stroke-linecap="round">
+    <path d="M17 23h0"/>
+    <path d="M13 28h6"/>
+    <path d="M14.5 32h4"/>
+    <path d="M11.5 36h8"/>
+    <path d="M15 40.5h2"/>
+  </g>
+  <!-- phone handset -->
+  <g transform="translate(26.5 21.5) scale(1.05)" stroke="#2c76ed" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#FF6320"/>
   <g transform="translate(14 14) scale(1.5)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
