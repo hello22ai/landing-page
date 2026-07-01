@@ -899,7 +899,7 @@ export default function Hello22Site() {
           ))}
         </div>
         <div style={{ maxWidth: 1240, margin: "0 auto", padding: "24px 28px", borderTop: "1px solid rgba(255,255,255,.07)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 13.5, color: "#6f6f80" }}>© 2026 hello22.ai</span>
+          <span style={{ fontSize: 13.5, color: "#6f6f80" }}>© 2026 hello22.ai · Powered by SparkView</span>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "#9594a6" }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--lime)", animation: "h22pulse 1.6s infinite" }} />All systems operational</span>
         </div>
       </footer>
