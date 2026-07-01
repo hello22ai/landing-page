@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   title: "hello22 — AI Voice Agents That Sound Human",
   description:
     "hello22 builds voice AI agents that answer calls, book appointments, and resolve customer issues in 22+ languages. Deploy in 22 minutes.",
+  other: {
+    "facebook-domain-verification": "4a9knjqdo3240smec39psb3j91dxtj"
+  },
   robots: { index: true, follow: true },
 };
 
