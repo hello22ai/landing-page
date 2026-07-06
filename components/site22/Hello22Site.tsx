@@ -34,8 +34,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--band-bg": "linear-gradient(135deg,rgba(44,118,237,.08),rgba(157,139,255,.08))",
     "--plan-pop": "linear-gradient(160deg,rgba(44,118,237,.12),rgba(157,139,255,.08)),#12121d",
     "--core-bg": "radial-gradient(circle at 50% 32%,#16161f,#101019)",
-    "--sec-alt": "#0c0c15", "--sec-alt-0": "rgba(12,12,21,0)",
-    "--sec-white": "#10101a", "--sec-white-0": "rgba(16,16,26,0)",
+    "--sec-alt": "#10101a",
     "--nav-bg": "rgba(7,7,13,.72)", "--nav-bg2": "rgba(7,7,13,.94)", "--form-bg": "rgba(8,8,14,.55)",
     "--tx": "#f4f4f7", "--tx2": "#e4e4ec", "--tx3": "#c9c9d4",
     "--mut": "#9594a6", "--mut2": "#8b8a9c", "--mut3": "#7a7a8c", "--dim": "#6f6f80", "--dim2": "#5d5d70",
@@ -58,8 +57,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--band-bg": "#edf3fd",
     "--plan-pop": "#f4f8fe",
     "--core-bg": "#ffffff",
-    "--sec-alt": "#eaeef6", "--sec-alt-0": "rgba(234,238,246,0)",
-    "--sec-white": "#ffffff", "--sec-white-0": "rgba(255,255,255,0)",
+    "--sec-alt": "#ffffff",
     "--nav-bg": "rgba(255,255,255,.82)", "--nav-bg2": "rgba(255,255,255,.97)", "--form-bg": "rgba(255,255,255,.72)",
     "--tx": "#10131c", "--tx2": "#1d2433", "--tx3": "#3e4658",
     "--mut": "#4a5266", "--mut2": "#555d72", "--mut3": "#60687e", "--dim": "#6c7488", "--dim2": "#838b9e",
@@ -265,8 +263,7 @@ const CSS = `
 .h22 .snap-x::-webkit-scrollbar{display:none}
 .h22 .nav-burger{display:none}
 .h22 img{max-width:100%}
-.h22 section.sec-alt::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:linear-gradient(180deg,var(--sec-alt-0) 0,var(--sec-alt) 56px,var(--sec-alt) calc(100% - 56px),var(--sec-alt-0) 100%);z-index:-1;pointer-events:none}
-.h22 section.sec-white::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:linear-gradient(180deg,var(--sec-white-0) 0,var(--sec-white) 56px,var(--sec-white) calc(100% - 56px),var(--sec-white-0) 100%);z-index:-1;pointer-events:none}
+.h22 section.sec-alt::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:var(--sec-alt);z-index:-1;pointer-events:none}
 .h22 .cmp-ai{background:rgba(44,118,237,.07);border-left:1px solid rgba(44,118,237,.16)}
 @media(hover:hover){.h22 .cmp-row:not(.cmp-head):hover{background:var(--w04)}}
 .h22 .plat-stats>div+div{border-left:1px solid var(--w08);padding-left:18px}
@@ -989,7 +986,7 @@ export default function Hello22Site() {
       </section>
 
       {/* VOICES */}
-      <section id="voices" className="sec-white" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
+      <section id="voices" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
         <div data-rv style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div>
             <div style={eyebrow}>Natural AI voices</div>
@@ -1119,7 +1116,7 @@ export default function Hello22Site() {
       </section>
 
       {/* HUMAN VS AI COMPARISON */}
-      <section id="compare" className="sec-white" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
+      <section id="compare" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
         <div className="cmp-grid" style={{ display: "grid", gridTemplateColumns: ".85fr 1.3fr", gap: 54, alignItems: "center" }}>
         <div data-rv="left">
           <div style={eyebrow}>Comparison</div>
