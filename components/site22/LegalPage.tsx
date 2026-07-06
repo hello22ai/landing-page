@@ -3,7 +3,6 @@
 // Privacy/Terms ka shared themed layout — homepage jaisa light/dark (h22-theme localStorage) + toggle.
 import { Manrope, Space_Grotesk } from "next/font/google";
 import { useEffect, useState } from "react";
-import { LogoIcon } from "./LogoIcon";
 
 const manrope = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-manrope", display: "swap" });
 const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-space", display: "swap" });
@@ -52,10 +51,9 @@ export default function LegalPage({ title, updated, intro, sections }: { title: 
       {/* HEADER */}
       <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", background: c.nav, borderBottom: `1px solid ${c.line}` }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 28px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-          <a href="/" aria-label="hello22.ai" style={{ display: "flex", alignItems: "center", gap: 8, height: 30, textDecoration: "none" }}>
-            <LogoIcon />
+          <a href="/" aria-label="hello22.ai" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={isLight ? "/images/hello22-text-color.svg" : "/images/hello22-text-white.svg"} alt="hello22.ai" style={{ height: "100%", width: "auto", display: "block" }} />
+            <img src={isLight ? "/images/hello22-logo-color.svg" : "/hello22-logo.png"} alt="hello22.ai" style={{ height: 28, width: "auto", display: "block" }} />
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 8, color: c.tx2, textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}><i className="fa-solid fa-arrow-left" style={{ fontSize: 12 }} aria-hidden="true" /> Back to home</a>
