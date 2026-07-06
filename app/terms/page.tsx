@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { Manrope, Space_Grotesk } from "next/font/google";
-
-const manrope = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-manrope", display: "swap" });
-const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-space", display: "swap" });
-const DISP = "var(--font-space), 'Space Grotesk', sans-serif";
-const LOGO = "/hello22-logo.png";
+import LegalPage from "@/components/site22/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions",
+  title: "Terms of Service",
   description:
-    "The terms and conditions for using hello22 — our 24/7 AI voice agent platform for inbound and outbound calls.",
+    "The terms of service for using hello22 — our 24/7 AI voice agent platform for inbound and outbound calls.",
 };
 
 const INTRO = `Before using hello22 (https://www.hello22.ai/), read this page to understand the terms and conditions for our platform. You accept the terms listed below by registering, logging in, or using any portion of the platform. Please get in touch if something doesn't feel right before continuing — sorting it out early is much simpler than untangling it later.`;
@@ -273,66 +268,5 @@ const SECTIONS: Section[] = [
 ];
 
 export default function TermsPage() {
-  const muted = "#9594a6";
-  return (
-    <div
-      className={`${manrope.variable} ${space.variable}`}
-      style={{ background: "#07070d", color: "#f4f4f7", minHeight: "100vh", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", position: "relative", overflowX: "clip" }}
-    >
-      {/* ambient glow */}
-      <div style={{ position: "absolute", top: -180, left: "50%", transform: "translateX(-50%)", width: 700, height: 460, borderRadius: "50%", background: "radial-gradient(circle,rgba(44,118,237,.16),transparent 70%)", filter: "blur(30px)", pointerEvents: "none", zIndex: 0 }} />
-
-      {/* HEADER */}
-      <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", background: "rgba(7,7,13,.72)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 28px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <a href="/" style={{ display: "flex", alignItems: "center" }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 28, width: "auto", display: "block" }} /></a>
-          <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#c9c9d4", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}><i className="fa-solid fa-arrow-left" style={{ fontSize: 12 }} /> Back to home</a>
-        </div>
-      </header>
-
-      {/* CONTENT */}
-      <main style={{ position: "relative", zIndex: 1, maxWidth: 820, margin: "0 auto", padding: "72px 28px 100px" }}>
-        <div style={{ fontSize: 13, letterSpacing: ".16em", textTransform: "uppercase", color: "#2c76ed", fontWeight: 700 }}>Legal</div>
-        <h1 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.03em", fontSize: "clamp(40px,6vw,64px)", lineHeight: 1.02, margin: "14px 0 0" }}>Terms and Conditions</h1>
-        <p style={{ fontSize: 13.5, color: "#6f6f80", margin: "16px 0 0", fontVariantNumeric: "tabular-nums" }}>Last updated: June 26, 2026</p>
-        <p style={{ fontSize: 16, lineHeight: 1.75, color: muted, margin: "24px 0 0" }}>{INTRO}</p>
-
-        <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 44 }}>
-          {SECTIONS.map((s) => (
-            <section key={s.n}>
-              <h2 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 24, letterSpacing: "-.01em", margin: 0, display: "flex", gap: 12 }}>
-                <span style={{ color: "#2c76ed" }}>{s.n}.</span>
-                <span>{s.title}</span>
-              </h2>
-              <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 14 }}>
-                {s.body.map((b, i) =>
-                  b.sub ? (
-                    <h3 key={i} style={{ fontFamily: DISP, fontWeight: 600, fontSize: 16, color: "#e4e4ec", margin: "8px 0 0" }}>{b.sub}</h3>
-                  ) : b.list ? (
-                    <ul key={i} style={{ margin: 0, paddingLeft: 22, display: "flex", flexDirection: "column", gap: 9 }}>
-                      {b.list.map((li, j) => <li key={j} style={{ fontSize: 16, lineHeight: 1.65, color: muted }}>{li}</li>)}
-                    </ul>
-                  ) : (
-                    <p key={i} style={{ fontSize: 16, lineHeight: 1.75, color: muted, margin: 0 }}>{b.p}</p>
-                  )
-                )}
-              </div>
-            </section>
-          ))}
-        </div>
-      </main>
-
-      {/* FOOTER */}
-      <footer style={{ position: "relative", zIndex: 1, borderTop: "1px solid rgba(255,255,255,.08)", background: "#090910" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 28px calc(26px + env(safe-area-inset-bottom))", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", fontSize: 13.5, color: "#6f6f80" }}>
-          <span>© 2026 hello22.ai</span>
-          <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-            <a href="/" style={{ color: "#9594a6", textDecoration: "none" }}>Home</a>
-            <a href="/privacy" style={{ color: "#9594a6", textDecoration: "none" }}>Privacy</a>
-            <a href="/terms" style={{ color: "#9594a6", textDecoration: "none" }}>Terms</a>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+  return <LegalPage title="Terms of Service" updated="June 26, 2026" intro={INTRO} sections={SECTIONS} />;
 }
