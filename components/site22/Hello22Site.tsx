@@ -1,15 +1,10 @@
 "use client";
 
-import { Manrope, Space_Grotesk } from "next/font/google";
-import localFont from "next/font/local";
 import { useEffect, useRef, useState } from "react";
 
-const manrope = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-manrope", display: "swap" });
-const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-space", display: "swap" });
-// Conthrax — the logo typeface. Single weight (600); heavier weights render via synthetic bold.
-const conthrax = localFont({ src: "../../public/fonts/conthrax-sb.woff", weight: "600", variable: "--font-conthrax", display: "swap" });
-
-const DISP = "var(--font-conthrax), 'Conthrax', var(--font-space), 'Space Grotesk', sans-serif";
+// Fonts (Manrope/Space Grotesk/Conthrax) are declared in app/layout.tsx so next/font
+// preloads them — declared here (client component) they emit no preload and LCP suffers.
+const DISP = "'Conthrax', var(--font-space), 'Space Grotesk', sans-serif";
 // Sub-heads, card titles, numbers, UI labels — Conthrax sirf display/buttons/eyebrows ke liye.
 const SUB = "var(--font-space), 'Space Grotesk', sans-serif";
 // Flat combined logo (senior ne 3D animated icon reject kiya — revert 2026-07-06 raat).
@@ -715,7 +710,7 @@ export default function Hello22Site() {
   return (
     <div
       ref={rootRef}
-      className={`h22 ${manrope.variable} ${space.variable} ${conthrax.variable}${rvOn ? " rv" : ""}`}
+      className={`h22${rvOn ? " rv" : ""}`}
       style={{ ...(THEMES[theme] as React.CSSProperties), background: "var(--bg)", color: "var(--tx)", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", overflowX: "clip", position: "relative" }}
     >
       <style dangerouslySetInnerHTML={{ __html: CSS }} />

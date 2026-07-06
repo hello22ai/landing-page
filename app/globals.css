@@ -473,3 +473,13 @@ body::before {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Conthrax — manual @font-face on a stable URL so it can be preloaded from the layout.
+   (next/font buried it in hashed CSS; late discovery re-recorded LCP at ~9.7s on mobile.) */
+@font-face {
+  font-family: "Conthrax";
+  src: url("/fonts/conthrax-sb.woff") format("woff");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}

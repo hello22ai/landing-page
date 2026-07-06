@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter_Tight } from "next/font/google";
+import { Fraunces, Inter_Tight, Manrope, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 
-// Legacy fonts (about/contact pages). preload:false — the homepage never renders them,
-// so they must not compete with the hero for mobile bandwidth.
+// Homepage fonts live HERE (not in the client component) so next/font emits
+// <link rel="preload"> for them — late font discovery was re-recording LCP at ~9.7s.
+// No weight array = single variable-font file per family (fewer preloads).
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const space = Space_Grotesk({ subsets: ["latin"], variable: "--font-space", display: "swap" });
+// Conthrax is a manual @font-face in globals.css (stable /fonts URL) + preload link below —
+// next/font hid it in hashed CSS with no preload, so the LCP headline swapped fonts at ~9.7s.
+
+// Legacy fonts (about/contact pages). preload:false — the homepage never renders them.
 const fraunces = Fraunces({
   subsets: ["latin"],
   style: ["normal", "italic"],
@@ -45,8 +51,19 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${interTight.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${space.variable} ${fraunces.variable} ${interTight.variable}`}>
       <body>
+        {/* LCP-critical: the hero headline renders in Conthrax */}
+        <link rel="preload" href="/fonts/conthrax-sb.woff" as="font" type="font/woff" crossOrigin="anonymous" />
+        {/* Font Awesome — async so its CSS never blocks first paint (was ~2.5s of the
+            render-blocking budget on slow 4G). Copied to /public/fa; inline injector runs
+            during HTML parse, dynamically-inserted stylesheets don't block rendering. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='/fa/css/all.min.css';document.head.appendChild(l);})();`,
+          }}
+        />
+        <noscript><link rel="stylesheet" href="/fa/css/all.min.css" /></noscript>
          {children}
         {/* Google Tag Manager — afterInteractive so it doesn't fight hydration on mobile */}
         <Script
