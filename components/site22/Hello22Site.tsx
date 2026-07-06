@@ -3,7 +3,6 @@
 import { Manrope, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import { useEffect, useRef, useState } from "react";
-import { LogoIcon } from "./LogoIcon";
 
 const manrope = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-manrope", display: "swap" });
 const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-space", display: "swap" });
@@ -13,9 +12,9 @@ const conthrax = localFont({ src: "../../public/fonts/conthrax-sb.woff", weight:
 const DISP = "var(--font-conthrax), 'Conthrax', var(--font-space), 'Space Grotesk', sans-serif";
 // Sub-heads, card titles, numbers, UI labels — Conthrax sirf display/buttons/eyebrows ke liye.
 const SUB = "var(--font-space), 'Space Grotesk', sans-serif";
-// Logo = animated 3D-style icon (LogoIcon component) + text-only wordmark (font wahi purana).
-const LOGO_TEXT_LIGHT = "/images/hello22-text-color.svg"; // black + brand-blue "22"
-const LOGO_TEXT_DARK = "/images/hello22-text-white.svg"; // white + blue "22"
+// Flat combined logo (senior ne 3D animated icon reject kiya — revert 2026-07-06 raat).
+const LOGO = "/hello22-logo.png"; // white wordmark — dark theme
+const LOGO_LIGHT = "/images/hello22-logo-color.svg"; // black + brand-blue wordmark — light theme
 const APP_URL = "https://app.hello22.ai/";
 const SUPPORT_EMAIL = "connect@hello22.ai";
 // Web3Forms key — demo-form submissions email to connect@hello22.ai. Client-safe by design.
@@ -36,6 +35,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--plan-pop": "linear-gradient(160deg,rgba(44,118,237,.12),rgba(157,139,255,.08)),#12121d",
     "--core-bg": "radial-gradient(circle at 50% 32%,#16161f,#101019)",
     "--sec-alt": "#0c0c15", "--sec-alt-0": "rgba(12,12,21,0)",
+    "--sec-white": "#10101a", "--sec-white-0": "rgba(16,16,26,0)",
     "--nav-bg": "rgba(7,7,13,.72)", "--nav-bg2": "rgba(7,7,13,.94)", "--form-bg": "rgba(8,8,14,.55)",
     "--tx": "#f4f4f7", "--tx2": "#e4e4ec", "--tx3": "#c9c9d4",
     "--mut": "#9594a6", "--mut2": "#8b8a9c", "--mut3": "#7a7a8c", "--dim": "#6f6f80", "--dim2": "#5d5d70",
@@ -59,6 +59,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--plan-pop": "#f4f8fe",
     "--core-bg": "#ffffff",
     "--sec-alt": "#eaeef6", "--sec-alt-0": "rgba(234,238,246,0)",
+    "--sec-white": "#ffffff", "--sec-white-0": "rgba(255,255,255,0)",
     "--nav-bg": "rgba(255,255,255,.82)", "--nav-bg2": "rgba(255,255,255,.97)", "--form-bg": "rgba(255,255,255,.72)",
     "--tx": "#10131c", "--tx2": "#1d2433", "--tx3": "#3e4658",
     "--mut": "#4a5266", "--mut2": "#555d72", "--mut3": "#60687e", "--dim": "#6c7488", "--dim2": "#838b9e",
@@ -245,6 +246,8 @@ const CSS = `
 @keyframes h22drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(34px,-28px) scale(1.07)}66%{transform:translate(-26px,20px) scale(.95)}}
 @keyframes h22glowpulse{0%,100%{opacity:.65;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.14)}}
 .h22 [data-rv]{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+.h22 [data-rv="left"]{transform:translateX(-44px) scale(.99)}
+.h22 [data-rv="right"]{transform:translateX(44px) scale(.99)}
 .h22 [data-rv].in{opacity:1;transform:none}
 .h22 a.nl{color:var(--tx3);text-decoration:none}.h22 a.nl:hover{color:var(--tx)}
 .h22 .lift{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s}
@@ -262,7 +265,8 @@ const CSS = `
 .h22 .snap-x::-webkit-scrollbar{display:none}
 .h22 .nav-burger{display:none}
 .h22 img{max-width:100%}
-.h22 section.sec-alt::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:linear-gradient(180deg,var(--sec-alt-0) 0,var(--sec-alt) clamp(64px,10vw,150px),var(--sec-alt) calc(100% - clamp(64px,10vw,150px)),var(--sec-alt-0) 100%);z-index:-1;pointer-events:none}
+.h22 section.sec-alt::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:linear-gradient(180deg,var(--sec-alt-0) 0,var(--sec-alt) 56px,var(--sec-alt) calc(100% - 56px),var(--sec-alt-0) 100%);z-index:-1;pointer-events:none}
+.h22 section.sec-white::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:linear-gradient(180deg,var(--sec-white-0) 0,var(--sec-white) 56px,var(--sec-white) calc(100% - 56px),var(--sec-white-0) 100%);z-index:-1;pointer-events:none}
 .h22 .cmp-ai{background:rgba(44,118,237,.07);border-left:1px solid rgba(44,118,237,.16)}
 @media(hover:hover){.h22 .cmp-row:not(.cmp-head):hover{background:var(--w04)}}
 .h22 .plat-stats>div+div{border-left:1px solid var(--w08);padding-left:18px}
@@ -329,6 +333,7 @@ const CSS = `
  .h22 #demo{padding-top:48px!important}
  .h22 section.full-bleed{padding:38px 0 22px!important}
  .h22 [data-rv]{transform:translateY(16px) scale(1)}
+ .h22 [data-rv="left"],.h22 [data-rv="right"]{transform:translateY(16px) scale(1)}
  .h22 section>p[data-rv],.h22 section>div[data-rv]>p{font-size:15.5px!important;line-height:1.6!important;margin-top:12px!important}
  .h22 section h2{line-height:1.12!important}
  .h22 .hero-sub{font-size:15.5px!important;margin-top:16px!important}
@@ -550,6 +555,33 @@ export default function Hello22Site() {
 
   useReveal(rootRef);
 
+  // Scroll progress bar (top) — rAF se direct width write, koi re-render nahi.
+  const progRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = progRef.current;
+    if (!el) return;
+    let raf = 0;
+    const upd = () => {
+      raf = 0;
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      el.style.width = `${max > 0 ? (h.scrollTop / max) * 100 : 0}%`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(upd); };
+    upd();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); if (raf) cancelAnimationFrame(raf); };
+  }, []);
+  // Nav scroll pe condense hota hai (height + shadow).
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 10);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+
   useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); if (demoAudioRef.current) demoAudioRef.current.pause(); if (tickRef.current) clearInterval(tickRef.current); }, []);
 
   // close lightbox on Escape
@@ -696,13 +728,11 @@ export default function Hello22Site() {
       )}
 
       {/* NAV */}
-      <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", background: "var(--nav-bg)", borderBottom: "1px solid var(--w07)" }}>
-        <div className="nav-bar" style={{ maxWidth: 1536, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
-          <a href="#top" className="nav-logo" aria-label="hello22.ai" style={{ display: "flex", alignItems: "center", gap: 10, height: 50, flexShrink: 0, textDecoration: "none" }}>
-            <LogoIcon />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={isLight ? LOGO_TEXT_LIGHT : LOGO_TEXT_DARK} alt="hello22.ai" style={{ height: "100%", width: "auto", display: "block" }} />
-          </a>
+      {/* scroll progress bar */}
+      <div ref={progRef} style={{ position: "fixed", top: 0, left: 0, height: 3, width: "0%", background: "var(--lime)", zIndex: 60, pointerEvents: "none", borderRadius: "0 2px 2px 0" }} />
+      <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", background: scrolled ? "var(--nav-bg2)" : "var(--nav-bg)", borderBottom: "1px solid var(--w07)", boxShadow: scrolled ? "0 14px 34px -22px var(--sh2)" : "none", transition: "box-shadow .3s ease, background .3s ease" }}>
+        <div className="nav-bar" style={{ maxWidth: 1536, margin: "0 auto", padding: "0 28px", height: scrolled ? 62 : 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, transition: "height .3s ease" }}>
+          <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={isLight ? LOGO_LIGHT : LOGO} alt="hello22.ai" className="nav-logo" style={{ height: 50, width: "auto", display: "block", filter: "var(--logo-filter)" }} /></a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
             {NAV_LINKS.map((l) => (
               <a key={l} className="nl" href={"#" + l.toLowerCase().replace(" ", "")}>{l}</a>
@@ -774,7 +804,7 @@ export default function Hello22Site() {
           </div>
           {/* live call card */}
           <div ref={heroCardRef} style={{ willChange: "transform" }}>
-          <div data-rv>
+          <div data-rv="right">
             <div className="float-card" style={{ position: "relative", background: "var(--hero-card)", border: "1px solid rgba(44,118,237,.42)", borderRadius: 24, padding: 26, boxShadow: "0 0 0 1px rgba(44,118,237,.08), 0 26px 70px -30px rgba(44,118,237,.4), 0 44px 90px -40px var(--sh1)", animation: "h22float 6.5s ease-in-out infinite" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 14, minWidth: 0 }}>
@@ -838,7 +868,7 @@ export default function Hello22Site() {
 
         <div className="demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 24, marginTop: 42, alignItems: "stretch" }}>
           {/* player */}
-          <div data-rv style={{ background: "var(--card-grad)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+          <div data-rv="left" style={{ background: "var(--card-grad)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", display: "flex", flexDirection: "column" }}>
             <div className="demo-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, padding: "16px 20px", borderBottom: "1px solid var(--w07)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <button onClick={playDemo} style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "var(--lime)", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13.5, padding: "10px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>
@@ -874,7 +904,7 @@ export default function Hello22Site() {
             </div>
           </div>
           {/* call summary */}
-          <div data-rv style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, padding: "18px 22px 8px", display: "flex", flexDirection: "column" }}>
+          <div data-rv="right" style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, padding: "18px 22px 8px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, paddingBottom: 16, borderBottom: "1px solid var(--w08)" }}>
               <span style={{ width: 38, height: 38, borderRadius: 12, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 15 }}><i className="fa-solid fa-headset" /></span>
               <span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 18 }}>Call summary</span>
@@ -959,7 +989,7 @@ export default function Hello22Site() {
       </section>
 
       {/* VOICES */}
-      <section id="voices" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
+      <section id="voices" className="sec-white" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
         <div data-rv style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div>
             <div style={eyebrow}>Natural AI voices</div>
@@ -1061,7 +1091,7 @@ export default function Hello22Site() {
         <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>It&apos;s the same hello22 agent</strong> — you just configure it for your business in the AI Brain. No separate setup per industry.</p>
         <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 24, marginTop: 40, alignItems: "start" }}>
           <div ref={ucListRef} style={{ willChange: "transform" }}>
-          <div data-rv className="ind-list" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div data-rv="left" className="ind-list" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {USECASES.map((t, i) => {
               const active = i === useCase;
               return (
@@ -1075,7 +1105,7 @@ export default function Hello22Site() {
           </div>
           </div>
           <div ref={ucCardRef} style={{ willChange: "transform" }}>
-          <div data-rv className="uc-card" style={{ background: "var(--card-grad)", border: "1px solid var(--w10)", borderRadius: 24, padding: 34, minHeight: 380 }}>
+          <div data-rv="right" className="uc-card" style={{ background: "var(--card-grad)", border: "1px solid var(--w10)", borderRadius: 24, padding: 34, minHeight: 380 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
               <div style={{ width: 50, height: 50, borderRadius: 14, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 22 }}><i className={`fa-solid ${uc.icon}`} /></div>
               <div><div style={{ fontFamily: SUB, fontWeight: 700, fontSize: 22 }}>{uc.name}</div><div style={{ fontSize: 13, color: "var(--lime)" }}>Configured in your AI Brain</div></div>
@@ -1089,14 +1119,14 @@ export default function Hello22Site() {
       </section>
 
       {/* HUMAN VS AI COMPARISON */}
-      <section id="compare" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
+      <section id="compare" className="sec-white" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
         <div className="cmp-grid" style={{ display: "grid", gridTemplateColumns: ".85fr 1.3fr", gap: 54, alignItems: "center" }}>
-        <div data-rv>
+        <div data-rv="left">
           <div style={eyebrow}>Comparison</div>
           <h2 style={{ ...h2 }}><b style={BD}>The Ultimate Assistant:</b> <span style={HL}>Human vs. AI</span></h2>
           <p style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 560, lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Discover why</strong> AI receptionists are transforming Australian businesses.</p>
         </div>
-        <div data-rv style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", boxShadow: "0 24px 60px -44px var(--sh2)" }}>
+        <div data-rv="right" style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", boxShadow: "0 24px 60px -44px var(--sh2)" }}>
           <div className="cmp-row cmp-head" style={{ display: "grid", gridTemplateColumns: "1.05fr 1.1fr 1.25fr", alignItems: "stretch", borderBottom: "1px solid var(--w10)" }}>
             <div className="cmp-fh" style={{ padding: "18px 24px", display: "flex", alignItems: "center", fontSize: 12.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--dim)", background: "var(--w04)" }}>Feature</div>
             <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 10, background: "var(--w04)" }}>
@@ -1418,11 +1448,7 @@ export default function Hello22Site() {
         <div style={{ maxWidth: 1536, margin: "0 auto", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 28, overflow: "hidden" }}>
           <div className="footer-grid" style={{ padding: "44px 40px 36px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1fr", gap: 40, alignItems: "start" }}>
             <div>
-              <span style={{ display: "flex", alignItems: "center", gap: 9, height: 34 }}>
-                <LogoIcon />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={isLight ? LOGO_TEXT_LIGHT : LOGO_TEXT_DARK} alt="hello22.ai" style={{ height: "100%", width: "auto", display: "block" }} />
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}<img src={isLight ? LOGO_LIGHT : LOGO} alt="hello22.ai" style={{ height: 34, width: "auto", display: "block", filter: "var(--logo-filter)" }} />
               <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "16px 0 0", maxWidth: 280 }}>Your 24/7 AI voice receptionist — answers every call, books appointments, and never misses a customer.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 18, fontSize: 14 }}>
                 <a href={`mailto:${SUPPORT_EMAIL}`} className="nl" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i className="fa-regular fa-envelope" style={{ color: "var(--blue-ink)", fontSize: 14 }} aria-hidden="true" />{SUPPORT_EMAIL}</a>

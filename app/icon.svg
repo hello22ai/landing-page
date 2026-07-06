@@ -1,18 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="15" fill="#2c76ed"/>
-  <g transform="translate(8 7) scale(.5)">
-    <path d="M 25.8 32 A 36 36 0 1 1 25.8 68" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
-    <g transform="translate(33 27.5) scale(0.088)">
-      <path fill="#ffffff" d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L192.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
-    </g>
-    <g fill="#ffffff">
-      <rect x="15" y="19.8" width="6" height="6.4" rx="3"/>
-      <rect x="10" y="28.8" width="11" height="6.4" rx="3.2"/>
-      <rect x="4.5" y="37.8" width="16.5" height="6.4" rx="3.2"/>
-      <rect x="-1" y="46.8" width="22" height="6.4" rx="3.2"/>
-      <rect x="4.5" y="55.8" width="16.5" height="6.4" rx="3.2"/>
-      <rect x="10" y="64.8" width="11" height="6.4" rx="3.2"/>
-      <rect x="15" y="73.8" width="6" height="6.4" rx="3"/>
-    </g>
+  <g transform="translate(13.5 13.5) scale(1.55)" fill="none" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
   </g>
 </svg>
