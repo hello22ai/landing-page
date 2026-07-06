@@ -1,14 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter_Tight } from "next/font/google";
+import Script from "next/script";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
 
+// Legacy fonts (about/contact pages). preload:false — the homepage never renders them,
+// so they must not compete with the hero for mobile bandwidth.
 const fraunces = Fraunces({
   subsets: ["latin"],
   style: ["normal", "italic"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-fraunces",
   display: "swap",
+  preload: false,
 });
 
 const interTight = Inter_Tight({
@@ -16,6 +20,7 @@ const interTight = Inter_Tight({
   weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-inter-tight",
   display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -41,9 +46,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${fraunces.variable} ${interTight.variable}`}>
-      <head>
-        {/* Google Tag Manager */}
-        <script
+      <body>
+         {children}
+        {/* Google Tag Manager — afterInteractive so it doesn't fight hydration on mobile */}
+        <Script
+          id="gtm"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -52,9 +60,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-MGM4L8SG');`,
           }}
         />
-        {/* End Google Tag Manager */}
-        {/* Meta Pixel Code */}
-        <script
+        {/* Meta Pixel */}
+        <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -68,10 +77,6 @@ fbq('init', '2981668052172302');
 fbq('track', 'PageView');`,
           }}
         />
-        {/* End Meta Pixel Code */}
-      </head>
-      <body>
-         {children}
         {/* Google Tag Manager (noscript)  */}
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGM4L8SG"
           height="0" width="0" style={{ display: "none", visibility: "hidden" }}></iframe></noscript>

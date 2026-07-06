@@ -243,10 +243,12 @@ const CSS = `
 @keyframes h22greet{0%{opacity:0;transform:translateY(22px) rotateX(-55deg);filter:blur(6px)}100%{opacity:1;transform:none;filter:blur(0)}}
 @keyframes h22drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(34px,-28px) scale(1.07)}66%{transform:translate(-26px,20px) scale(.95)}}
 @keyframes h22glowpulse{0%,100%{opacity:.65;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.14)}}
-.h22 [data-rv]{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
-.h22 [data-rv="left"]{transform:translateX(-44px) scale(.99)}
-.h22 [data-rv="right"]{transform:translateX(44px) scale(.99)}
-.h22 [data-rv].in{opacity:1;transform:none}
+.h22.rv [data-rv]{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+.h22.rv [data-rv="left"]{transform:translateX(-44px) scale(.99)}
+.h22.rv [data-rv="right"]{transform:translateX(44px) scale(.99)}
+.h22.rv [data-rv].in{opacity:1;transform:none}
+@keyframes h22rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.h22 .hin{animation:h22rise .7s cubic-bezier(.2,.7,.2,1) both}
 .h22 a.nl{color:var(--tx3);text-decoration:none}.h22 a.nl:hover{color:var(--tx)}
 .h22 .lift{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s}
 .h22 .btnp{transition:transform .18s ease,box-shadow .25s ease}
@@ -329,8 +331,8 @@ const CSS = `
  .h22 #top{padding-top:42px!important;padding-bottom:36px!important}
  .h22 #demo{padding-top:48px!important}
  .h22 section.full-bleed{padding:38px 0 22px!important}
- .h22 [data-rv]{transform:translateY(16px) scale(1)}
- .h22 [data-rv="left"],.h22 [data-rv="right"]{transform:translateY(16px) scale(1)}
+ .h22.rv [data-rv]{transform:translateY(16px) scale(1)}
+ .h22.rv [data-rv="left"],.h22.rv [data-rv="right"]{transform:translateY(16px) scale(1)}
  .h22 section>p[data-rv],.h22 section>div[data-rv]>p{font-size:15.5px!important;line-height:1.6!important;margin-top:12px!important}
  .h22 section h2{line-height:1.12!important}
  .h22 .hero-sub{font-size:15.5px!important;margin-top:16px!important}
@@ -550,6 +552,9 @@ export default function Hello22Site() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const demoAudioRef = useRef<HTMLAudioElement | null>(null);
 
+  // reveal-hide sirf JS ke baad — warna slow mobile pe LCP tab tak blank rehta hai
+  const [rvOn, setRvOn] = useState(false);
+  useEffect(() => { setRvOn(true); }, []);
   useReveal(rootRef);
 
   // Scroll progress bar (top) — rAF se direct width write, koi re-render nahi.
@@ -710,7 +715,7 @@ export default function Hello22Site() {
   return (
     <div
       ref={rootRef}
-      className={`h22 ${manrope.variable} ${space.variable} ${conthrax.variable}`}
+      className={`h22 ${manrope.variable} ${space.variable} ${conthrax.variable}${rvOn ? " rv" : ""}`}
       style={{ ...(THEMES[theme] as React.CSSProperties), background: "var(--bg)", color: "var(--tx)", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", overflowX: "clip", position: "relative" }}
     >
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
@@ -761,28 +766,28 @@ export default function Hello22Site() {
       <section id="top" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "76px 28px 56px" }}>
         <div className="hero-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 54, alignItems: "center" }}>
           <div>
-            <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "7px 14px", borderRadius: 999, background: "var(--w05)", border: "1px solid var(--w10)", fontSize: 13, color: "var(--tx3)" }}>
+            <div className="hin" style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "7px 14px", borderRadius: 999, background: "var(--w05)", border: "1px solid var(--w10)", fontSize: 13, color: "var(--tx3)" }}>
               <span style={{ position: "relative", display: "inline-flex", width: 8, height: 8 }}>
                 <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "var(--lime)" }} />
                 <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "var(--lime)", animation: "h22ring 1.8s ease-out infinite" }} />
               </span>
               <span style={{ fontWeight: 600, color: "var(--tx3)", letterSpacing: ".02em" }}>24/7 AI voice receptionist</span>
             </div>
-            <h1 data-rv className="hero-h1" style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0" }}>
+            <h1 className="hero-h1 hin" style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0", animationDelay: ".06s" }}>
               <span style={{ display: "inline-flex", alignItems: "baseline", perspective: "600px" }}>
                 <span key={greet} style={{ display: "inline-block", animation: "h22greet .65s cubic-bezier(.2,.8,.2,1) both" }}>{GREETS[greet]}</span>
                 <span style={{ color: "var(--lime)" }}>.</span>
               </span>
             </h1>
-            <p data-rv style={{ fontFamily: SUB, fontSize: "clamp(18px,2vw,25px)", fontWeight: 600, color: "var(--tx2)", margin: "14px 0 0", letterSpacing: "-.01em", lineHeight: 1.35 }}>I&apos;m your AI voice agent —<br /><span style={HL}>ready to talk.</span></p>
-            <p data-rv className="hero-sub" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 520, margin: "20px 0 0" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 answers every call,</strong> books appointments, qualifies leads, and resolves questions — sounding <span style={HL}>natural and human</span>, in English, 24/7.</p>
-            <div data-rv className="hero-ctas" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
+            <p className="hin" style={{ fontFamily: SUB, fontSize: "clamp(18px,2vw,25px)", fontWeight: 600, color: "var(--tx2)", margin: "14px 0 0", letterSpacing: "-.01em", lineHeight: 1.35, animationDelay: ".12s" }}>I&apos;m your AI voice agent —<br /><span style={HL}>ready to talk.</span></p>
+            <p className="hero-sub hin" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 520, margin: "20px 0 0", animationDelay: ".18s" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 answers every call,</strong> books appointments, qualifies leads, and resolves questions — sounding <span style={HL}>natural and human</span>, in English, 24/7.</p>
+            <div className="hero-ctas hin" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap", animationDelay: ".24s" }}>
               <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 18px 44px -12px rgba(44,118,237,.75)" }}><span aria-hidden style={{ fontSize: 15, lineHeight: 1 }}>✦</span><BtnTxt t="Start free — setup in minutes" /></a>
               <a href="#demo" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--surface)", color: "var(--blue-ink)", fontWeight: 700, fontSize: 16, padding: "14px 24px", borderRadius: 999, border: "1.5px solid rgba(44,118,237,.5)", boxShadow: "0 10px 26px -18px rgba(44,118,237,.6)" }}>
                 <span style={{ display: "inline-flex", width: 26, height: 26, borderRadius: "50%", background: "var(--lime)", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 10, boxShadow: "0 6px 14px -6px rgba(44,118,237,.7)", flexShrink: 0 }}><i className="fa-solid fa-play" style={{ marginLeft: 1 }} /></span><BtnTxt t="Hear a live call" />
               </a>
             </div>
-            <div data-rv className="hero-checks" style={{ display: "flex", gap: 22, marginTop: 30, flexWrap: "wrap" }}>
+            <div className="hero-checks hin" style={{ display: "flex", gap: 22, marginTop: 30, flexWrap: "wrap", animationDelay: ".3s" }}>
               {[
                 { ic: "fa-regular fa-clock", t: "24/7", d: "Always on" },
                 { ic: "fa-regular fa-circle-check", t: "Every call", d: "answered" },
@@ -801,7 +806,7 @@ export default function Hello22Site() {
           </div>
           {/* live call card */}
           <div ref={heroCardRef} style={{ willChange: "transform" }}>
-          <div data-rv="right">
+          <div className="hin" style={{ animationDelay: ".15s" }}>
             <div className="float-card" style={{ position: "relative", background: "var(--hero-card)", border: "1px solid rgba(44,118,237,.42)", borderRadius: 24, padding: 26, boxShadow: "0 0 0 1px rgba(44,118,237,.08), 0 26px 70px -30px rgba(44,118,237,.4), 0 44px 90px -40px var(--sh1)", animation: "h22float 6.5s ease-in-out infinite" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 14, minWidth: 0 }}>
