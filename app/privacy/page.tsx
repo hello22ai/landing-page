@@ -183,7 +183,7 @@ export default function PrivacyPage() {
   return (
     <div
       className={`${manrope.variable} ${space.variable}`}
-      style={{ background: "#07070d", color: "#f4f4f7", minHeight: "100vh", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", position: "relative", overflow: "hidden" }}
+      style={{ background: "#07070d", color: "#f4f4f7", minHeight: "100vh", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", position: "relative", overflowX: "clip" }}
     >
       {/* ambient glow */}
       <div style={{ position: "absolute", top: -180, left: "50%", transform: "translateX(-50%)", width: 700, height: 460, borderRadius: "50%", background: "radial-gradient(circle,rgba(44,118,237,.16),transparent 70%)", filter: "blur(30px)", pointerEvents: "none", zIndex: 0 }} />
@@ -225,7 +225,7 @@ export default function PrivacyPage() {
 
       {/* FOOTER */}
       <footer style={{ position: "relative", zIndex: 1, borderTop: "1px solid rgba(255,255,255,.08)", background: "#090910" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", fontSize: 13.5, color: "#6f6f80" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "26px 28px calc(26px + env(safe-area-inset-bottom))", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", fontSize: 13.5, color: "#6f6f80" }}>
           <span>© 2026 hello22.ai</span>
           <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
             <a href="/" style={{ color: "#9594a6", textDecoration: "none" }}>Home</a>

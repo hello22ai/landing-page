@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter_Tight } from "next/font/google";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./globals.css";
@@ -17,6 +17,13 @@ const interTight = Inter_Tight({
   variable: "--font-inter-tight",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#07070d",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.hello22.ai"),

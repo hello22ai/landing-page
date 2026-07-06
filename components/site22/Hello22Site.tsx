@@ -14,6 +14,11 @@ const WEB3FORMS_ACCESS_KEY = "42827426-7f8f-4a99-98a9-7aabe3ed8000";
 
 const GREETS = ["hello"];
 
+const NAV_LINKS = ["Demo", "Product", "Voices", "Features", "Industries", "Pricing", "FAQ"];
+
+// Kitni voices pehle dikhani hain — baaki "See all voices" se khulti hain.
+const VOICE_PREVIEW = 6;
+
 const TRUST = [
   { name: "Twilio", src: "/images/logos/color/twilio.svg" },
   { name: "Stripe", src: "/images/logos/color/stripe.svg" },
@@ -137,19 +142,76 @@ const CSS = `
 .h22marquee:hover{animation-play-state:paused}
 .h22 a.nl{color:#c9c9d4;text-decoration:none}.h22 a.nl:hover{color:#fff}
 .h22 .lift{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s}
-.h22 .lift:hover{transform:translateY(-7px);box-shadow:0 30px 64px -32px rgba(0,0,0,.85)}
-.h22 .btnp:hover{transform:translateY(-2px)}
+@media(hover:hover){
+ .h22 .lift:hover{transform:translateY(-7px);box-shadow:0 30px 64px -32px rgba(0,0,0,.85)}
+ .h22 .btnp:hover{transform:translateY(-2px)}
+}
+.h22 .nav-burger{display:none}
+.h22 img{max-width:100%}
+.h22{-webkit-text-size-adjust:100%;text-size-adjust:100%;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+.h22 h1,.h22 h2,.h22 h3{text-wrap:balance}
+.h22 .footer-grid a{padding:3px 0}
+.h22 footer{padding-bottom:env(safe-area-inset-bottom)}
+.h22 .nav-mobile{max-height:calc(100vh - 74px);max-height:calc(100dvh - 74px);overflow-y:auto}
+.h22 .ind-list::-webkit-scrollbar{display:none}
+@media(min-width:921px){.h22 .nav-mobile{display:none!important}}
+@media(max-width:1080px){
+ .h22 .voices-grid{grid-template-columns:repeat(2,1fr)!important}
+}
 @media(max-width:920px){
  .h22 .nav-links{display:none!important}
+ .h22 .nav-burger{display:inline-flex!important}
  .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid,.h22 .shots-grid,.h22 .cta-grid{grid-template-columns:1fr!important}
  .h22 .feat-grid{grid-template-columns:1fr 1fr!important}
  .h22 .feat-grid>div{grid-column:auto!important}
  .h22 .tcol{grid-column:span 2!important}
  .h22 .footer-grid{grid-template-columns:1fr 1fr!important}
+ .h22 .demo-side{display:grid!important;grid-template-columns:repeat(3,1fr)!important}
+ .h22 .price-grid{max-width:520px;margin-left:auto!important;margin-right:auto!important}
+ .h22 .ind-list{flex-direction:row!important;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .h22 .ind-btn{flex:0 0 auto;width:auto!important;white-space:nowrap;padding:11px 16px!important;background:#12121d!important;border:1px solid rgba(255,255,255,.1)!important}
+ .h22 .ind-btn[data-active="true"]{background:linear-gradient(135deg,rgba(44,118,237,.22),rgba(157,139,255,.14))!important;border-color:rgba(44,118,237,.5)!important;color:#f4f4f7!important}
+ .h22 .ind-num,.h22 .ind-arrow{display:none!important}
 }
-@media(max-width:620px){.h22 .voices-grid,.h22 .feat-grid,.h22 .stat4,.h22 .tcol{grid-template-columns:1fr!important}}
-@media(max-width:560px){.h22 .orbit{transform:scale(.74)}}
-@media(prefers-reduced-motion:reduce){.h22 .orbit-spin,.h22 .orbit-spin *{animation:none!important}}
+@media(max-width:680px){
+ .h22 .voices-grid,.h22 .feat-grid,.h22 .stat4,.h22 .tcol,.h22 .demo-side{grid-template-columns:1fr!important}
+ .h22 section{padding-left:18px!important;padding-right:18px!important}
+ .h22 .footer-grid{padding-left:18px!important;padding-right:18px!important}
+ .h22 .band-pad{padding:38px 20px!important}
+ .h22 .cta-pad{padding:36px 18px!important}
+ .h22 .form-card{padding:20px 16px!important}
+ .h22 .uc-card{padding:26px 20px!important;min-height:0!important}
+ .h22 input,.h22 select,.h22 textarea{font-size:16px!important}
+ .h22 .bubble{max-width:90%!important}
+ .h22 .demo-head{padding:14px 16px!important}
+ .h22 .faq-q{padding:16px!important}
+ .h22 .faq-a{padding:0 16px 18px!important}
+}
+@media(max-width:560px){
+ .h22 .orbit{transform:scale(.72);margin:-60px}
+ .h22 .footer-grid{grid-template-columns:1fr!important;gap:28px!important}
+}
+@media(max-width:480px){
+ .h22 .nav-bar{padding:0 16px!important;height:64px!important}
+ .h22 .nav-signin{display:none!important}
+ .h22 .nav-cta{padding:9px 15px!important;font-size:13.5px!important}
+ .h22 .hero-h1{font-size:clamp(54px,19vw,88px)!important}
+ .h22 .hero-ctas a{width:100%;display:inline-flex;align-items:center;justify-content:center;text-align:center;box-sizing:border-box}
+ .h22 .form-row{grid-template-columns:1fr!important}
+ .h22 .price-grid>div{padding:24px 18px!important}
+}
+@media(max-width:390px){
+ .h22 .orbit{transform:scale(.6);margin:-84px}
+}
+@media(max-height:520px) and (orientation:landscape){
+ .h22 #top{padding-top:34px!important;padding-bottom:24px!important}
+ .h22 .hero-h1{font-size:clamp(48px,9vw,84px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .h22 *,.h22 *::before,.h22 *::after{animation:none!important;transition:none!important}
+ .h22 [data-rv]{opacity:1!important;transform:none!important}
+ html{scroll-behavior:auto}
+}
 `;
 
 // Renders FAQ answers: "\n\n" => paragraphs, **text** => bold.
@@ -175,6 +237,8 @@ function useParallax<T extends HTMLElement>(speed: number) {
     let raf = 0;
     const update = () => {
       raf = 0;
+      // stacked single-column layouts (phone/tablet) — parallax off to avoid overlap
+      if (window.innerWidth <= 920) { el.style.transform = "none"; return; }
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || 1;
       const prog = (rect.top + rect.height / 2 - vh / 2) / vh; // ~ -1 (below) .. +1 (above)
@@ -217,6 +281,8 @@ export default function Hello22Site() {
   const [playingVoice, setPlayingVoice] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showAllVoices, setShowAllVoices] = useState(false);
   const ucListRef = useParallax<HTMLDivElement>(34);
   const ucCardRef = useParallax<HTMLDivElement>(-34);
   const [demoStatus, setDemoStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
@@ -368,7 +434,7 @@ export default function Hello22Site() {
     <div
       ref={rootRef}
       className={`h22 ${manrope.variable} ${space.variable}`}
-      style={{ "--bg": "#07070d", "--surface": "#12121d", "--lime": "#2c76ed", "--violet": "#9d8bff", "--cyan": "#56e0e0", background: "#07070d", color: "#f4f4f7", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", overflow: "hidden", position: "relative" } as React.CSSProperties}
+      style={{ "--bg": "#07070d", "--surface": "#12121d", "--lime": "#2c76ed", "--violet": "#9d8bff", "--cyan": "#56e0e0", background: "#07070d", color: "#f4f4f7", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", overflowX: "clip", position: "relative" } as React.CSSProperties}
     >
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
@@ -378,19 +444,31 @@ export default function Hello22Site() {
       <div style={{ position: "absolute", top: 540, left: "30%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(44,118,237,.12),transparent 65%)", filter: "blur(30px)", pointerEvents: "none", zIndex: 0, animation: "h22drift 26s ease-in-out infinite", animationDelay: "-12s" }} />
 
       {/* NAV */}
-      <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", background: "rgba(7,7,13,.72)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
+      <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", background: "rgba(7,7,13,.72)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
+        <div className="nav-bar" style={{ maxWidth: 1240, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
           <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 30, width: "auto", display: "block" }} /></a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
-            {["Demo", "Product", "Voices", "Features", "Industries", "Pricing", "FAQ"].map((l) => (
-              <a key={l} className="nl" href={l === "Docs" ? "#" : "#" + l.toLowerCase().replace(" ", "")}>{l}</a>
+            {NAV_LINKS.map((l) => (
+              <a key={l} className="nl" href={"#" + l.toLowerCase().replace(" ", "")}>{l}</a>
             ))}
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
-            <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ color: "#f4f4f7", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
-            <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 14.5, padding: "11px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
+            <a className="nav-signin" href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ color: "#f4f4f7", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp nav-cta" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 14.5, padding: "11px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
+            <button className="nav-burger" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)} style={{ width: 42, height: 42, borderRadius: 12, background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.12)", color: "#f4f4f7", fontSize: 17, cursor: "pointer", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <i className={`fa-solid ${menuOpen ? "fa-xmark" : "fa-bars"}`} />
+            </button>
           </div>
         </div>
+        {menuOpen && (
+          <nav className="nav-mobile" style={{ borderTop: "1px solid rgba(255,255,255,.07)", background: "rgba(7,7,13,.94)", padding: "8px 18px 18px", display: "flex", flexDirection: "column" }}>
+            {NAV_LINKS.map((l) => (
+              <a key={l} href={"#" + l.toLowerCase().replace(" ", "")} onClick={() => setMenuOpen(false)} style={{ color: "#e4e4ec", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px", borderBottom: "1px solid rgba(255,255,255,.06)" }}>{l}</a>
+            ))}
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ color: "#e4e4ec", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px" }}>Sign in</a>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="btnp" style={{ textDecoration: "none", textAlign: "center", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 20px", borderRadius: 999, marginTop: 8, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
+          </nav>
+        )}
       </header>
 
       {/* HERO */}
@@ -404,7 +482,7 @@ export default function Hello22Site() {
               </span>
               <span style={{ fontWeight: 600, color: "#c9c9d4", letterSpacing: ".02em" }}>24/7 AI voice receptionist</span>
             </div>
-            <h1 data-rv style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0" }}>
+            <h1 data-rv className="hero-h1" style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0" }}>
               <span style={{ display: "inline-flex", alignItems: "baseline", perspective: "600px" }}>
                 <span key={greet} style={{ display: "inline-block", animation: "h22greet .65s cubic-bezier(.2,.8,.2,1) both" }}>{GREETS[greet]}</span>
                 <span style={{ color: "var(--lime)" }}>.</span>
@@ -412,7 +490,7 @@ export default function Hello22Site() {
             </h1>
             <p data-rv style={{ fontFamily: DISP, fontSize: "clamp(22px,2.4vw,30px)", fontWeight: 500, color: "#e4e4ec", margin: "14px 0 0", letterSpacing: "-.01em" }}>I&apos;m your AI voice agent — ready to talk.</p>
             <p data-rv style={{ fontSize: 18, lineHeight: 1.6, color: "#9594a6", maxWidth: 520, margin: "20px 0 0" }}>hello22 answers every call, books appointments, qualifies leads, and resolves questions — sounding natural and human, in English, 24/7.</p>
-            <div data-rv style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
+            <div data-rv className="hero-ctas" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
               <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free — setup in minutes</a>
               <a href="#demo" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,.06)", color: "#f4f4f7", fontWeight: 600, fontSize: 16, padding: "16px 24px", borderRadius: 999, border: "1px solid rgba(255,255,255,.14)" }}>
                 <span style={{ display: "inline-flex", width: 22, height: 22, borderRadius: "50%", background: "var(--lime)", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-play" /></span>Hear a live call
@@ -474,7 +552,7 @@ export default function Hello22Site() {
 
         <div className="demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, marginTop: 42, alignItems: "start" }}>
           <div data-rv style={{ background: "var(--surface)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 24, overflow: "hidden" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)" }}>
+            <div className="demo-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <button onClick={playDemo} style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 14, padding: "11px 18px", borderRadius: 999, boxShadow: "0 12px 28px -14px rgba(44,118,237,.7)" }}>
                   <i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-play"}`} />{demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Play sample call"}
@@ -489,7 +567,7 @@ export default function Hello22Site() {
                 const ag = t.role === "agent";
                 return (
                   <div key={i} style={{ display: "flex", justifyContent: ag ? "flex-end" : "flex-start", opacity: shown ? 1 : 0.12, transform: shown ? "none" : "translateY(8px)", transition: "all .5s ease" }}>
-                    <div style={{ maxWidth: "78%", padding: "14px 18px", borderRadius: ag ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: ag ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "rgba(255,255,255,.05)", border: ag ? "1px solid rgba(44,118,237,.28)" : "1px solid rgba(255,255,255,.09)" }}>
+                    <div className="bubble" style={{ maxWidth: "78%", padding: "14px 18px", borderRadius: ag ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: ag ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "rgba(255,255,255,.05)", border: ag ? "1px solid rgba(44,118,237,.28)" : "1px solid rgba(255,255,255,.09)" }}>
                       <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6, color: ag ? "var(--lime)" : "#9594a6" }}>{t.name}</div>
                       <div style={{ fontSize: 15, lineHeight: 1.5 }}>{t.text}</div>
                     </div>
@@ -498,7 +576,7 @@ export default function Hello22Site() {
               })}
             </div>
           </div>
-          <div data-rv style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div data-rv className="demo-side" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div style={{ ...card, borderRadius: 18, padding: 18 }}><div style={{ fontSize: 12, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em" }}>Intent</div><div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 19, marginTop: 6 }}>Book appointment</div></div>
             <div style={{ ...card, borderRadius: 18, padding: 18 }}><div style={{ fontSize: 12, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em" }}>Sentiment</div><div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}><span style={{ width: 9, height: 9, borderRadius: "50%", background: "var(--cyan)" }} /><span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 19, color: "var(--cyan)" }}>Positive</span></div></div>
             <div style={{ ...card, borderRadius: 18, padding: 18 }}><div style={{ fontSize: 12, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Live actions</div>{["Booking captured", "SMS confirmation sent", "Summary delivered"].map((a) => <div key={a} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, marginBottom: 10 }}><span style={{ width: 18, height: 18, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-check" /></span>{a}</div>)}</div>
@@ -541,12 +619,12 @@ export default function Hello22Site() {
         <h2 data-rv style={{ ...h2, maxWidth: 560 }}>Pick a voice. Click to hear it speak.</h2>
         <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}>A curated library of studio-grade English voices. Preview any voice free, then go live in one click.</p>
         <div className="voices-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginTop: 38 }}>
-          {VOICES.map((v, i) => {
+          {(showAllVoices ? VOICES : VOICES.slice(0, VOICE_PREVIEW)).map((v, i) => {
             const playing = i === playingVoice;
             const hl = i === voice || playing;
             const pals = [["rgba(44,118,237,.14)", "#2c76ed"], ["rgba(86,224,224,.14)", "#56e0e0"], ["rgba(157,139,255,.16)", "#9d8bff"]][i % 3];
             return (
-              <div key={v.id} data-rv onClick={() => toggleVoice(i)} style={{ display: "flex", alignItems: "center", gap: 14, padding: 16, borderRadius: 16, cursor: "pointer", transition: "all .25s ease", background: hl ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "#12121d", border: hl ? "1px solid rgba(44,118,237,.5)" : "1px solid rgba(255,255,255,.08)", boxShadow: hl ? "0 18px 40px -22px rgba(44,118,237,.5)" : "none" }}>
+              <div key={v.id} data-rv={i < VOICE_PREVIEW ? "" : undefined} onClick={() => toggleVoice(i)} style={{ display: "flex", alignItems: "center", gap: 14, padding: 16, borderRadius: 16, cursor: "pointer", transition: "all .25s ease", background: hl ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "#12121d", border: hl ? "1px solid rgba(44,118,237,.5)" : "1px solid rgba(255,255,255,.08)", boxShadow: hl ? "0 18px 40px -22px rgba(44,118,237,.5)" : "none" }}>
                 <div style={{ position: "relative", width: 50, height: 50, borderRadius: 14, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISP, fontWeight: 600, fontSize: 20, background: pals[0], color: pals[1] }}>
                   {playing && <span style={{ position: "absolute", inset: 0, borderRadius: 14, background: "var(--lime)", opacity: .35, animation: "h22ring 1.6s ease-out infinite" }} />}
                   <span style={{ position: "relative" }}>{v.letter}</span><span style={{ position: "absolute", bottom: -4, right: -4, fontSize: 15 }}>{v.flag}</span>
@@ -567,7 +645,21 @@ export default function Hello22Site() {
             );
           })}
         </div>
-        <div data-rv style={{ marginTop: 22 }}>
+        <div data-rv style={{ display: "flex", justifyContent: "center", marginTop: 28 }}>
+          <button
+            onClick={() => {
+              if (showAllVoices && playingVoice !== null && playingVoice >= VOICE_PREVIEW) { stopVoice(); setPlayingVoice(null); }
+              setShowAllVoices((s) => !s);
+            }}
+            className="btnp"
+            style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,.06)", color: "#f4f4f7", border: "1px solid rgba(255,255,255,.14)", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, fontSize: 15, padding: "13px 26px", borderRadius: 999 }}
+          >
+            {showAllVoices
+              ? <>Show less <i className="fa-solid fa-chevron-up" style={{ fontSize: 11 }} /></>
+              : <>See all {VOICES.length} voices <i className="fa-solid fa-chevron-down" style={{ fontSize: 11 }} /></>}
+          </button>
+        </div>
+        <div data-rv style={{ marginTop: 18, textAlign: "center" }}>
           <p style={{ fontSize: 13, color: "#6f6f80", margin: 0 }}>Preview voices may sound lighter than the production voice engine.</p>
         </div>
       </section>
@@ -629,21 +721,21 @@ export default function Hello22Site() {
         <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}>It&apos;s the same hello22 agent — you just configure it for your business in the AI Brain. No separate setup per industry.</p>
         <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 24, marginTop: 40, alignItems: "start" }}>
           <div ref={ucListRef} style={{ willChange: "transform" }}>
-          <div data-rv style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div data-rv className="ind-list" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {USECASES.map((t, i) => {
               const active = i === useCase;
               return (
-                <button key={t.name} onClick={() => setUseCase(i)} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "15px 18px", borderRadius: 14, fontFamily: "inherit", background: active ? "#16161f" : "transparent", border: active ? "1px solid rgba(255,255,255,.13)" : "1px solid transparent", color: active ? "#f4f4f7" : "#9594a6" }}>
-                  <span style={{ fontFamily: DISP, fontSize: 13, fontWeight: 600, opacity: .55, width: 22 }}>{"0" + (i + 1)}</span>
+                <button key={t.name} className="ind-btn" data-active={active} onClick={() => setUseCase(i)} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "15px 18px", borderRadius: 14, fontFamily: "inherit", background: active ? "#16161f" : "transparent", border: active ? "1px solid rgba(255,255,255,.13)" : "1px solid transparent", color: active ? "#f4f4f7" : "#9594a6" }}>
+                  <span className="ind-num" style={{ fontFamily: DISP, fontSize: 13, fontWeight: 600, opacity: .55, width: 22 }}>{"0" + (i + 1)}</span>
                   <span style={{ fontSize: 15.5, fontWeight: 600, flex: 1, textAlign: "left" }}>{t.name}</span>
-                  <span style={{ opacity: active ? 1 : 0, color: "var(--lime)", transition: "opacity .2s" }}>→</span>
+                  <span className="ind-arrow" style={{ opacity: active ? 1 : 0, color: "var(--lime)", transition: "opacity .2s" }}>→</span>
                 </button>
               );
             })}
           </div>
           </div>
           <div ref={ucCardRef} style={{ willChange: "transform" }}>
-          <div data-rv style={{ background: "linear-gradient(155deg,#16161f,#0f0f18)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 24, padding: 34, minHeight: 380 }}>
+          <div data-rv className="uc-card" style={{ background: "linear-gradient(155deg,#16161f,#0f0f18)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 24, padding: 34, minHeight: 380 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
               <div style={{ width: 50, height: 50, borderRadius: 14, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 22 }}><i className={`fa-solid ${uc.icon}`} /></div>
               <div><div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 22 }}>{uc.name}</div><div style={{ fontSize: 13, color: "var(--lime)" }}>Configured in your AI Brain</div></div>
@@ -702,7 +794,7 @@ export default function Hello22Site() {
 
       {/* VALUE BAND */}
       <section style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 80px" }}>
-        <div data-rv style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg,rgba(44,118,237,.08),rgba(157,139,255,.08))", border: "1px solid rgba(255,255,255,.1)", borderRadius: 26, padding: "56px 40px", textAlign: "center" }}>
+        <div data-rv className="band-pad" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg,rgba(44,118,237,.08),rgba(157,139,255,.08))", border: "1px solid rgba(255,255,255,.1)", borderRadius: 26, padding: "56px 40px", textAlign: "center" }}>
           <div style={{ ...eyebrow }}>Why hello22</div>
           <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(30px,3.8vw,46px)", margin: "12px 0 0", maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}>Every missed call is a missed customer.</h2>
           <p style={{ fontSize: 17, color: "#9594a6", maxWidth: 560, margin: "16px auto 0", lineHeight: 1.6 }}>hello22 picks up every time — turning your phone into booked jobs, captured leads, and happy callers instead of voicemail.</p>
@@ -792,13 +884,13 @@ export default function Hello22Site() {
             const open = faqOpen === i;
             return (
               <div key={i} style={{ ...card, overflow: "hidden", borderColor: open ? "rgba(44,118,237,.35)" : "rgba(255,255,255,.09)", transition: "border-color .25s ease" }}>
-                <button onClick={() => setFaqOpen(open ? null : i)} aria-expanded={open} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, width: "100%", textAlign: "left", cursor: "pointer", background: "transparent", border: "none", color: "#f4f4f7", fontFamily: "inherit", padding: "20px 24px" }}>
+                <button className="faq-q" onClick={() => setFaqOpen(open ? null : i)} aria-expanded={open} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, width: "100%", textAlign: "left", cursor: "pointer", background: "transparent", border: "none", color: "#f4f4f7", fontFamily: "inherit", padding: "20px 24px" }}>
                   <span style={{ fontSize: 16.5, fontWeight: 600 }}>{f.q}</span>
                   <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: "50%", background: open ? "var(--lime)" : "rgba(255,255,255,.06)", border: open ? "none" : "1px solid rgba(255,255,255,.14)", color: open ? "#fff" : "#9594a6", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12, transition: "all .25s ease", transform: open ? "rotate(180deg)" : "none" }}><i className="fa-solid fa-chevron-down" /></span>
                 </button>
                 <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .3s ease" }}>
                   <div style={{ overflow: "hidden" }}>
-                    <div style={{ padding: "0 24px 22px" }}>{renderAnswer(f.a)}</div>
+                    <div className="faq-a" style={{ padding: "0 24px 22px" }}>{renderAnswer(f.a)}</div>
                   </div>
                 </div>
               </div>
@@ -810,7 +902,7 @@ export default function Hello22Site() {
 
       {/* FINAL CTA */}
       <section id="cta" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
-        <div data-rv style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#14141f,#0c0c15)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 30, padding: "56px 48px" }}>
+        <div data-rv className="cta-pad" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#14141f,#0c0c15)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 30, padding: "56px 48px" }}>
           <div style={{ position: "absolute", top: -120, left: "20%", width: 520, height: 340, background: "radial-gradient(circle,rgba(44,118,237,.18),transparent 70%)", filter: "blur(20px)", pointerEvents: "none", animation: "h22glowpulse 5.5s ease-in-out infinite" }} />
           <div className="cta-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
             {/* LEFT — say hello */}
@@ -826,7 +918,7 @@ export default function Hello22Site() {
               </div>
             </div>
             {/* RIGHT — demo form */}
-            <div style={{ background: "rgba(8,8,14,.55)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 22, padding: 26 }}>
+            <div className="form-card" style={{ background: "rgba(8,8,14,.55)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 22, padding: 26 }}>
               <h3 style={{ fontFamily: DISP, fontWeight: 600, fontSize: 24, margin: 0 }}>Book a <span style={{ color: "var(--violet)" }}>Free Demo</span></h3>
               {demoStatus === "ok" ? (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, textAlign: "center", padding: "40px 10px" }}>
@@ -837,15 +929,15 @@ export default function Hello22Site() {
               ) : (
                 <form onSubmit={submitDemo} style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 12 }}>
                   <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" style={{ display: "none" }} />
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                     <input name="name" required placeholder="Full Name" style={inp} />
                     <input name="business" required placeholder="Business Name" style={inp} />
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                     <input name="email" type="email" required placeholder="Business Email" style={inp} />
                     <input name="phone" type="tel" required placeholder="Phone Number" style={inp} />
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                     <select name="industry" required defaultValue="" style={inp}>
                       <option value="" disabled style={opt}>Industry</option>
                       {["HVAC", "Cleaning", "Electrical", "Plumbing", "Painting", "Flooring", "Other"].map((x) => <option key={x} value={x} style={opt}>{x}</option>)}
@@ -906,7 +998,7 @@ export default function Hello22Site() {
 
       {/* LIGHTBOX */}
       {lightbox && (
-        <div onClick={() => setLightbox(null)} style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(5,5,10,.88)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 28, cursor: "zoom-out" }}>
+        <div onClick={() => setLightbox(null)} style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(5,5,10,.88)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 28, cursor: "zoom-out" }}>
           <button onClick={() => setLightbox(null)} aria-label="Close" style={{ position: "absolute", top: 22, right: 26, width: 42, height: 42, borderRadius: "50%", background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.18)", color: "#fff", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><i className="fa-solid fa-xmark" /></button>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={lightbox} alt="Product screenshot" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "94vw", maxHeight: "90vh", width: "auto", height: "auto", borderRadius: 12, border: "1px solid rgba(255,255,255,.14)", boxShadow: "0 40px 100px -30px rgba(0,0,0,.9)", cursor: "default" }} />
