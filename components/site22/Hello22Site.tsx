@@ -3,6 +3,7 @@
 import { Manrope, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import { useEffect, useRef, useState } from "react";
+import { LogoIcon } from "./LogoIcon";
 
 const manrope = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-manrope", display: "swap" });
 const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-space", display: "swap" });
@@ -12,9 +13,10 @@ const conthrax = localFont({ src: "../../public/fonts/conthrax-sb.woff", weight:
 const DISP = "var(--font-conthrax), 'Conthrax', var(--font-space), 'Space Grotesk', sans-serif";
 // Sub-heads, card titles, numbers, UI labels — Conthrax sirf display/buttons/eyebrows ke liye.
 const SUB = "var(--font-space), 'Space Grotesk', sans-serif";
-const LOGO = "/hello22-logo.png"; // white wordmark — dark theme
-const LOGO_LIGHT = "/images/hello22-logo-color.svg"; // black + brand-blue wordmark — light theme
-const APP_URL = "https://agent.hello22.ai";
+// Logo = animated 3D-style icon (LogoIcon component) + text-only wordmark (font wahi purana).
+const LOGO_TEXT_LIGHT = "/images/hello22-text-color.svg"; // black + brand-blue "22"
+const LOGO_TEXT_DARK = "/images/hello22-text-white.svg"; // white + blue "22"
+const APP_URL = "https://app.hello22.ai/";
 const SUPPORT_EMAIL = "connect@hello22.ai";
 // Web3Forms key — demo-form submissions email to connect@hello22.ai. Client-safe by design.
 const WEB3FORMS_ACCESS_KEY = "42827426-7f8f-4a99-98a9-7aabe3ed8000";
@@ -33,7 +35,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--band-bg": "linear-gradient(135deg,rgba(44,118,237,.08),rgba(157,139,255,.08))",
     "--plan-pop": "linear-gradient(160deg,rgba(44,118,237,.12),rgba(157,139,255,.08)),#12121d",
     "--core-bg": "radial-gradient(circle at 50% 32%,#16161f,#101019)",
-    "--sec-alt": "#0c0c15",
+    "--sec-alt": "#0c0c15", "--sec-alt-0": "rgba(12,12,21,0)",
     "--nav-bg": "rgba(7,7,13,.72)", "--nav-bg2": "rgba(7,7,13,.94)", "--form-bg": "rgba(8,8,14,.55)",
     "--tx": "#f4f4f7", "--tx2": "#e4e4ec", "--tx3": "#c9c9d4",
     "--mut": "#9594a6", "--mut2": "#8b8a9c", "--mut3": "#7a7a8c", "--dim": "#6f6f80", "--dim2": "#5d5d70",
@@ -56,7 +58,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--band-bg": "#edf3fd",
     "--plan-pop": "#f4f8fe",
     "--core-bg": "#ffffff",
-    "--sec-alt": "#eaeef6",
+    "--sec-alt": "#eaeef6", "--sec-alt-0": "rgba(234,238,246,0)",
     "--nav-bg": "rgba(255,255,255,.82)", "--nav-bg2": "rgba(255,255,255,.97)", "--form-bg": "rgba(255,255,255,.72)",
     "--tx": "#10131c", "--tx2": "#1d2433", "--tx3": "#3e4658",
     "--mut": "#4a5266", "--mut2": "#555d72", "--mut3": "#60687e", "--dim": "#6c7488", "--dim2": "#838b9e",
@@ -122,20 +124,6 @@ const USECASES: UC[] = [
   { name: "Plumbing Business", icon: "fa-faucet-drip", kpi: "3m 47s avg call duration", title: "Turn plumbing emergencies into booked jobs automatically.", body: "Answer urgent plumbing enquiries, schedule repairs, prioritize emergency leaks, collect customer details, and dispatch technicians immediately.", stats: [{ v: "3m 47s", l: "Avg call" }, { v: "95%", l: "Jobs scheduled" }, { v: "4.9/5", l: "Customer rating" }], tags: ["Emergency Plumbing", "Leak Detection", "Appointment Booking", "Technician Dispatch"] },
   { name: "Painting Services", icon: "fa-paint-roller", kpi: "3m 05s avg call duration", title: "Convert more quote requests into paying customers.", body: "Qualify painting enquiries, collect project details, schedule site inspections, send estimates, and book consultations automatically with every incoming call.", stats: [{ v: "3m 05s", l: "Avg call" }, { v: "88%", l: "Quotes booked" }, { v: "4.8/5", l: "Client satisfaction" }], tags: ["Quote Requests", "Site Visits", "Residential Painting", "Commercial Projects"] },
   { name: "Flooring Services", icon: "fa-ruler-combined", kpi: "3m 34s avg call duration", title: "Capture every flooring enquiry before your competitors do.", body: "Book flooring consultations, collect room measurements, answer product questions, schedule on-site estimates, and follow up automatically with potential customers.", stats: [{ v: "3m 34s", l: "Avg call" }, { v: "90%", l: "Consultations booked" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Floor Estimates", "Installation Booking", "Product Enquiries", "Site Measurement"] },
-];
-
-// Orbital integrations diagram — logos orbit the hello22 core.
-type Orb = { src?: string; more?: boolean; label?: string; name: string; r: number; a: number; size: number };
-const ORBIT: Orb[] = [
-  { src: "/images/logos/color/google-calendar.svg", name: "Google Calendar", r: 175, a: -90, size: 56 },
-  { src: "/images/logos/color/stripe.svg", name: "Stripe", r: 175, a: -30, size: 56 },
-  { src: "/images/logos/color/openai.svg", name: "OpenAI", r: 175, a: 30, size: 56 },
-  { src: "/images/logos/color/whatsapp.svg", name: "WhatsApp", r: 175, a: 90, size: 56 },
-  { src: "/images/logos/color/anthropic.svg", name: "Anthropic", r: 175, a: 150, size: 56 },
-  { more: true, name: "More integrations", r: 175, a: 210, size: 52 },
-  { src: "/images/logos/color/twilio.svg", name: "Twilio", r: 98, a: -90, size: 50 },
-  { src: "/images/logos/color/aws.svg", name: "AWS", r: 98, a: 30, size: 50 },
-  { src: "/images/logos/color/elevenlabs.svg", name: "ElevenLabs", r: 98, a: 150, size: 50 },
 ];
 
 type Line = { role: "caller" | "agent"; name: string; text: string };
@@ -217,18 +205,33 @@ const PLANS: Plan[] = [
       { t: "Multilingual voice agent", on: true },
       { t: "Premium AI voices", on: true },
       { t: "Call summary via SMS", on: true },
-      { t: "Free Nexleon CRM setup & custom CRM integration", on: true },
+      { t: "Free Nexleon CRM setup & Custom CRM integration", on: true },
     ],
   },
 ];
 
+// Human vs AI comparison table — orbit section ki jagah (client reference).
+type CmpRow = { f: string; ic: string; h: string; a: string };
+const COMPARE: CmpRow[] = [
+  { f: "Availability", ic: "fa-regular fa-clock", h: "9am–5pm, weekdays", a: "24/7, 365 days a year" },
+  { f: "Sick Days & Leave", ic: "fa-solid fa-umbrella-beach", h: "Of course! They're human.", a: "Never. Always on duty." },
+  { f: "Cost", ic: "fa-solid fa-sack-dollar", h: "Salary, super, leave", a: "One simple flat rate" },
+  { f: "Setup Time", ic: "fa-solid fa-bolt", h: "Weeks of hiring & training", a: "Live in minutes" },
+  { f: "3 Calls at Once?", ic: "fa-solid fa-phone-volume", h: "\u201CPlease hold.\u201D", a: "Easily." },
+  { f: "Integration", ic: "fa-solid fa-plug", h: "Manual note-taking", a: "Connects to your tools" },
+];
+
 // Google reviews CTA — apna Google Business review link yahan daal dein.
 const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=hello22.ai+reviews";
-type Testi = { quote: string; name: string; role: string; img: string; stars: number };
+// img optional — photo na ho to card initials avatar dikhata hai. Pehle 3 preview me, baaki "Show all" se.
+type Testi = { quote: string; name: string; role: string; img?: string; stars: number };
 const TESTIMONIALS: Testi[] = [
   { quote: "We were missing 15 to 20 calls a week — mostly evenings and lunch hours. Since hello22 took over, every call is answered and our bookings are up almost 40%.", name: "Dr. Melissa Tran", role: "Brightside Dental Clinic", img: "/images/portrait-melissa.jpg", stars: 4.5 },
   { quote: "I'm in showings half the day. Now every enquiry is answered instantly, and the caller's details are texted to me before I'm even out of the building.", name: "James Carter", role: "Carter Realty Group", img: "/images/portrait-james.jpg", stars: 5 },
   { quote: "The AI handles appointment calls so smoothly that most clients don't realise they weren't talking to our staff. Our front desk finally has room to breathe.", name: "Priya Sharma", role: "Sharma Immigration Services", img: "/images/portrait-priya.jpg", stars: 5 },
+  { quote: "hello22 answers our after-hours emergency calls now. Last month it booked two big jobs that would have gone straight to voicemail.", name: "Mark Reynolds", role: "Reynolds Plumbing Co.", stars: 5 },
+  { quote: "Our team is on the tools all day. The AI takes every call, sorts urgent from routine, and the summary lands on WhatsApp before we're off the ladder.", name: "Sophie Nguyen", role: "SparkRight Electrical", stars: 4.5 },
+  { quote: "Quotes used to slip through whenever we missed a call. Now every enquiry is captured, and half our bookings happen while we're still on another job.", name: "David Okafor", role: "FreshNest Cleaning", stars: 5 },
 ];
 
 const CSS = `
@@ -241,10 +244,6 @@ const CSS = `
 @keyframes h22greet{0%{opacity:0;transform:translateY(22px) rotateX(-55deg);filter:blur(6px)}100%{opacity:1;transform:none;filter:blur(0)}}
 @keyframes h22drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(34px,-28px) scale(1.07)}66%{transform:translate(-26px,20px) scale(.95)}}
 @keyframes h22glowpulse{0%,100%{opacity:.65;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.14)}}
-@keyframes h22spin{to{transform:rotate(360deg)}}
-@keyframes h22spinr{to{transform:rotate(-360deg)}}
-@keyframes h22waveY{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
-@keyframes h22dash{to{stroke-dashoffset:-1630}}
 .h22 [data-rv]{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
 .h22 [data-rv].in{opacity:1;transform:none}
 .h22 a.nl{color:var(--tx3);text-decoration:none}.h22 a.nl:hover{color:var(--tx)}
@@ -263,7 +262,9 @@ const CSS = `
 .h22 .snap-x::-webkit-scrollbar{display:none}
 .h22 .nav-burger{display:none}
 .h22 img{max-width:100%}
-.h22 section.sec-alt::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:var(--sec-alt);border-top:1px solid var(--w08);border-bottom:1px solid var(--w08);z-index:-1;pointer-events:none}
+.h22 section.sec-alt::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:linear-gradient(180deg,var(--sec-alt-0) 0,var(--sec-alt) clamp(64px,10vw,150px),var(--sec-alt) calc(100% - clamp(64px,10vw,150px)),var(--sec-alt-0) 100%);z-index:-1;pointer-events:none}
+.h22 .cmp-ai{background:rgba(44,118,237,.07);border-left:1px solid rgba(44,118,237,.16)}
+@media(hover:hover){.h22 .cmp-row:not(.cmp-head):hover{background:var(--w04)}}
 .h22 .plat-stats>div+div{border-left:1px solid var(--w08);padding-left:18px}
 .h22{-webkit-text-size-adjust:100%;text-size-adjust:100%;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
 .h22 h1,.h22 h2,.h22 h3{text-wrap:balance}
@@ -276,8 +277,8 @@ const CSS = `
 .h22 .bubble{max-width:min(78%,640px)!important}
 .h22 .hero-feat{border-right:1px solid var(--w09)}
 .h22 .hero-feat:last-child{border-right:none;padding-right:0}
-.h22 .testi-grid{display:grid;grid-template-columns:minmax(270px,330px) repeat(3,minmax(0,1fr));gap:18px;margin-top:42px}
-@media(max-width:1240px){.h22 .testi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.h22 .testi-grid{display:grid;grid-template-columns:minmax(270px,330px) minmax(0,1fr);gap:18px;margin-top:42px}
+@media(max-width:1240px){.h22 .testi-grid{grid-template-columns:minmax(0,1fr)}}
 @media(min-width:1441px){
  .h22 section,.h22 .nav-bar{padding-left:48px!important;padding-right:48px!important}
  .h22 .footer-grid,.h22 .footer-bottom{padding-left:48px!important;padding-right:48px!important}
@@ -286,7 +287,6 @@ const CSS = `
  .h22 .demo-grid{grid-template-columns:minmax(0,1fr) 400px!important}
  .h22 #industries .uc-grid{grid-template-columns:360px minmax(0,1120px)!important}
  .h22 .cta-grid{grid-template-columns:1.1fr minmax(0,680px)!important;gap:80px!important}
- .h22 .orbit{transform:scale(1.16)}
  .h22 .feat-grid,.h22 .uc-grid,.h22 .shots-grid,.h22 .price-grid,.h22 .testi-grid{gap:22px!important}
 }
 @media(min-width:921px){.h22 .nav-mobile{display:none!important}}
@@ -302,12 +302,14 @@ const CSS = `
  .h22 .nav-links{display:none!important}
  .h22 .nav-burger{display:inline-flex!important}
  .h22 .nav-logo{height:44px!important}
- .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid,.h22 .cta-grid{grid-template-columns:minmax(0,1fr)!important}
+ .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .price-grid,.h22 .cta-grid,.h22 .cmp-grid{grid-template-columns:minmax(0,1fr)!important}
+ .h22 .cmp-grid{gap:28px!important}
  .h22 .feat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .h22 .feat-grid>div{grid-column:auto!important}
  .h22 .tcol{grid-column:span 2!important}
  .h22 .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .h22 .price-grid{max-width:520px}
+ .h22 .plan-caps{min-height:0!important}
  .h22 .ind-list{flex-direction:row!important;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
  .h22 .ind-btn{flex:0 0 auto;width:auto!important;white-space:nowrap;padding:11px 16px!important;background:var(--surface)!important;border:1px solid var(--w10)!important}
  .h22 .ind-btn[data-active="true"]{background:rgba(44,118,237,.16)!important;border-color:rgba(44,118,237,.5)!important;color:var(--tx)!important}
@@ -332,7 +334,6 @@ const CSS = `
  .h22 .hero-sub{font-size:15.5px!important;margin-top:16px!important}
  .h22 .hero-checks{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;margin-top:24px!important}
  .h22 .hero-feat{border-right:none!important;padding-right:0!important}
- .h22 .hero-waves{opacity:.22!important}
  .h22 .wave{gap:2px!important;padding:0!important}
  .h22 .float-card{animation:h22floatSm 8s ease-in-out infinite!important}
  .h22 .voices-grid,.h22 .feat-grid,.h22 .uc-grid,.h22 .price-grid,.h22 .demo-grid,.h22 .faq-list{margin-top:24px!important}
@@ -356,10 +357,13 @@ const CSS = `
  .h22 .demo-head{padding:14px 16px!important}
  .h22 .faq-q{padding:16px!important}
  .h22 .faq-a{padding:0 16px 18px!important}
+ .h22 .cmp-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+ .h22 .cmp-fh{display:none!important}
+ .h22 .cmp-row>div{padding:11px 12px!important}
+ .h22 .cmp-row>div.cmp-f{grid-column:1 / -1;padding:12px 14px 2px!important}
  .h22 .testi-grid{grid-template-columns:minmax(0,1fr);gap:14px;margin-top:26px}
 }
 @media(max-width:560px){
- .h22 .orbit{transform:scale(.72);margin:-60px}
  .h22 .footer-grid{grid-template-columns:minmax(0,1fr)!important;gap:28px!important}
  .h22 .plat-stats{grid-template-columns:minmax(0,1fr)!important}
 }
@@ -374,7 +378,6 @@ const CSS = `
  .h22 .form-row{grid-template-columns:minmax(0,1fr)!important}
 }
 @media(max-width:390px){
- .h22 .orbit{transform:scale(.6);margin:-84px}
  .h22 .nav-logo{height:28px!important}
  .h22 .nav-cta{padding:8px 11px!important}
 }
@@ -385,7 +388,6 @@ const CSS = `
 @media(prefers-reduced-motion:reduce){
  .h22 *,.h22 *::before,.h22 *::after{animation:none!important;transition:none!important}
  .h22 [data-rv]{opacity:1!important;transform:none!important}
- .h22 .wave-pulse{display:none}
  html{scroll-behavior:auto}
 }
 `;
@@ -394,6 +396,7 @@ const CSS = `
 function BtnTxt({ t }: { t: string }) {
   return <span>{t}</span>;
 }
+
 // Heading emphasis: blue highlight for key words, heavier weight for leading words.
 const HL: React.CSSProperties = { color: "var(--blue-ink)", fontWeight: 700 };
 const BD: React.CSSProperties = { fontWeight: 800 };
@@ -492,29 +495,36 @@ export default function Hello22Site() {
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
   const [playingVoice, setPlayingVoice] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const [faqOpen, setFaqOpen] = useState<number | null>(null); // by default sab band
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAllVoices, setShowAllVoices] = useState(false);
+  const [testiPage, setTestiPage] = useState(0);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
   // voices preview = poori rows: mobile 6 (1-col), desktop 8 (4-col), ultra-wide 12 (6-col)
   const [wideScreen, setWideScreen] = useState(false);
   const [smallScreen, setSmallScreen] = useState(false);
+  const [midScreen, setMidScreen] = useState(false);
   useEffect(() => {
     const mqW = window.matchMedia("(min-width: 1441px)");
     const mqS = window.matchMedia("(max-width: 680px)");
-    const f = () => { setWideScreen(mqW.matches); setSmallScreen(mqS.matches); };
+    const mqM = window.matchMedia("(max-width: 1240px)");
+    const f = () => { setWideScreen(mqW.matches); setSmallScreen(mqS.matches); setMidScreen(mqM.matches); };
     f();
     mqW.addEventListener("change", f);
     mqS.addEventListener("change", f);
-    return () => { mqW.removeEventListener("change", f); mqS.removeEventListener("change", f); };
+    mqM.addEventListener("change", f);
+    return () => { mqW.removeEventListener("change", f); mqS.removeEventListener("change", f); mqM.removeEventListener("change", f); };
   }, []);
   const voicePreview = wideScreen ? 12 : smallScreen ? VOICE_PREVIEW : 8;
+  // Testimonial slider: ek page = jitne cards view me aate hain (desktop 3, tablet 2, phone 1)
+  const testiPerView = smallScreen ? 1 : midScreen ? 2 : 3;
+  const testiPages = Math.ceil(TESTIMONIALS.length / testiPerView);
+  useEffect(() => { setTestiPage((p) => Math.min(p, testiPages - 1)); }, [testiPages]);
   const ucListRef = useParallax<HTMLDivElement>(34);
   const ucCardRef = useParallax<HTMLDivElement>(-34);
   // Scroll parallax — alag-alag speeds se depth ka feel; hook mobile (≤920) aur reduced-motion pe off hai.
   const heroCardRef = useParallax<HTMLDivElement>(-30);
   const shotsRef = useParallax<HTMLDivElement>(-18);
-  const orbitWrapRef = useParallax<HTMLDivElement>(26);
   const ctaFormRef = useParallax<HTMLDivElement>(-24);
   const [demoStatus, setDemoStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
 
@@ -688,7 +698,11 @@ export default function Hello22Site() {
       {/* NAV */}
       <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", background: "var(--nav-bg)", borderBottom: "1px solid var(--w07)" }}>
         <div className="nav-bar" style={{ maxWidth: 1536, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
-          <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={isLight ? LOGO_LIGHT : LOGO} alt="hello22.ai" className="nav-logo" style={{ height: 50, width: "auto", display: "block", filter: "var(--logo-filter)" }} /></a>
+          <a href="#top" className="nav-logo" aria-label="hello22.ai" style={{ display: "flex", alignItems: "center", gap: 10, height: 50, flexShrink: 0, textDecoration: "none" }}>
+            <LogoIcon />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={isLight ? LOGO_TEXT_LIGHT : LOGO_TEXT_DARK} alt="hello22.ai" style={{ height: "100%", width: "auto", display: "block" }} />
+          </a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
             {NAV_LINKS.map((l) => (
               <a key={l} className="nl" href={"#" + l.toLowerCase().replace(" ", "")}>{l}</a>
@@ -718,28 +732,6 @@ export default function Hello22Site() {
 
       {/* HERO */}
       <section id="top" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "76px 28px 56px" }}>
-        {/* flowing wave lines — decorative, full hero width */}
-        <svg className="hero-waves" aria-hidden viewBox="0 0 1600 400" preserveAspectRatio="none" style={{ position: "absolute", left: 0, right: 0, bottom: -70, width: "100%", height: "auto", pointerEvents: "none", zIndex: 0, opacity: .38 }}>
-          <defs>
-            <linearGradient id="h22wl" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stopColor="#2c76ed" stopOpacity=".05" />
-              <stop offset=".35" stopColor="#2c76ed" stopOpacity=".5" />
-              <stop offset=".7" stopColor="#56e0e0" stopOpacity=".35" />
-              <stop offset="1" stopColor="#2c76ed" stopOpacity=".08" />
-            </linearGradient>
-            <linearGradient id="h22wp" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stopColor="#4d8ef5" stopOpacity=".9" />
-              <stop offset="1" stopColor="#56e0e0" stopOpacity=".7" />
-            </linearGradient>
-          </defs>
-          {Array.from({ length: 16 }).map((_, i) => (
-            <path key={i} d={`M-40 ${285 + i * 7} C 380 ${375 - i * 15}, 950 ${95 + i * 15}, 1640 ${240 - i * 5}`} stroke="url(#h22wl)" strokeWidth="1" fill="none" style={{ animation: `h22waveY ${6 + (i % 4)}s ease-in-out ${(-i * 0.45).toFixed(2)}s infinite` }} />
-          ))}
-          {/* travelling light pulses on a few lines */}
-          {[3, 8, 13].map((i, k) => (
-            <path key={`p${i}`} className="wave-pulse" d={`M-40 ${285 + i * 7} C 380 ${375 - i * 15}, 950 ${95 + i * 15}, 1640 ${240 - i * 5}`} stroke="url(#h22wp)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeDasharray="80 1550" style={{ animation: `h22waveY ${6 + (i % 4)}s ease-in-out ${(-i * 0.45).toFixed(2)}s infinite, h22dash ${9 + k * 3}s linear ${-k * 3.5}s infinite` }} />
-          ))}
-        </svg>
         <div className="hero-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 54, alignItems: "center" }}>
           <div>
             <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "7px 14px", borderRadius: 999, background: "var(--w05)", border: "1px solid var(--w10)", fontSize: 13, color: "var(--tx3)" }}>
@@ -759,8 +751,8 @@ export default function Hello22Site() {
             <p data-rv className="hero-sub" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 520, margin: "20px 0 0" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 answers every call,</strong> books appointments, qualifies leads, and resolves questions — sounding <span style={HL}>natural and human</span>, in English, 24/7.</p>
             <div data-rv className="hero-ctas" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
               <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 18px 44px -12px rgba(44,118,237,.75)" }}><span aria-hidden style={{ fontSize: 15, lineHeight: 1 }}>✦</span><BtnTxt t="Start free — setup in minutes" /></a>
-              <a href="#demo" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--w06)", color: "var(--tx)", fontWeight: 600, fontSize: 16, padding: "16px 24px", borderRadius: 999, border: "1px solid var(--w14)" }}>
-                <span style={{ display: "inline-flex", width: 24, height: 24, borderRadius: "50%", background: "#fff", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-play" style={{ marginLeft: 1 }} /></span><BtnTxt t="Hear a live call" />
+              <a href="#demo" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--surface)", color: "var(--blue-ink)", fontWeight: 700, fontSize: 16, padding: "14px 24px", borderRadius: 999, border: "1.5px solid rgba(44,118,237,.5)", boxShadow: "0 10px 26px -18px rgba(44,118,237,.6)" }}>
+                <span style={{ display: "inline-flex", width: 26, height: 26, borderRadius: "50%", background: "var(--lime)", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 10, boxShadow: "0 6px 14px -6px rgba(44,118,237,.7)", flexShrink: 0 }}><i className="fa-solid fa-play" style={{ marginLeft: 1 }} /></span><BtnTxt t="Hear a live call" />
               </a>
             </div>
             <div data-rv className="hero-checks" style={{ display: "flex", gap: 22, marginTop: 30, flexWrap: "wrap" }}>
@@ -917,13 +909,16 @@ export default function Hello22Site() {
         <div className="shots-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 16, marginTop: 36 }}>
           {SHOTS.map((s) => (
             <div key={s.src} data-rv className="lift" style={{ ...card, borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ position: "relative", minHeight: 140, background: "var(--card-grad)", borderBottom: "1px solid var(--w07)" }}>
-                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 9, color: "var(--dim2)" }}>
-                  <i className="fa-solid fa-image" style={{ fontSize: 28 }} />
-                  <span style={{ fontSize: 12.5 }}>Screenshot coming soon</span>
+              {/* image wrapper — fixed height frame, sab cards me same size/alignment */}
+              <div style={{ padding: "14px 14px 0" }}>
+                <div style={{ position: "relative", height: 185, borderRadius: 12, overflow: "hidden", border: "1px solid var(--w08)", background: "var(--card-grad)" }}>
+                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 9, color: "var(--dim2)" }}>
+                    <i className="fa-solid fa-image" style={{ fontSize: 28 }} />
+                    <span style={{ fontSize: 12.5 }}>Screenshot coming soon</span>
+                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={s.src} alt={s.title} loading="lazy" onClick={() => setLightbox(s.src)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", cursor: "zoom-in" }} />
                 </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.src} alt={s.title} loading="lazy" onClick={() => setLightbox(s.src)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} style={{ position: "relative", width: "100%", height: "auto", display: "block", cursor: "zoom-in" }} />
               </div>
               <div style={{ padding: "16px 16px 16px", display: "flex", flexDirection: "column", flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
@@ -1093,49 +1088,40 @@ export default function Hello22Site() {
         </div>
       </section>
 
-      {/* INTEGRATIONS */}
-      <section id="integrations" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
-        <div className="int-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 50, alignItems: "center" }}>
-          <div data-rv>
-            <div style={eyebrow}>Integrations</div>
-            <h2 style={{ ...h2, fontSize: "clamp(24px,4vw,40px)", lineHeight: 1.12 }}><b style={BD}>Connects</b> to <span style={HL}>your stack</span>.</h2>
-            <p style={{ fontSize: 17, color: "var(--mut)", lineHeight: 1.65, margin: "18px 0 0", maxWidth: 440 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Google Calendar for booking,</strong> your CRM or any webhook for leads, and the voice &amp; AI infrastructure behind every call — so conversations turn into booked appointments and updated records automatically.</p>
-          </div>
-          <div ref={orbitWrapRef} style={{ willChange: "transform" }}>
-          <div data-rv style={{ display: "flex", justifyContent: "center" }}>
-            <div className="orbit" style={{ position: "relative", width: 420, height: 420, flexShrink: 0 }}>
-              {/* ambient glow — sirf dark mein */}
-              {!isLight && <div style={{ position: "absolute", left: "50%", top: "50%", width: 240, height: 240, transform: "translate(-50%,-50%)", borderRadius: "50%", background: "radial-gradient(circle,rgba(44,118,237,.20),transparent 70%)", filter: "blur(14px)", pointerEvents: "none" }} />}
-              {/* orbit rings */}
-              {[98, 175].map((r) => <div key={r} style={{ position: "absolute", left: 210 - r, top: 210 - r, width: r * 2, height: r * 2, borderRadius: "50%", border: "1px solid var(--w07)" }} />)}
-              {/* spinning badges */}
-              <div className="orbit-spin" style={{ position: "absolute", inset: 0, animation: "h22spin 50s linear infinite" }}>
-                {ORBIT.map((b, i) => {
-                  const rad = (b.a * Math.PI) / 180;
-                  const cx = 210 + b.r * Math.cos(rad);
-                  const cy = 210 + b.r * Math.sin(rad);
-                  return (
-                    <div key={i} style={{ position: "absolute", left: cx - b.size / 2, top: cy - b.size / 2, width: b.size, height: b.size }}>
-                      <div title={b.name} style={{ width: "100%", height: "100%", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", animation: "h22spinr 50s linear infinite", background: b.more || b.label ? "var(--s2)" : "#fff", border: b.more || b.label ? "1px solid var(--w14)" : "1px solid var(--logo-ring)", boxShadow: "0 12px 28px -12px var(--sh2)", color: "var(--mut)" }}>
-                        {b.more
-                          ? <i className="fa-solid fa-ellipsis" style={{ fontSize: 18 }} />
-                          : b.label
-                          ? <span style={{ fontSize: 11.5, fontWeight: 700, color: "var(--tx3)" }}>{b.label}</span>
-                          /* eslint-disable-next-line @next/next/no-img-element */
-                          : <img src={b.src} alt={b.name} style={{ width: "54%", height: "54%", objectFit: "contain" }} />}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              {/* center core */}
-              <div style={{ position: "absolute", left: 210 - 56, top: 210 - 56, width: 112, height: 112, borderRadius: "50%", background: "var(--core-bg)", border: "1px solid rgba(44,118,237,.45)", boxShadow: "0 0 0 8px rgba(44,118,237,.06), 0 24px 56px -20px rgba(44,118,237,.6)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-                <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 24, letterSpacing: "-.02em" }}>hello<span style={{ color: "var(--lime)" }}>22</span></div>
-                <div style={{ fontSize: 10, color: "var(--mut)", letterSpacing: ".06em", marginTop: 3, textTransform: "uppercase" }}>AI Receptionist</div>
-              </div>
+      {/* HUMAN VS AI COMPARISON */}
+      <section id="compare" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
+        <div className="cmp-grid" style={{ display: "grid", gridTemplateColumns: ".85fr 1.3fr", gap: 54, alignItems: "center" }}>
+        <div data-rv>
+          <div style={eyebrow}>Comparison</div>
+          <h2 style={{ ...h2 }}><b style={BD}>The Ultimate Assistant:</b> <span style={HL}>Human vs. AI</span></h2>
+          <p style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 560, lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Discover why</strong> AI receptionists are transforming Australian businesses.</p>
+        </div>
+        <div data-rv style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", boxShadow: "0 24px 60px -44px var(--sh2)" }}>
+          <div className="cmp-row cmp-head" style={{ display: "grid", gridTemplateColumns: "1.05fr 1.1fr 1.25fr", alignItems: "stretch", borderBottom: "1px solid var(--w10)" }}>
+            <div className="cmp-fh" style={{ padding: "18px 24px", display: "flex", alignItems: "center", fontSize: 12.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--dim)", background: "var(--w04)" }}>Feature</div>
+            <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 10, background: "var(--w04)" }}>
+              <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "var(--w06)", border: "1px solid var(--w10)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--mut)", fontSize: 12 }}><i className="fa-solid fa-user" /></span>
+              <span style={{ fontFamily: SUB, fontSize: 14.5, fontWeight: 600, color: "var(--tx2)" }}>Traditional Receptionist</span>
+            </div>
+            <div className="cmp-ai" style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 10 }}>
+              <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 12, boxShadow: "0 8px 18px -8px rgba(44,118,237,.7)" }}><i className="fa-solid fa-headset" /></span>
+              <span style={{ fontFamily: SUB, fontSize: 14.5, fontWeight: 700, color: "var(--blue-ink)" }}>Our AI Receptionist</span>
             </div>
           </div>
-          </div>
+          {COMPARE.map((r, i) => (
+            <div key={r.f} className="cmp-row" style={{ display: "grid", gridTemplateColumns: "1.05fr 1.1fr 1.25fr", alignItems: "stretch", borderTop: i === 0 ? "none" : "1px solid var(--w08)" }}>
+              <div className="cmp-f" style={{ padding: "14px 24px", display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ width: 32, height: 32, borderRadius: 9, flexShrink: 0, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.22)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 13 }}><i className={r.ic} /></span>
+                <span style={{ fontSize: 14.5, fontWeight: 600, color: "var(--tx)" }}>{r.f}</span>
+              </div>
+              <div style={{ padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", textAlign: "left", fontSize: 14, color: "var(--mut)", lineHeight: 1.5 }}>{r.h}</div>
+              <div className="cmp-ai" style={{ padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 9, textAlign: "left" }}>
+                <span style={{ width: 17, height: 17, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-check" /></span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "var(--blue-ink)", lineHeight: 1.45 }}>{r.a}</span>
+              </div>
+            </div>
+          ))}
+        </div>
         </div>
       </section>
 
@@ -1189,7 +1175,7 @@ export default function Hello22Site() {
           <p style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 560, lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>We&apos;re proud</strong> of every call we answer. Here&apos;s what business owners had to say after putting hello22 on their front desk.</p>
         </div>
         <div className="testi-grid">
-          {/* rating column */}
+          {/* rating column — slider arrows ke saath */}
           <div data-rv style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", gap: 20, padding: "10px 4px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
               <div style={{ width: 54, height: 54, flexShrink: 0, borderRadius: "50%", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">
@@ -1212,10 +1198,17 @@ export default function Hello22Site() {
             </div>
             <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: 0 }}>Real reviews from businesses using hello22 as their 24/7 front desk.</p>
             <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 24px", borderRadius: 999, boxShadow: "0 14px 30px -14px rgba(44,118,237,.7)" }}><BtnTxt t="Read Google Reviews" /> <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: 12 }} aria-hidden="true" /></a>
+            {/* slider arrows */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4 }}>
+              <button aria-label="Previous reviews" onClick={() => setTestiPage((p) => Math.max(0, p - 1))} disabled={testiPage === 0} className="btnp" style={{ width: 44, height: 44, borderRadius: "50%", cursor: testiPage === 0 ? "default" : "pointer", background: "var(--surface)", border: "1.5px solid rgba(44,118,237,.4)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 14, opacity: testiPage === 0 ? 0.35 : 1 }}><i className="fa-solid fa-arrow-left" aria-hidden="true" /></button>
+              <button aria-label="Next reviews" onClick={() => setTestiPage((p) => Math.min(testiPages - 1, p + 1))} disabled={testiPage >= testiPages - 1} className="btnp" style={{ width: 44, height: 44, borderRadius: "50%", cursor: testiPage >= testiPages - 1 ? "default" : "pointer", background: "var(--lime)", border: "none", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 14, boxShadow: "0 10px 24px -12px rgba(44,118,237,.7)", opacity: testiPage >= testiPages - 1 ? 0.35 : 1 }}><i className="fa-solid fa-arrow-right" aria-hidden="true" /></button>
+            </div>
           </div>
-          {/* review cards */}
+          {/* review slider — arrows se pages slide hote hain */}
+          <div data-rv className="testi-slider" style={{ overflow: "hidden", minWidth: 0 }}>
+            <div style={{ display: "flex", gap: 18, transform: `translateX(calc(${-testiPage} * (100% + 18px)))`, transition: "transform .5s cubic-bezier(.2,.7,.2,1)" }}>
           {TESTIMONIALS.map((t) => (
-            <figure key={t.name} data-rv className="lift" style={{ ...card, display: "flex", flexDirection: "column", padding: 26, margin: 0 }}>
+            <figure key={t.name} className="lift" style={{ ...card, display: "flex", flexDirection: "column", padding: 26, margin: 0, flex: `0 0 calc((100% - ${(testiPerView - 1) * 18}px) / ${testiPerView})` }}>
               <div aria-label={`Rated ${t.stars} out of 5 stars`} style={{ display: "flex", gap: 4, fontSize: 15 }}>
                 {[0, 1, 2, 3, 4].map((n) => {
                   const full = n + 1 <= Math.floor(t.stars);
@@ -1225,7 +1218,10 @@ export default function Hello22Site() {
               </div>
               <blockquote style={{ flex: 1, fontSize: 15, lineHeight: 1.65, color: "var(--tx3)", margin: "16px 0 0" }}>&ldquo;{t.quote}&rdquo;</blockquote>
               <figcaption style={{ display: "flex", alignItems: "center", gap: 12, borderTop: "1px solid var(--w08)", marginTop: 20, paddingTop: 18 }}>
-                <img src={t.img} alt={t.name} width={44} height={44} loading="lazy" style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(44,118,237,.35)" }} />
+                {t.img
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  ? <img src={t.img} alt={t.name} width={44} height={44} loading="lazy" style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(44,118,237,.35)" }} />
+                  : <span aria-hidden="true" style={{ width: 44, height: 44, flexShrink: 0, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "2px solid rgba(44,118,237,.35)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: SUB, fontWeight: 700, fontSize: 16 }}>{t.name.charAt(0)}</span>}
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 14.5, fontWeight: 700, color: "var(--tx)" }}>{t.name}</div>
                   <div style={{ fontSize: 12.5, color: "var(--mut)", marginTop: 2 }}>{t.role}</div>
@@ -1234,6 +1230,8 @@ export default function Hello22Site() {
               </figcaption>
             </figure>
           ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1250,11 +1248,11 @@ export default function Hello22Site() {
             </span>
           </div>
         </div>
-        <div className="price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42, alignItems: "stretch" }}>
+        <div data-rv className="price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42, alignItems: "stretch" }}>
           {PLANS.map((p) => (
-            <div key={p.name} data-rv className={p.popular ? "" : "lift"} style={{ position: "relative", display: "flex", flexDirection: "column", background: "var(--surface)", border: p.popular ? "1.5px solid rgba(44,118,237,.55)" : "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", boxShadow: p.popular ? "0 30px 70px -34px rgba(44,118,237,.45)" : "none" }}>
+            <div key={p.name} className={p.popular ? "" : "lift"} style={{ position: "relative", display: "flex", flexDirection: "column", background: "var(--surface)", border: p.popular ? "1.5px solid rgba(44,118,237,.55)" : "1.5px solid var(--w14)", borderRadius: 22, overflow: "hidden", boxShadow: p.popular ? "0 30px 70px -34px rgba(44,118,237,.45)" : "0 10px 30px -24px var(--sh2)" }}>
               {p.popular && <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", background: "var(--lime)", color: "#fff", fontSize: 11.5, fontWeight: 800, padding: "6px 16px", borderRadius: "0 0 12px 12px", textTransform: "uppercase", letterSpacing: ".07em" }}>Most popular</div>}
-              <div style={{ padding: p.popular ? "38px 24px 0" : "24px 24px 0", display: "flex", flexDirection: "column", flex: 1 }}>
+              <div style={{ padding: "38px 24px 0", display: "flex", flexDirection: "column", flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
                   <span style={{ width: 46, height: 46, borderRadius: "50%", flexShrink: 0, background: p.violet ? "rgba(157,139,255,.16)" : "rgba(44,118,237,.12)", border: p.violet ? "1px solid rgba(157,139,255,.32)" : "1px solid rgba(44,118,237,.28)", color: p.violet ? "var(--violet)" : "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}><i className={p.icon} aria-hidden="true" /></span>
                   <span style={{ minWidth: 0 }}>
@@ -1263,14 +1261,14 @@ export default function Hello22Site() {
                   </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 7, margin: "18px 0 14px" }}><span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 17, color: "var(--tx3)" }}>AUD</span><span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 42, color: "var(--tx)", letterSpacing: "-.02em", lineHeight: 1 }}>{p.price}</span><span style={{ fontSize: 15, fontWeight: 600, color: "var(--mut)" }}>/ month</span></div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 18 }}>
+                <div className="plan-caps" style={{ display: "flex", flexWrap: "wrap", alignContent: "flex-start", gap: 8, marginBottom: 18, minHeight: 82 }}>
                   {p.caps.map((c) => (
                     <span key={c.label} style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 12.5, fontWeight: 700, padding: "7px 12px", borderRadius: 999, background: c.blue ? "rgba(44,118,237,.12)" : "var(--w05)", border: c.blue ? "1px solid rgba(44,118,237,.28)" : "1px solid var(--w10)", color: c.blue ? "var(--blue-ink)" : "var(--tx3)" }}><i className={c.icon} aria-hidden="true" />{c.label}</span>
                   ))}
                 </div>
                 <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={p.popular
                   ? { display: "block", textAlign: "center", textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 16px", borderRadius: 14, boxShadow: "0 14px 30px -14px rgba(44,118,237,.7)" }
-                  : { display: "block", textAlign: "center", textDecoration: "none", background: "transparent", color: "var(--blue-ink)", fontWeight: 700, fontSize: 15, padding: "13px 16px", borderRadius: 14, border: "1.5px solid rgba(44,118,237,.5)" }}>Get started</a>
+                  : { display: "block", textAlign: "center", textDecoration: "none", background: "transparent", color: "var(--blue-ink)", fontWeight: 700, fontSize: 15, padding: "13px 16px", borderRadius: 14, border: "1.5px solid rgba(44,118,237,.5)" }}>Start 14-day free trial</a>
                 <div style={{ height: 1, background: "var(--w08)", margin: "18px 0 16px" }} />
                 <div style={{ display: "flex", flexDirection: "column", gap: 11, flex: 1, paddingBottom: 20 }}>
                   {p.feats.map((f) => (
@@ -1420,16 +1418,20 @@ export default function Hello22Site() {
         <div style={{ maxWidth: 1536, margin: "0 auto", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 28, overflow: "hidden" }}>
           <div className="footer-grid" style={{ padding: "44px 40px 36px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1fr", gap: 40, alignItems: "start" }}>
             <div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}<img src={isLight ? LOGO_LIGHT : LOGO} alt="hello22.ai" style={{ height: 34, width: "auto", display: "block", filter: "var(--logo-filter)" }} />
+              <span style={{ display: "flex", alignItems: "center", gap: 9, height: 34 }}>
+                <LogoIcon />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={isLight ? LOGO_TEXT_LIGHT : LOGO_TEXT_DARK} alt="hello22.ai" style={{ height: "100%", width: "auto", display: "block" }} />
+              </span>
               <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "16px 0 0", maxWidth: 280 }}>Your 24/7 AI voice receptionist — answers every call, books appointments, and never misses a customer.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 18, fontSize: 14 }}>
                 <a href={`mailto:${SUPPORT_EMAIL}`} className="nl" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i className="fa-regular fa-envelope" style={{ color: "var(--blue-ink)", fontSize: 14 }} aria-hidden="true" />{SUPPORT_EMAIL}</a>
               </div>
             </div>
             {([
-              { t: "Product", l: [{ n: "Features", h: "#features" }, { n: "Voices", h: "#voices" }, { n: "Integrations", h: "#integrations" }, { n: "Pricing", h: "#pricing" }, { n: "Live demo", h: "#demo" }, { n: "FAQ", h: "#faq" }] },
+              { t: "Product", l: [{ n: "Features", h: "#features" }, { n: "Voices", h: "#voices" }, { n: "Pricing", h: "#pricing" }, { n: "Live demo", h: "#demo" }, { n: "FAQ", h: "#faq" }] },
               // Company pages abhi bane nahi hain — un links ko plain text rakha hai; Support email pe jata hai
-              { t: "Company", l: [{ n: "About" }, { n: "Contact" }, { n: "Blog" }, { n: "Support", h: `mailto:${SUPPORT_EMAIL}` }] },
+              { t: "Company", l: [{ n: "About" }, { n: "Contact" }, { n: "Blog" }, { n: "Reviews", h: "#testimonials" }, { n: "Support", h: `mailto:${SUPPORT_EMAIL}` }] },
             ] as { t: string; l: { n: string; h?: string }[] }[]).map((col) => (
               <div key={col.t}>
                 <div style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".1em", color: "var(--dim)", marginBottom: 16 }}>{col.t}</div>
@@ -1457,7 +1459,7 @@ export default function Hello22Site() {
           <div className="footer-bottom" style={{ padding: "18px 40px", borderTop: "1px solid var(--w07)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
             <span style={{ fontSize: 13.5, color: "var(--dim)" }}>© 2026 hello22.ai · <a href="https://sparkview.com.au" target="_blank" rel="noopener noreferrer" style={{ color: "var(--mut)", textDecoration: "none", fontWeight: 600 }}>Powered by SparkView</a></span>
             <span style={{ display: "flex", alignItems: "center", gap: 24, fontSize: 13.5 }}>
-              <a className="nl" href="/terms">Terms of Use</a>
+              <a className="nl" href="/terms">Terms of Service</a>
               <a className="nl" href="/privacy">Privacy Policy</a>
             </span>
           </div>
