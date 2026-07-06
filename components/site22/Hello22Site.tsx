@@ -18,6 +18,8 @@ const NAV_LINKS = ["Demo", "Product", "Voices", "Features", "Industries", "Prici
 
 // Kitni voices pehle dikhani hain — baaki "See all voices" se khulti hain.
 const VOICE_PREVIEW = 6;
+// FAQ bhi waise hi — pehle 6, baaki expander se.
+const FAQ_PREVIEW = 6;
 
 const TRUST = [
   { name: "Twilio", src: "/images/logos/color/twilio.svg" },
@@ -94,10 +96,10 @@ const TRANSCRIPT: Line[] = [
 // File ko public/images/screenshots/ mein daalein, fir niche ek entry bana dein.
 type Shot = { src: string; title: string; desc: string };
 const SHOTS: Shot[] = [
-  { src: "/images/screenshots/dashboard.png", title: "Voice agent analytics", desc: "Live performance at a glance — calls handled, success rate, leads captured, minutes used, and peak call times." },
-  { src: "/images/screenshots/call-logs.png", title: "Call inbox", desc: "Every call transcribed, summarised, and analysed — filter by outcome or time and search summaries instantly." },
-  { src: "/images/screenshots/ai-brain.png", title: "AI Brain — agent builder", desc: "Build your receptionist step by step: identity, knowledge, rules, automations, and voice — no code." },
-  { src: "/images/screenshots/plans-billing.png", title: "Plans & billing", desc: "Track minutes, switch plans, and control auto-renew — full visibility over your usage and costs." },
+  { src: "/images/screenshots/dashboard.png", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time." },
+  { src: "/images/screenshots/call-logs.png", title: "Call Logs", desc: "Review conversations and outcomes instantly." },
+  { src: "/images/screenshots/ai-brain.png", title: "AI Agent Builder", desc: "Create and customize your AI agent in minutes." },
+  { src: "/images/screenshots/plans-billing.png", title: "Plans & Billing", desc: "Track minutes, switch plans, and control auto-renew." },
 ];
 
 // FAQ — edit/add questions here. `a` supports **bold** markup (rendered below).
@@ -131,54 +133,106 @@ const CSS = `
 @keyframes h22pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.55)}}
 @keyframes h22eq{0%,100%{transform:scaleY(.28)}50%{transform:scaleY(1)}}
 @keyframes h22float{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-22px)}}
+@keyframes h22floatSm{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-9px)}}
 @keyframes h22ring{0%{transform:scale(.7);opacity:.55}100%{transform:scale(2.1);opacity:0}}
 @keyframes h22greet{0%{opacity:0;transform:translateY(22px) rotateX(-55deg);filter:blur(6px)}100%{opacity:1;transform:none;filter:blur(0)}}
 @keyframes h22drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(34px,-28px) scale(1.07)}66%{transform:translate(-26px,20px) scale(.95)}}
 @keyframes h22glowpulse{0%,100%{opacity:.65;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.14)}}
 @keyframes h22spin{to{transform:rotate(360deg)}}
 @keyframes h22spinr{to{transform:rotate(-360deg)}}
+@keyframes h22waveY{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+@keyframes h22dash{to{stroke-dashoffset:-1630}}
 .h22 [data-rv]{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
 .h22 [data-rv].in{opacity:1;transform:none}
 .h22marquee:hover{animation-play-state:paused}
 .h22 a.nl{color:#c9c9d4;text-decoration:none}.h22 a.nl:hover{color:#fff}
 .h22 .lift{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s}
+.h22 .btnp{transition:transform .18s ease,box-shadow .25s ease}
+.h22 .btnp:active{transform:translateY(1px) scale(.98)}
 @media(hover:hover){
  .h22 .lift:hover{transform:translateY(-7px);box-shadow:0 30px 64px -32px rgba(0,0,0,.85)}
  .h22 .btnp:hover{transform:translateY(-2px)}
 }
+@media(hover:none){
+ .h22 .lift:active{transform:scale(.985)}
+}
+.h22 ::selection{background:rgba(44,118,237,.4);color:#fff}
+.h22 a:focus-visible,.h22 button:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:10px}
+.h22 .snap-x::-webkit-scrollbar{display:none}
 .h22 .nav-burger{display:none}
 .h22 img{max-width:100%}
-.h22{-webkit-text-size-adjust:100%;text-size-adjust:100%;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+.h22{color-scheme:dark;-webkit-text-size-adjust:100%;text-size-adjust:100%;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
 .h22 h1,.h22 h2,.h22 h3{text-wrap:balance}
 .h22 .footer-grid a{padding:3px 0}
 .h22 footer{padding-bottom:env(safe-area-inset-bottom)}
 .h22 .nav-mobile{max-height:calc(100vh - 74px);max-height:calc(100dvh - 74px);overflow-y:auto}
 .h22 .ind-list::-webkit-scrollbar{display:none}
+.h22 .wave>span{min-width:0}
+.h22 .demo-head button{white-space:nowrap}
+.h22 .bubble{max-width:min(78%,640px)!important}
+.h22 .hero-feat{border-right:1px solid rgba(255,255,255,.09)}
+.h22 .hero-feat:last-child{border-right:none;padding-right:0}
+@media(min-width:1441px){
+ .h22 section,.h22 .nav-bar{padding-left:48px!important;padding-right:48px!important}
+ .h22 .footer-grid{padding-left:48px!important;padding-right:48px!important}
+ .h22 .voices-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+ .h22 .hero-grid{grid-template-columns:1.15fr minmax(0,680px)!important;gap:80px!important}
+ .h22 .demo-grid{grid-template-columns:minmax(0,1fr) 400px!important}
+ .h22 .price-grid{max-width:1380px;margin-left:auto!important;margin-right:auto!important}
+ .h22 #industries .uc-grid{grid-template-columns:360px minmax(0,1120px)!important}
+ .h22 .cta-grid{grid-template-columns:1.1fr minmax(0,680px)!important;gap:80px!important}
+ .h22 .orbit{transform:scale(1.16)}
+ .h22 .feat-grid,.h22 .uc-grid,.h22 .shots-grid,.h22 .price-grid{gap:22px!important}
+}
 @media(min-width:921px){.h22 .nav-mobile{display:none!important}}
 @media(max-width:1080px){
- .h22 .voices-grid{grid-template-columns:repeat(2,1fr)!important}
+ .h22 .voices-grid,.h22 .shots-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 @media(max-width:920px){
  .h22 .nav-links{display:none!important}
  .h22 .nav-burger{display:inline-flex!important}
- .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid,.h22 .shots-grid,.h22 .cta-grid{grid-template-columns:1fr!important}
- .h22 .feat-grid{grid-template-columns:1fr 1fr!important}
+ .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .int-grid,.h22 .price-grid,.h22 .cta-grid{grid-template-columns:minmax(0,1fr)!important}
+ .h22 .feat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .h22 .feat-grid>div{grid-column:auto!important}
  .h22 .tcol{grid-column:span 2!important}
- .h22 .footer-grid{grid-template-columns:1fr 1fr!important}
- .h22 .demo-side{display:grid!important;grid-template-columns:repeat(3,1fr)!important}
+ .h22 .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .h22 .price-grid{max-width:520px;margin-left:auto!important;margin-right:auto!important}
  .h22 .ind-list{flex-direction:row!important;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
  .h22 .ind-btn{flex:0 0 auto;width:auto!important;white-space:nowrap;padding:11px 16px!important;background:#12121d!important;border:1px solid rgba(255,255,255,.1)!important}
  .h22 .ind-btn[data-active="true"]{background:linear-gradient(135deg,rgba(44,118,237,.22),rgba(157,139,255,.14))!important;border-color:rgba(44,118,237,.5)!important;color:#f4f4f7!important}
  .h22 .ind-num,.h22 .ind-arrow{display:none!important}
+ .h22 section{padding-top:26px!important;padding-bottom:64px!important}
+ .h22 #top{padding-top:44px!important;padding-bottom:36px!important}
+ .h22 #demo{padding-top:44px!important}
+ .h22 section.full-bleed{padding:26px 0 10px!important}
 }
 @media(max-width:680px){
- .h22 .voices-grid,.h22 .feat-grid,.h22 .stat4,.h22 .tcol,.h22 .demo-side{grid-template-columns:1fr!important}
- .h22 section{padding-left:18px!important;padding-right:18px!important}
+ .h22 .voices-grid,.h22 .feat-grid,.h22 .tcol{grid-template-columns:minmax(0,1fr)!important}
+ .h22 section{padding-left:18px!important;padding-right:18px!important;padding-top:22px!important;padding-bottom:46px!important}
+ .h22 #top{padding-top:34px!important;padding-bottom:28px!important}
+ .h22 #demo{padding-top:36px!important}
+ .h22 section.full-bleed{padding:20px 0 4px!important}
+ .h22 [data-rv]{transform:translateY(16px) scale(1)}
+ .h22 section>p[data-rv],.h22 section>div[data-rv]>p{font-size:15.5px!important;line-height:1.6!important;margin-top:12px!important}
+ .h22 section h2{line-height:1.12!important}
+ .h22 .hero-sub{font-size:15.5px!important;margin-top:16px!important}
+ .h22 .hero-checks{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;margin-top:24px!important}
+ .h22 .hero-feat{border-right:none!important;padding-right:0!important}
+ .h22 .hero-waves{opacity:.22!important}
+ .h22 .wave{gap:2px!important;padding:0!important}
+ .h22 .float-card{animation:h22floatSm 8s ease-in-out infinite!important}
+ .h22 .voices-grid,.h22 .feat-grid,.h22 .uc-grid,.h22 .price-grid,.h22 .demo-grid,.h22 .faq-list{margin-top:24px!important}
+ .h22 .snap-x{display:grid!important;grid-template-columns:none!important;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:18px;gap:12px!important;margin:24px -18px 0!important;padding:4px 18px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .h22 .snap-x>*{scroll-snap-align:start}
+ .h22 .stat4{gap:10px!important;margin-top:24px!important;grid-template-columns:minmax(0,1fr)!important}
+ .h22 .stat4>div{display:grid!important;grid-template-columns:44px minmax(0,1fr);column-gap:14px;row-gap:2px;text-align:left;padding:14px 16px!important;align-items:center}
+ .h22 .stat4>div>div:first-child{margin:0!important;width:44px!important;height:44px!important}
+ .h22 .stat4>div>div:nth-child(2){margin:0!important;font-size:16px!important}
+ .h22 .stat4>div>p{grid-column:2;margin:0!important;font-size:13px!important}
+ .h22 .feat-grid>div{padding:22px 20px!important}
  .h22 .footer-grid{padding-left:18px!important;padding-right:18px!important}
- .h22 .band-pad{padding:38px 20px!important}
- .h22 .cta-pad{padding:36px 18px!important}
+ .h22 .band-pad{padding:32px 18px!important}
+ .h22 .cta-pad{padding:34px 18px!important}
  .h22 .form-card{padding:20px 16px!important}
  .h22 .uc-card{padding:26px 20px!important;min-height:0!important}
  .h22 input,.h22 select,.h22 textarea{font-size:16px!important}
@@ -189,7 +243,7 @@ const CSS = `
 }
 @media(max-width:560px){
  .h22 .orbit{transform:scale(.72);margin:-60px}
- .h22 .footer-grid{grid-template-columns:1fr!important;gap:28px!important}
+ .h22 .footer-grid{grid-template-columns:minmax(0,1fr)!important;gap:28px!important}
 }
 @media(max-width:480px){
  .h22 .nav-bar{padding:0 16px!important;height:64px!important}
@@ -197,7 +251,7 @@ const CSS = `
  .h22 .nav-cta{padding:9px 15px!important;font-size:13.5px!important}
  .h22 .hero-h1{font-size:clamp(54px,19vw,88px)!important}
  .h22 .hero-ctas a{width:100%;display:inline-flex;align-items:center;justify-content:center;text-align:center;box-sizing:border-box}
- .h22 .form-row{grid-template-columns:1fr!important}
+ .h22 .form-row{grid-template-columns:minmax(0,1fr)!important}
  .h22 .price-grid>div{padding:24px 18px!important}
 }
 @media(max-width:390px){
@@ -210,6 +264,7 @@ const CSS = `
 @media(prefers-reduced-motion:reduce){
  .h22 *,.h22 *::before,.h22 *::after{animation:none!important;transition:none!important}
  .h22 [data-rv]{opacity:1!important;transform:none!important}
+ .h22 .wave-pulse{display:none}
  html{scroll-behavior:auto}
 }
 `;
@@ -259,8 +314,21 @@ function useReveal(rootRef: React.RefObject<HTMLDivElement | null>) {
     if (!root) return;
     const els = Array.from(root.querySelectorAll("[data-rv]"));
     const io = new IntersectionObserver(
-      (ents) => ents.forEach((e) => { if (e.isIntersecting) { (e.target as HTMLElement).classList.add("in"); io.unobserve(e.target); } }),
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      (ents) => {
+        // elements entering together get a soft stagger instead of popping in at once
+        let order = 0;
+        ents.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target as HTMLElement;
+          el.style.transitionDelay = `${Math.min(order * 60, 240)}ms`;
+          el.classList.add("in");
+          io.unobserve(el);
+          // clear the delay after the reveal so hover transitions stay instant
+          window.setTimeout(() => { el.style.transitionDelay = ""; }, 1100);
+          order++;
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -8% 0px" }
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -276,13 +344,29 @@ export default function Hello22Site() {
   const [demoPlaying, setDemoPlaying] = useState(false);
   const [demoStarted, setDemoStarted] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
+  const [callSecs, setCallSecs] = useState(0);
   const demoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
   const [playingVoice, setPlayingVoice] = useState<number | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAllVoices, setShowAllVoices] = useState(false);
+  const [showAllFaqs, setShowAllFaqs] = useState(false);
+  // voices preview = poori rows: mobile 6 (1-col), desktop 8 (4-col), ultra-wide 12 (6-col)
+  const [wideScreen, setWideScreen] = useState(false);
+  const [smallScreen, setSmallScreen] = useState(false);
+  useEffect(() => {
+    const mqW = window.matchMedia("(min-width: 1441px)");
+    const mqS = window.matchMedia("(max-width: 680px)");
+    const f = () => { setWideScreen(mqW.matches); setSmallScreen(mqS.matches); };
+    f();
+    mqW.addEventListener("change", f);
+    mqS.addEventListener("change", f);
+    return () => { mqW.removeEventListener("change", f); mqS.removeEventListener("change", f); };
+  }, []);
+  const voicePreview = wideScreen ? 12 : smallScreen ? VOICE_PREVIEW : 8;
   const ucListRef = useParallax<HTMLDivElement>(34);
   const ucCardRef = useParallax<HTMLDivElement>(-34);
   const [demoStatus, setDemoStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
@@ -309,7 +393,7 @@ export default function Hello22Site() {
 
   useReveal(rootRef);
 
-  useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); if (demoAudioRef.current) demoAudioRef.current.pause(); }, []);
+  useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); if (demoAudioRef.current) demoAudioRef.current.pause(); if (tickRef.current) clearInterval(tickRef.current); }, []);
 
   // close lightbox on Escape
   useEffect(() => {
@@ -367,10 +451,15 @@ export default function Hello22Site() {
 
   // hero counters
 
+  // call-timer: real seconds, jaise asli call chal rahi ho
+  function stopTick() {
+    if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
+  }
   function stopDemo() {
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     if (demoAudioRef.current) { demoAudioRef.current.pause(); demoAudioRef.current = null; }
     if (demoTimer.current) clearTimeout(demoTimer.current);
+    stopTick();
     setDemoPlaying(false);
   }
   function advanceDemo(i: number) {
@@ -397,7 +486,7 @@ export default function Hello22Site() {
     window.speechSynthesis.speak(u);
   }
   function speakFrom(i: number) {
-    if (i >= TRANSCRIPT.length) { setDemoPlaying(false); return; }
+    if (i >= TRANSCRIPT.length) { setDemoPlaying(false); stopTick(); return; }
     setDemoStep(i + 1);
     // Prefer a real recorded line; fall back to the browser engine if missing.
     const audio = new Audio(`/audio/demo/line-${i}.mp3`);
@@ -414,20 +503,22 @@ export default function Hello22Site() {
     setDemoPlaying(true);
     setDemoStarted(true);
     setDemoStep(0);
+    setCallSecs(0);
+    stopTick();
+    tickRef.current = setInterval(() => setCallSecs((s) => s + 1), 1000);
     speakFrom(0);
   }
 
-  const secs = Math.min(48, demoStep * 8);
-  const demoTime = "0:" + (secs < 10 ? "0" + secs : secs);
-  const demoState = demoPlaying ? "Live" : demoStep > 0 ? "Ended" : "Ready";
+  const demoTime = `00:${String(Math.floor(callSecs / 60)).padStart(2, "0")}:${String(callSecs % 60).padStart(2, "0")}`;
   const uc = USECASES[useCase];
 
   const eyebrow: React.CSSProperties = { fontSize: 13, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--lime)", fontWeight: 700 };
-  const h2: React.CSSProperties = { fontFamily: DISP, fontWeight: 600, letterSpacing: "-.03em", fontSize: "clamp(34px,4.5vw,52px)", lineHeight: 1.05, margin: "14px 0 0" };
+  const h2: React.CSSProperties = { fontFamily: DISP, fontWeight: 600, letterSpacing: "-.03em", fontSize: "clamp(28px,5.4vw,52px)", lineHeight: 1.08, margin: "14px 0 0" };
   const card: React.CSSProperties = { background: "var(--surface)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 22 };
   const featIcon = (bg: string, bd: string, col: string): React.CSSProperties => ({ width: 44, height: 44, borderRadius: 12, background: bg, border: `1px solid ${bd}`, display: "flex", alignItems: "center", justifyContent: "center", color: col, fontSize: 18 });
   const pill: React.CSSProperties = { fontSize: 13, padding: "8px 13px", borderRadius: 999, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" };
   const inp: React.CSSProperties = { width: "100%", background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 10, padding: "12px 14px", color: "#f4f4f7", fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" };
+  const ghost: React.CSSProperties = { display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.14)", color: "#e4e4ec", fontWeight: 600, fontSize: 14, padding: "11px 20px", borderRadius: 999, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" };
   const opt: React.CSSProperties = { background: "#12121d", color: "#f4f4f7" };
 
   return (
@@ -445,7 +536,7 @@ export default function Hello22Site() {
 
       {/* NAV */}
       <header style={{ position: "sticky", top: 0, zIndex: 50, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", background: "rgba(7,7,13,.72)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
-        <div className="nav-bar" style={{ maxWidth: 1240, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
+        <div className="nav-bar" style={{ maxWidth: 1536, margin: "0 auto", padding: "0 28px", height: 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
           <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 30, width: "auto", display: "block" }} /></a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
             {NAV_LINKS.map((l) => (
@@ -472,8 +563,30 @@ export default function Hello22Site() {
       </header>
 
       {/* HERO */}
-      <section id="top" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "64px 28px 40px" }}>
-        <div className="hero-grid" style={{ display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 54, alignItems: "center" }}>
+      <section id="top" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 40px" }}>
+        {/* flowing wave lines — decorative, full hero width */}
+        <svg className="hero-waves" aria-hidden viewBox="0 0 1600 400" preserveAspectRatio="none" style={{ position: "absolute", left: 0, right: 0, bottom: -70, width: "100%", height: "auto", pointerEvents: "none", zIndex: 0, opacity: .38 }}>
+          <defs>
+            <linearGradient id="h22wl" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor="#2c76ed" stopOpacity=".05" />
+              <stop offset=".35" stopColor="#2c76ed" stopOpacity=".5" />
+              <stop offset=".7" stopColor="#56e0e0" stopOpacity=".35" />
+              <stop offset="1" stopColor="#2c76ed" stopOpacity=".08" />
+            </linearGradient>
+            <linearGradient id="h22wp" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor="#4d8ef5" stopOpacity=".9" />
+              <stop offset="1" stopColor="#56e0e0" stopOpacity=".7" />
+            </linearGradient>
+          </defs>
+          {Array.from({ length: 16 }).map((_, i) => (
+            <path key={i} d={`M-40 ${285 + i * 7} C 380 ${375 - i * 15}, 950 ${95 + i * 15}, 1640 ${240 - i * 5}`} stroke="url(#h22wl)" strokeWidth="1" fill="none" style={{ animation: `h22waveY ${6 + (i % 4)}s ease-in-out ${(-i * 0.45).toFixed(2)}s infinite` }} />
+          ))}
+          {/* travelling light pulses on a few lines */}
+          {[3, 8, 13].map((i, k) => (
+            <path key={`p${i}`} className="wave-pulse" d={`M-40 ${285 + i * 7} C 380 ${375 - i * 15}, 950 ${95 + i * 15}, 1640 ${240 - i * 5}`} stroke="url(#h22wp)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeDasharray="80 1550" style={{ animation: `h22waveY ${6 + (i % 4)}s ease-in-out ${(-i * 0.45).toFixed(2)}s infinite, h22dash ${9 + k * 3}s linear ${-k * 3.5}s infinite` }} />
+          ))}
+        </svg>
+        <div className="hero-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 54, alignItems: "center" }}>
           <div>
             <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "7px 14px", borderRadius: 999, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)", fontSize: 13, color: "#c9c9d4" }}>
               <span style={{ position: "relative", display: "inline-flex", width: 8, height: 8 }}>
@@ -488,48 +601,73 @@ export default function Hello22Site() {
                 <span style={{ color: "var(--lime)" }}>.</span>
               </span>
             </h1>
-            <p data-rv style={{ fontFamily: DISP, fontSize: "clamp(22px,2.4vw,30px)", fontWeight: 500, color: "#e4e4ec", margin: "14px 0 0", letterSpacing: "-.01em" }}>I&apos;m your AI voice agent — ready to talk.</p>
-            <p data-rv style={{ fontSize: 18, lineHeight: 1.6, color: "#9594a6", maxWidth: 520, margin: "20px 0 0" }}>hello22 answers every call, books appointments, qualifies leads, and resolves questions — sounding natural and human, in English, 24/7.</p>
+            <p data-rv style={{ fontFamily: DISP, fontSize: "clamp(22px,2.4vw,30px)", fontWeight: 500, color: "#e4e4ec", margin: "14px 0 0", letterSpacing: "-.01em", lineHeight: 1.3 }}>I&apos;m your AI voice agent —<br /><span style={{ color: "#4d8ef5" }}>ready to talk.</span></p>
+            <p data-rv className="hero-sub" style={{ fontSize: 18, lineHeight: 1.6, color: "#9594a6", maxWidth: 520, margin: "20px 0 0" }}>hello22 answers every call, books appointments, qualifies leads, and resolves questions — sounding natural and human, in English, 24/7.</p>
             <div data-rv className="hero-ctas" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
-              <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}>Start free — setup in minutes</a>
+              <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 18px 44px -12px rgba(44,118,237,.75)" }}><span aria-hidden style={{ fontSize: 15, lineHeight: 1 }}>✦</span>Start free — setup in minutes</a>
               <a href="#demo" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,.06)", color: "#f4f4f7", fontWeight: 600, fontSize: 16, padding: "16px 24px", borderRadius: 999, border: "1px solid rgba(255,255,255,.14)" }}>
-                <span style={{ display: "inline-flex", width: 22, height: 22, borderRadius: "50%", background: "var(--lime)", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-play" /></span>Hear a live call
+                <span style={{ display: "inline-flex", width: 24, height: 24, borderRadius: "50%", background: "#fff", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-play" style={{ marginLeft: 1 }} /></span>Hear a live call
               </a>
             </div>
-            <div data-rv style={{ display: "flex", gap: 20, marginTop: 28, flexWrap: "wrap", fontSize: 13.5, color: "#9594a6" }}>
-              {["24/7", "Every call answered", "Natural English voice", "Live in minutes"].map((x) => <span key={x} style={{ display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ color: "var(--lime)" }}><i className="fa-solid fa-check" /></span>{x}</span>)}
+            <div data-rv className="hero-checks" style={{ display: "flex", gap: 22, marginTop: 30, flexWrap: "wrap" }}>
+              {[
+                { ic: "fa-regular fa-clock", t: "24/7", d: "Always on" },
+                { ic: "fa-regular fa-circle-check", t: "Every call", d: "answered" },
+                { ic: "fa-solid fa-microphone-lines", t: "Natural English", d: "voice" },
+                { ic: "fa-solid fa-bolt", t: "Live in", d: "minutes" },
+              ].map((x) => (
+                <div key={x.t} className="hero-feat" style={{ display: "flex", alignItems: "center", gap: 12, paddingRight: 22 }}>
+                  <i className={x.ic} style={{ color: "#4d8ef5", fontSize: 20 }} />
+                  <div style={{ lineHeight: 1.3 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#e4e4ec" }}>{x.t}</div>
+                    <div style={{ fontSize: 12.5, color: "#8b8a9c" }}>{x.d}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           {/* live call card */}
           <div data-rv>
-            <div style={{ position: "relative", background: "linear-gradient(160deg,#15151f,#0d0d16)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 26, padding: 26, boxShadow: "0 40px 90px -40px rgba(0,0,0,.8)", animation: "h22float 6.5s ease-in-out infinite" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 13, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 18 }}><i className="fa-solid fa-phone" /></div>
-                  <div><div style={{ fontSize: 11, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em" }}>Inbound call</div><div style={{ fontWeight: 700, fontSize: 16 }}>Apex Plumbing</div></div>
+            <div className="float-card" style={{ position: "relative", background: "linear-gradient(165deg,#0d1526,#070c17)", border: "1px solid rgba(44,118,237,.42)", borderRadius: 24, padding: 26, boxShadow: "0 0 0 1px rgba(44,118,237,.08), 0 26px 70px -30px rgba(44,118,237,.4), 0 44px 90px -40px rgba(0,0,0,.85)", animation: "h22float 6.5s ease-in-out infinite" }}>
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 14, minWidth: 0 }}>
+                  <div style={{ width: 46, height: 46, borderRadius: 14, background: "var(--lime)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 18, flexShrink: 0, boxShadow: "0 10px 24px -10px rgba(44,118,237,.8)" }}><i className="fa-solid fa-phone" /></div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 11, color: "#8b8a9c", textTransform: "uppercase", letterSpacing: ".12em" }}>Inbound call</div>
+                    <div style={{ fontWeight: 700, fontSize: 17, marginTop: 2 }}>Apex Plumbing</div>
+                    <div style={{ fontSize: 13, color: "#8b8a9c", marginTop: 3, fontVariantNumeric: "tabular-nums" }}>+1 (415) 555-0142</div>
+                  </div>
                 </div>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", borderRadius: 999, background: "rgba(255,75,75,.14)", border: "1px solid rgba(255,75,75,.3)", fontSize: 12, fontWeight: 700, color: "#ff8585" }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ff5b5b", animation: "h22pulse 1.4s infinite" }} />Live</div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 9, flexShrink: 0 }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: "rgba(255,60,60,.1)", border: "1px solid rgba(255,75,75,.28)", fontSize: 12.5, fontWeight: 700, color: "#fff" }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ff4b4b", animation: "h22pulse 1.4s infinite" }} />Live</div>
+                  <span style={{ fontSize: 13.5, color: "#c9c9d4", fontVariantNumeric: "tabular-nums", paddingRight: 2 }}>0:42</span>
+                </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 16, fontSize: 13, color: "#9594a6", fontVariantNumeric: "tabular-nums" }}><span>+1 (415) 555-0142</span><span>0:42</span></div>
-              <div style={{ display: "flex", alignItems: "center", gap: 3, height: 70, margin: "18px 0 6px", padding: "0 4px" }}>
+              <div className="wave" style={{ display: "flex", alignItems: "center", gap: 3, height: 76, margin: "20px 0 4px", padding: "0 4px" }}>
                 {Array.from({ length: 46 }).map((_, i) => {
-                  const h = 10 + Math.round(40 * Math.abs(Math.sin(i * 0.55) + 0.4 * Math.sin(i * 1.7)));
-                  return <span key={i} style={{ width: 4, flex: "1 1 0", maxWidth: 6, borderRadius: 4, background: "linear-gradient(180deg,#2c76ed,#56e0e0)", height: Math.min(56, h), transformOrigin: "center", animation: `h22eq ${0.7 + (i % 5) * 0.12}s ease-in-out ${(i * 0.045).toFixed(2)}s infinite` }} />;
+                  const t = i / 45;
+                  const env = Math.sin(Math.PI * t);
+                  const detail = 0.42 + 0.58 * Math.abs(Math.sin(i * 0.9) + 0.4 * Math.sin(i * 2.3)) / 1.4;
+                  const h = Math.max(4, Math.round(62 * env * detail));
+                  return <span key={i} style={{ width: 4, flex: "1 1 0", maxWidth: 6, borderRadius: 4, background: "linear-gradient(180deg,#2c76ed,#56e0e0)", height: h, transformOrigin: "center", animation: `h22eq ${0.7 + (i % 5) * 0.12}s ease-in-out ${(i * 0.045).toFixed(2)}s infinite` }} />;
                 })}
               </div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
-                <span style={{ fontSize: 12, fontWeight: 600, padding: "7px 12px", borderRadius: 9, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" }}>EN</span>
-                <span style={{ fontSize: 12, fontWeight: 600, padding: "7px 12px", borderRadius: 9, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" }}>Voice: Sarah</span>
+                <span style={{ fontSize: 12, fontWeight: 600, padding: "8px 14px", borderRadius: 10, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" }}>EN</span>
+                <span style={{ fontSize: 12, fontWeight: 600, padding: "8px 14px", borderRadius: 10, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.1)" }}>Voice: Sarah</span>
               </div>
-              <div style={{ marginTop: 18, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,.08)", display: "flex", alignItems: "center", justifyContent: "space-between" }}><span style={{ fontSize: 13, color: "#9594a6" }}>Intent</span><span style={{ fontFamily: DISP, fontSize: 16, fontWeight: 600, color: "var(--lime)" }}>Book appointment</span></div>
+              <div style={{ marginTop: 18, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,.08)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 13.5, color: "#8b8a9c" }}>Intent</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: DISP, fontSize: 16, fontWeight: 600, color: "#4d8ef5" }}>Book appointment<i className="fa-solid fa-chevron-right" style={{ fontSize: 11 }} /></span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* TRUST MARQUEE */}
-      <section style={{ position: "relative", zIndex: 1, padding: "34px 0 14px" }}>
-        <p style={{ textAlign: "center", fontSize: 13, letterSpacing: ".16em", textTransform: "uppercase", color: "#6f6f80", margin: "0 0 26px" }}>Built on best-in-class voice & infrastructure</p>
+      <section className="full-bleed" style={{ position: "relative", zIndex: 1, padding: "34px 0 14px" }}>
+        <p style={{ textAlign: "center", fontSize: 13, letterSpacing: ".16em", textTransform: "uppercase", color: "#6f6f80", margin: "0 0 26px", padding: "0 18px" }}>Built on best-in-class voice & infrastructure</p>
         <div style={{ position: "relative", overflow: "hidden", WebkitMaskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)", maskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)" }}>
           <div className="h22marquee" style={{ display: "flex", gap: 60, width: "max-content", animation: "h22marq 32s linear infinite", paddingRight: 60 }}>
             {[...TRUST, ...TRUST].map((t, i) => (
@@ -544,69 +682,84 @@ export default function Hello22Site() {
       </section>
 
       {/* DEMO */}
-      <section id="demo" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "90px 28px", scrollMarginTop: 90 }}>
-        <div data-rv style={eyebrow}>Live demo</div>
+      <section id="demo" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "90px 28px", scrollMarginTop: 90 }}>
+        <div data-rv style={eyebrow}>AI phone agent</div>
         <h2 data-rv style={{ ...h2, maxWidth: 760 }}>Press play. Hear hello22 handle a real call.</h2>
-        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}>A real conversation generated by hello22. The caller is transcribed, the agent responds in real time — no pre-recorded lines, no decision trees.</p>
+        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}>Experience how natural conversations flow with hello22. It listens, understands, and responds — just like a human.</p>
         <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 13, color: "#7a7a8c" }}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-volume-high" /></span>Hit play — the caller and agent speak aloud using your browser&apos;s voice engine.</div>
 
-        <div className="demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, marginTop: 42, alignItems: "start" }}>
-          <div data-rv style={{ background: "var(--surface)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 24, overflow: "hidden" }}>
-            <div className="demo-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <button onClick={playDemo} style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 14, padding: "11px 18px", borderRadius: 999, boxShadow: "0 12px 28px -14px rgba(44,118,237,.7)" }}>
-                  <i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-play"}`} />{demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Play sample call"}
+        <div className="demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 24, marginTop: 42, alignItems: "stretch" }}>
+          {/* player */}
+          <div data-rv style={{ background: "linear-gradient(165deg,#10101b,#0b0b14)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 22, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+            <div className="demo-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, padding: "16px 20px", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <button onClick={playDemo} style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "var(--lime)", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13.5, padding: "10px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>
+                  <i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-phone"}`} style={{ fontSize: 12 }} />{demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Call"}
                 </button>
-                <div><div style={{ fontWeight: 700, fontSize: 14 }}>Apex Plumbing · New booking</div><div style={{ fontSize: 12, color: "#9594a6", fontVariantNumeric: "tabular-nums" }}>{demoTime} · EN</div></div>
+                <span style={{ fontSize: 13.5, fontWeight: 600, color: "#7a7a8c", padding: "10px 16px" }}>Transcript</span>
               </div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", borderRadius: 999, background: "rgba(44,118,237,.12)", border: "1px solid rgba(44,118,237,.3)", fontSize: 12, fontWeight: 700, color: "var(--lime)" }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--lime)", animation: "h22pulse 1.4s infinite" }} />{demoState}</div>
+              <span style={{ fontFamily: DISP, fontSize: 15.5, fontWeight: 600, color: "#4d8ef5", fontVariantNumeric: "tabular-nums" }}>{demoTime}</span>
             </div>
-            <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16, minHeight: 360 }}>
+            <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 13, minHeight: 340, flex: 1 }}>
               {TRANSCRIPT.map((t, i) => {
                 const shown = !demoStarted || i < demoStep;
-                const ag = t.role === "agent";
+                const caller = t.role === "caller";
                 return (
-                  <div key={i} style={{ display: "flex", justifyContent: ag ? "flex-end" : "flex-start", opacity: shown ? 1 : 0.12, transform: shown ? "none" : "translateY(8px)", transition: "all .5s ease" }}>
-                    <div className="bubble" style={{ maxWidth: "78%", padding: "14px 18px", borderRadius: ag ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: ag ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "rgba(255,255,255,.05)", border: ag ? "1px solid rgba(44,118,237,.28)" : "1px solid rgba(255,255,255,.09)" }}>
-                      <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6, color: ag ? "var(--lime)" : "#9594a6" }}>{t.name}</div>
-                      <div style={{ fontSize: 15, lineHeight: 1.5 }}>{t.text}</div>
+                  <div key={i} style={{ display: "flex", justifyContent: caller ? "flex-end" : "flex-start", opacity: shown ? 1 : 0.12, transform: shown ? "none" : "translateY(8px)", transition: "all .5s ease" }}>
+                    <div className="bubble" style={{ maxWidth: "78%", padding: "12px 16px", borderRadius: caller ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: caller ? "linear-gradient(135deg,#2c5fd8,#5a4fc7)" : "rgba(255,255,255,.05)", border: caller ? "1px solid rgba(122,108,224,.45)" : "1px solid rgba(255,255,255,.08)", boxShadow: caller ? "0 10px 26px -14px rgba(44,95,216,.6)" : "none" }}>
+                      <div style={{ fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 5, color: caller ? "rgba(255,255,255,.72)" : "#4d8ef5" }}>{t.name}</div>
+                      <div style={{ fontSize: 14.5, lineHeight: 1.5 }}>{t.text}</div>
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div data-rv className="demo-side" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            <div style={{ ...card, borderRadius: 18, padding: 18 }}><div style={{ fontSize: 12, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em" }}>Intent</div><div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 19, marginTop: 6 }}>Book appointment</div></div>
-            <div style={{ ...card, borderRadius: 18, padding: 18 }}><div style={{ fontSize: 12, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em" }}>Sentiment</div><div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}><span style={{ width: 9, height: 9, borderRadius: "50%", background: "var(--cyan)" }} /><span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 19, color: "var(--cyan)" }}>Positive</span></div></div>
-            <div style={{ ...card, borderRadius: 18, padding: 18 }}><div style={{ fontSize: 12, color: "#9594a6", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Live actions</div>{["Booking captured", "SMS confirmation sent", "Summary delivered"].map((a) => <div key={a} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, marginBottom: 10 }}><span style={{ width: 18, height: 18, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-check" /></span>{a}</div>)}</div>
+          {/* call summary */}
+          <div data-rv style={{ background: "var(--surface)", border: "1px solid rgba(255,255,255,.09)", borderRadius: 22, padding: "18px 22px 8px", display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,.08)" }}>
+              <span style={{ width: 38, height: 38, borderRadius: 12, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#4d8ef5", fontSize: 15 }}><i className="fa-solid fa-headset" /></span>
+              <span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 18 }}>Call summary</span>
+            </div>
+            {[
+              { ic: "fa-solid fa-bullseye", l: "Intent", v: "Book appointment" },
+              { ic: "fa-regular fa-circle-check", l: "Outcome", v: "Appointment booked" },
+              { ic: "fa-regular fa-calendar", l: "Date & time", v: "Friday at 7:00 PM" },
+              { ic: "fa-regular fa-face-smile", l: "Sentiment", v: "Positive" },
+              { ic: "fa-solid fa-gauge-high", l: "Confidence", v: "98%" },
+            ].map((r, idx, arr) => (
+              <div key={r.l} style={{ display: "flex", gap: 13, alignItems: "flex-start", padding: "13px 0", borderBottom: idx < arr.length - 1 ? "1px solid rgba(255,255,255,.06)" : "none" }}>
+                <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.12)", border: "1px solid rgba(44,118,237,.25)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#4d8ef5", fontSize: 12 }}><i className={r.ic} /></span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "#4d8ef5" }}>{r.l}</div>
+                  <div style={{ fontSize: 14.5, color: "#e4e4ec", marginTop: 3, fontWeight: 600 }}>{r.v}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* PRODUCT SCREENSHOTS */}
-      <section id="product" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
-        <div data-rv style={eyebrow}>Inside the product</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 700 }}>See hello22 in action.</h2>
-        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}>A real look at the dashboard your team works in every day — live calls, agent setup, and analytics, all in one place.</p>
-        <div className="shots-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 18, marginTop: 42 }}>
+      <section id="product" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+        <div data-rv>
+          <div style={eyebrow}>See hello22 in action</div>
+          <h2 style={{ ...h2, maxWidth: 700 }}>One platform.<br />Endless possibilities.</h2>
+        </div>
+        <div className="shots-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 16, marginTop: 36 }}>
           {SHOTS.map((s) => (
-            <div key={s.src} data-rv className="lift" style={{ ...card, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 14px", borderBottom: "1px solid rgba(255,255,255,.08)", background: "rgba(255,255,255,.02)" }}>
-                {["#ff5f57", "#febc2e", "#28c840"].map((c) => <span key={c} style={{ width: 11, height: 11, borderRadius: "50%", background: c, opacity: .85 }} />)}
-                <span style={{ marginLeft: 8, fontSize: 12, color: "#7a7a8c", fontVariantNumeric: "tabular-nums" }}>agent.hello22.ai</span>
-              </div>
-              <div style={{ position: "relative", minHeight: 180, background: "linear-gradient(150deg,#16161f,#101019)" }}>
-                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, color: "#5d5d70" }}>
-                  <i className="fa-solid fa-image" style={{ fontSize: 34 }} />
-                  <span style={{ fontSize: 13 }}>Screenshot coming soon</span>
+            <div key={s.src} data-rv className="lift" style={{ ...card, borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              <div style={{ position: "relative", minHeight: 140, background: "linear-gradient(150deg,#16161f,#101019)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 9, color: "#5d5d70" }}>
+                  <i className="fa-solid fa-image" style={{ fontSize: 28 }} />
+                  <span style={{ fontSize: 12.5 }}>Screenshot coming soon</span>
                 </div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.src} alt={s.title} loading="lazy" onClick={() => setLightbox(s.src)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} style={{ position: "relative", width: "100%", height: "auto", display: "block", cursor: "zoom-in" }} />
               </div>
-              <div style={{ padding: "18px 20px" }}>
-                <div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 17 }}>{s.title}</div>
-                <div style={{ fontSize: 14, color: "#9594a6", lineHeight: 1.55, marginTop: 6 }}>{s.desc}</div>
+              <div style={{ padding: "14px 16px 16px" }}>
+                <div style={{ fontFamily: DISP, fontWeight: 600, fontSize: 16 }}>{s.title}</div>
+                <div style={{ fontSize: 13, color: "#9594a6", lineHeight: 1.5, marginTop: 5 }}>{s.desc}</div>
               </div>
             </div>
           ))}
@@ -614,58 +767,53 @@ export default function Hello22Site() {
       </section>
 
       {/* VOICES */}
-      <section id="voices" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
-        <div data-rv style={eyebrow}>Voice library</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 560 }}>Pick a voice. Click to hear it speak.</h2>
-        <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}>A curated library of studio-grade English voices. Preview any voice free, then go live in one click.</p>
-        <div className="voices-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginTop: 38 }}>
-          {(showAllVoices ? VOICES : VOICES.slice(0, VOICE_PREVIEW)).map((v, i) => {
+      <section id="voices" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+        <div data-rv style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+          <div>
+            <div style={eyebrow}>Natural AI voices</div>
+            <h2 style={{ ...h2, maxWidth: 560 }}>Pick a voice.<br />Click to hear it speak.</h2>
+          </div>
+          <button
+            onClick={() => {
+              if (showAllVoices && playingVoice !== null && playingVoice >= voicePreview) { stopVoice(); setPlayingVoice(null); }
+              setShowAllVoices((s) => !s);
+            }}
+            style={ghost}
+          >
+            {showAllVoices ? <>Show fewer voices <i className="fa-solid fa-arrow-up" style={{ fontSize: 12 }} /></> : <>Explore all voices <i className="fa-solid fa-arrow-right" style={{ fontSize: 12 }} /></>}
+          </button>
+        </div>
+        <div className="voices-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 12, marginTop: 36 }}>
+          {(showAllVoices ? VOICES : VOICES.slice(0, voicePreview)).map((v, i) => {
             const playing = i === playingVoice;
             const hl = i === voice || playing;
-            const pals = [["rgba(44,118,237,.14)", "#2c76ed"], ["rgba(86,224,224,.14)", "#56e0e0"], ["rgba(157,139,255,.16)", "#9d8bff"]][i % 3];
+            const pals = [["rgba(44,118,237,.18)", "#5b93f5"], ["rgba(86,224,224,.16)", "#56e0e0"], ["rgba(157,139,255,.18)", "#9d8bff"]][i % 3];
             return (
-              <div key={v.id} data-rv={i < VOICE_PREVIEW ? "" : undefined} onClick={() => toggleVoice(i)} style={{ display: "flex", alignItems: "center", gap: 14, padding: 16, borderRadius: 16, cursor: "pointer", transition: "all .25s ease", background: hl ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "#12121d", border: hl ? "1px solid rgba(44,118,237,.5)" : "1px solid rgba(255,255,255,.08)", boxShadow: hl ? "0 18px 40px -22px rgba(44,118,237,.5)" : "none" }}>
-                <div style={{ position: "relative", width: 50, height: 50, borderRadius: 14, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISP, fontWeight: 600, fontSize: 20, background: pals[0], color: pals[1] }}>
-                  {playing && <span style={{ position: "absolute", inset: 0, borderRadius: 14, background: "var(--lime)", opacity: .35, animation: "h22ring 1.6s ease-out infinite" }} />}
-                  <span style={{ position: "relative" }}>{v.letter}</span><span style={{ position: "absolute", bottom: -4, right: -4, fontSize: 15 }}>{v.flag}</span>
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ fontWeight: 700, fontSize: 15.5 }}>{v.id}</span><span style={{ fontSize: 11, color: "#7a7a8c", background: "rgba(255,255,255,.06)", padding: "2px 7px", borderRadius: 6 }}>{v.loc}</span></div>
-                  <div style={{ fontSize: 13, color: "#9594a6", marginTop: 3 }}>{v.desc}</div>
-                </div>
+              <div key={v.id} data-rv={i < 8 ? "" : undefined} onClick={() => toggleVoice(i)} role="button" aria-pressed={playing} style={{ display: "flex", alignItems: "center", gap: 11, padding: "11px 13px", borderRadius: 14, cursor: "pointer", transition: "all .25s ease", background: hl ? "linear-gradient(135deg,rgba(44,118,237,.16),rgba(157,139,255,.10))" : "#12121d", border: hl ? "1px solid rgba(44,118,237,.5)" : "1px solid rgba(255,255,255,.08)", boxShadow: hl ? "0 14px 32px -20px rgba(44,118,237,.5)" : "none" }}>
+                <span style={{ position: "relative", width: 40, height: 40, borderRadius: "50%", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: pals[0], color: pals[1], fontSize: 12 }}>
+                  {playing && <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "var(--lime)", opacity: .35, animation: "h22ring 1.6s ease-out infinite" }} />}
+                  <i className={`fa-solid ${playing ? "fa-stop" : "fa-play"}`} style={{ position: "relative", marginLeft: playing ? 0 : 2 }} />
+                </span>
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: "block", fontWeight: 700, fontSize: 14.5 }}>{v.id}</span>
+                  <span style={{ display: "block", fontSize: 12.5, color: "#8b8a9c", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginTop: 2 }}>{v.desc}</span>
+                </span>
                 {playing ? (
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
-                    <span style={{ display: "flex", alignItems: "center", gap: 2.5, height: 26 }}>{Array.from({ length: 7 }).map((_, j) => <span key={j} style={{ width: 3, borderRadius: 3, background: "#2c76ed", height: 8 + (j % 3) * 7, transformOrigin: "center", animation: `h22eq ${0.5 + (j % 3) * 0.15}s ease-in-out ${(j * 0.08).toFixed(2)}s infinite` }} />)}</span>
-                    <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-stop" /></span>
-                  </span>
+                  <span style={{ display: "flex", alignItems: "center", gap: 2.5, height: 20, flexShrink: 0 }}>{Array.from({ length: 4 }).map((_, j) => <span key={j} style={{ width: 3, borderRadius: 3, background: "#5b93f5", height: 7 + (j % 3) * 5, transformOrigin: "center", animation: `h22eq ${0.5 + (j % 3) * 0.15}s ease-in-out ${(j * 0.08).toFixed(2)}s infinite` }} />)}</span>
                 ) : (
-                  <span style={{ width: 24, height: 24, borderRadius: "50%", border: "1px solid rgba(255,255,255,.16)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: "#7a7a8c" }}><i className="fa-solid fa-play" /></span>
+                  <i className="fa-solid fa-chevron-right" style={{ fontSize: 10, color: "#5d5d70", flexShrink: 0 }} />
                 )}
               </div>
             );
           })}
         </div>
-        <div data-rv style={{ display: "flex", justifyContent: "center", marginTop: 28 }}>
-          <button
-            onClick={() => {
-              if (showAllVoices && playingVoice !== null && playingVoice >= VOICE_PREVIEW) { stopVoice(); setPlayingVoice(null); }
-              setShowAllVoices((s) => !s);
-            }}
-            className="btnp"
-            style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,.06)", color: "#f4f4f7", border: "1px solid rgba(255,255,255,.14)", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, fontSize: 15, padding: "13px 26px", borderRadius: 999 }}
-          >
-            {showAllVoices
-              ? <>Show less <i className="fa-solid fa-chevron-up" style={{ fontSize: 11 }} /></>
-              : <>See all {VOICES.length} voices <i className="fa-solid fa-chevron-down" style={{ fontSize: 11 }} /></>}
-          </button>
-        </div>
-        <div data-rv style={{ marginTop: 18, textAlign: "center" }}>
+        <div style={{ marginTop: 18 }}>
           <p style={{ fontSize: 13, color: "#6f6f80", margin: 0 }}>Preview voices may sound lighter than the production voice engine.</p>
         </div>
       </section>
 
       {/* FEATURES */}
-      <section id="features" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+      <section id="features" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
         <div data-rv style={eyebrow}>The platform</div>
         <h2 data-rv style={{ ...h2, maxWidth: 640 }}>Everything you need to talk to everyone.</h2>
         <div className="feat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginTop: 40 }}>
@@ -688,11 +836,11 @@ export default function Hello22Site() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px" }}>
+      <section style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px" }}>
         <div data-rv style={eyebrow}>How it works</div>
         <h2 data-rv style={{ ...h2, maxWidth: 640 }}>Set up, sign up, go live — with hello22.</h2>
         <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}>No code, no telephony setup, no flowcharts. Sarah walks you through every step — confirm your business, create your account, and take your first real call.</p>
-        <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42 }}>
+        <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42 }}>
           {[
             { n: "01", c: "var(--lime)", t: "Set up", h: "Sarah builds your agent", d: "hello22 finds your business and sets up your AI receptionist with you — just review the details and confirm.", img: "/images/screenshots/step-1.png" },
             { n: "02", c: "var(--violet)", t: "Account", h: "Create your account", d: "Add your name, email, and mobile so hello22 can route your calls and text you a summary after every one.", img: "/images/screenshots/step-2.png" },
@@ -715,7 +863,7 @@ export default function Hello22Site() {
       </section>
 
       {/* USE CASES */}
-      <section id="industries" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+      <section id="industries" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
         <div data-rv style={eyebrow}>Industries</div>
         <h2 data-rv style={{ ...h2, maxWidth: 640 }}>Built for the trades that run on phone calls.</h2>
         <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}>It&apos;s the same hello22 agent — you just configure it for your business in the AI Brain. No separate setup per industry.</p>
@@ -749,11 +897,11 @@ export default function Hello22Site() {
       </section>
 
       {/* INTEGRATIONS */}
-      <section style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px" }}>
+      <section id="integrations" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
         <div className="int-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 50, alignItems: "center" }}>
           <div data-rv>
             <div style={eyebrow}>Integrations</div>
-            <h2 style={{ ...h2, fontSize: "clamp(34px,4.2vw,48px)", lineHeight: 1.06 }}>Connects to your stack.</h2>
+            <h2 style={{ ...h2, fontSize: "clamp(28px,4.6vw,48px)", lineHeight: 1.08 }}>Connects to your stack.</h2>
             <p style={{ fontSize: 17, color: "#9594a6", lineHeight: 1.65, margin: "18px 0 0", maxWidth: 440 }}>Google Calendar for booking, Perfex CRM or any webhook for leads, and the voice &amp; AI infrastructure behind every call — so conversations turn into booked appointments and updated records automatically.</p>
           </div>
           <div data-rv style={{ display: "flex", justifyContent: "center" }}>
@@ -793,10 +941,10 @@ export default function Hello22Site() {
       </section>
 
       {/* VALUE BAND */}
-      <section style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 80px" }}>
+      <section style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 80px" }}>
         <div data-rv className="band-pad" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg,rgba(44,118,237,.08),rgba(157,139,255,.08))", border: "1px solid rgba(255,255,255,.1)", borderRadius: 26, padding: "56px 40px", textAlign: "center" }}>
           <div style={{ ...eyebrow }}>Why hello22</div>
-          <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(30px,3.8vw,46px)", margin: "12px 0 0", maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}>Every missed call is a missed customer.</h2>
+          <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(26px,4.8vw,46px)", lineHeight: 1.12, margin: "12px 0 0", maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}>Every missed call is a missed customer.</h2>
           <p style={{ fontSize: 17, color: "#9594a6", maxWidth: 560, margin: "16px auto 0", lineHeight: 1.6 }}>hello22 picks up every time — turning your phone into booked jobs, captured leads, and happy callers instead of voicemail.</p>
           <div className="stat4" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 40, maxWidth: 820, marginLeft: "auto", marginRight: "auto" }}>
             {[
@@ -815,11 +963,11 @@ export default function Hello22Site() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px" }}>
+      <section style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px" }}>
         <div data-rv style={eyebrow}>Early access</div>
         <h2 data-rv style={{ ...h2, maxWidth: 640, margin: "14px 0 12px" }}>What you get from day one.</h2>
         <p data-rv style={{ fontSize: 18, color: "#9594a6", maxWidth: 600, margin: "0 0 34px", lineHeight: 1.6 }}>hello22 is in early access. Here&apos;s exactly what your AI receptionist does the moment you go live — no inflated claims.</p>
-        <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }}>
+        <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }}>
           {[
             { ic: "fa-phone-volume", t: "Answers every call", d: "24/7 — no missed calls, no hold music, no voicemail. Every caller gets a real, natural conversation.", bg: "rgba(44,118,237,.16)", c: "var(--lime)" },
             { ic: "fa-bolt", t: "Live in minutes", d: "Describe your agent, connect your tools, pick a number. No code, no telephony setup, no flowcharts.", bg: "rgba(86,224,224,.16)", c: "var(--cyan)" },
@@ -835,7 +983,7 @@ export default function Hello22Site() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+      <section id="pricing" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
         <div data-rv style={{ textAlign: "center" }}>
           <div style={eyebrow}>Pricing</div>
           <h2 style={{ ...h2 }}>Simple plans. Cancel anytime.</h2>
@@ -879,8 +1027,8 @@ export default function Hello22Site() {
           <h2 style={{ ...h2 }}>Frequently asked questions.</h2>
           <p style={{ fontSize: 18, color: "#9594a6", margin: "16px auto 0", maxWidth: 520, lineHeight: 1.6 }}>Everything you need to know about hello22. Can&apos;t find your answer? <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--lime)", textDecoration: "none", fontWeight: 600 }}>Get in touch →</a></p>
         </div>
-        <div data-rv style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 42 }}>
-          {FAQS.map((f, i) => {
+        <div data-rv className="faq-list" style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 42 }}>
+          {(showAllFaqs ? FAQS : FAQS.slice(0, FAQ_PREVIEW)).map((f, i) => {
             const open = faqOpen === i;
             return (
               <div key={i} style={{ ...card, overflow: "hidden", borderColor: open ? "rgba(44,118,237,.35)" : "rgba(255,255,255,.09)", transition: "border-color .25s ease" }}>
@@ -897,11 +1045,25 @@ export default function Hello22Site() {
             );
           })}
         </div>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
+          <button
+            onClick={() => {
+              if (showAllFaqs && faqOpen !== null && faqOpen >= FAQ_PREVIEW) setFaqOpen(null);
+              setShowAllFaqs((s) => !s);
+            }}
+            className="btnp"
+            style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,.06)", color: "#f4f4f7", border: "1px solid rgba(255,255,255,.14)", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, fontSize: 15, padding: "13px 26px", borderRadius: 999 }}
+          >
+            {showAllFaqs
+              ? <>Show fewer questions <i className="fa-solid fa-chevron-up" style={{ fontSize: 11 }} /></>
+              : <>Show all {FAQS.length} questions <i className="fa-solid fa-chevron-down" style={{ fontSize: 11 }} /></>}
+          </button>
+        </div>
       </section>
 
 
       {/* FINAL CTA */}
-      <section id="cta" style={{ position: "relative", zIndex: 1, maxWidth: 1240, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
+      <section id="cta" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "30px 28px 90px", scrollMarginTop: 90 }}>
         <div data-rv className="cta-pad" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#14141f,#0c0c15)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 30, padding: "56px 48px" }}>
           <div style={{ position: "absolute", top: -120, left: "20%", width: 520, height: 340, background: "radial-gradient(circle,rgba(44,118,237,.18),transparent 70%)", filter: "blur(20px)", pointerEvents: "none", animation: "h22glowpulse 5.5s ease-in-out infinite" }} />
           <div className="cta-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
@@ -963,7 +1125,7 @@ export default function Hello22Site() {
 
       {/* FOOTER */}
       <footer style={{ position: "relative", zIndex: 1, borderTop: "1px solid rgba(255,255,255,.08)", background: "#090910" }}>
-        <div className="footer-grid" style={{ maxWidth: 1240, margin: "0 auto", padding: "60px 28px 30px", display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: 40 }}>
+        <div className="footer-grid" style={{ maxWidth: 1536, margin: "0 auto", padding: "60px 28px 30px", display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: 40 }}>
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}<img src={LOGO} alt="hello22.ai" style={{ height: 28, width: "auto", display: "block" }} />
             <p style={{ fontSize: 14.5, color: "#9594a6", lineHeight: 1.6, margin: "18px 0 0", maxWidth: 260 }}>A native AI voice receptionist that answers every call, books every appointment, and sounds natural — built for teams who never want to miss a customer.</p>
@@ -979,18 +1141,23 @@ export default function Hello22Site() {
                 : <span key={s.ic} style={st}><i className={`fa-brands ${s.ic}`} /></span>;
             })}</div>
           </div>
-          {[
-            { t: "Product", l: ["Features", "Voices", "Integrations", "Pricing", "Live demo"] },
-            { t: "Company", l: ["About", "Contact", "Blog"] },
-            { t: "Legal", l: ["Privacy", "Terms"] },
-          ].map((col) => (
+          {([
+            { t: "Product", l: [{ n: "Features", h: "#features" }, { n: "Voices", h: "#voices" }, { n: "Integrations", h: "#integrations" }, { n: "Pricing", h: "#pricing" }, { n: "Live demo", h: "#demo" }] },
+            // Company pages abhi bane nahi hain — links plain text, koi redirect nahi
+            { t: "Company", l: [{ n: "About" }, { n: "Contact" }, { n: "Blog" }] },
+            { t: "Legal", l: [{ n: "Privacy", h: "/privacy" }, { n: "Terms", h: "/terms" }] },
+          ] as { t: string; l: { n: string; h?: string }[] }[]).map((col) => (
             <div key={col.t}>
               <div style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".1em", color: "#6f6f80", marginBottom: 16 }}>{col.t}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14.5 }}>{col.l.map((l) => <a key={l} className="nl" href={l === "Privacy" ? "/privacy" : l === "Terms" ? "/terms" : "#"}>{l}</a>)}</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 11, fontSize: 14.5 }}>
+                {col.l.map((l) => l.h
+                  ? <a key={l.n} className="nl" href={l.h}>{l.n}</a>
+                  : <span key={l.n} style={{ color: "#6f6f80", cursor: "default", padding: "3px 0" }}>{l.n}</span>)}
+              </div>
             </div>
           ))}
         </div>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "24px 28px", borderTop: "1px solid rgba(255,255,255,.07)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+        <div style={{ maxWidth: 1536, margin: "0 auto", padding: "24px 28px", borderTop: "1px solid rgba(255,255,255,.07)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <span style={{ fontSize: 13.5, color: "#6f6f80" }}>© 2026 hello22.ai · Powered by SparkView</span>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "#9594a6" }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--lime)", animation: "h22pulse 1.6s infinite" }} />All systems operational</span>
         </div>

@@ -27,6 +27,8 @@
 }
 html {
   scroll-behavior: smooth;
+  /* dark native widgets: select popups, scrollbars, pickers */
+  color-scheme: dark;
 }
 
 body {
