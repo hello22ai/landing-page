@@ -118,6 +118,10 @@ const USECASES: UC[] = [
   { name: "Plumbing Business", icon: "fa-faucet-drip", kpi: "3m 47s avg call duration", title: "Turn plumbing emergencies into booked jobs automatically.", body: "Answer urgent plumbing enquiries, schedule repairs, prioritize emergency leaks, collect customer details, and dispatch technicians immediately.", stats: [{ v: "3m 47s", l: "Avg call" }, { v: "95%", l: "Jobs scheduled" }, { v: "4.9/5", l: "Customer rating" }], tags: ["Emergency Plumbing", "Leak Detection", "Appointment Booking", "Technician Dispatch"] },
   { name: "Painting Services", icon: "fa-paint-roller", kpi: "3m 05s avg call duration", title: "Convert more quote requests into paying customers.", body: "Qualify painting enquiries, collect project details, schedule site inspections, send estimates, and book consultations automatically with every incoming call.", stats: [{ v: "3m 05s", l: "Avg call" }, { v: "88%", l: "Quotes booked" }, { v: "4.8/5", l: "Client satisfaction" }], tags: ["Quote Requests", "Site Visits", "Residential Painting", "Commercial Projects"] },
   { name: "Flooring Services", icon: "fa-ruler-combined", kpi: "3m 34s avg call duration", title: "Capture every flooring enquiry before your competitors do.", body: "Book flooring consultations, collect room measurements, answer product questions, schedule on-site estimates, and follow up automatically with potential customers.", stats: [{ v: "3m 34s", l: "Avg call" }, { v: "90%", l: "Consultations booked" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Floor Estimates", "Installation Booking", "Product Enquiries", "Site Measurement"] },
+  { name: "Carpenter", icon: "fa-hammer", kpi: "3m 18s avg call duration", title: "Book more carpentry projects without missing a call.", body: "Capture every enquiry, schedule on-site consultations, answer service questions, collect project details, and qualify leads before they reach your team.", stats: [{ v: "3m 18s", l: "Avg call" }, { v: "90%", l: "Leads captured" }, { v: "4.8/5", l: "Customer satisfaction" }], tags: ["Custom Furniture", "Site Visits", "Quote Requests", "Lead Qualification"] },
+  { name: "Handyman", icon: "fa-screwdriver-wrench", kpi: "2m 49s avg call duration", title: "Handle every repair request, even after hours.", body: "Answer customer enquiries, book repair appointments, prioritize urgent jobs, collect job details, and route requests to the right technician automatically.", stats: [{ v: "2m 49s", l: "Avg call" }, { v: "92%", l: "Jobs booked" }, { v: "4.8/5", l: "Customer rating" }], tags: ["Repair Booking", "Job Scheduling", "Emergency Repairs", "Customer Support"] },
+  { name: "Fencing Contractors", icon: "fa-road-barrier", kpi: "3m 22s avg call duration", title: "Convert fencing enquiries into booked site inspections.", body: "Schedule consultations, capture property details, answer common questions, qualify fencing projects, and book on-site measurements without missing a lead.", stats: [{ v: "3m 22s", l: "Avg call" }, { v: "89%", l: "Inspections booked" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Site Inspections", "Quote Requests", "Property Measurements", "Project Scheduling"] },
+  { name: "Pool Cleaners", icon: "fa-water-ladder", kpi: "2m 41s avg call duration", title: "Keep your schedule full with automated booking.", body: "Book recurring pool cleaning services, answer maintenance enquiries, schedule emergency visits, and send appointment confirmations automatically.", stats: [{ v: "2m 41s", l: "Avg call" }, { v: "94%", l: "Bookings confirmed" }, { v: "4.8/5", l: "Customer rating" }], tags: ["Recurring Services", "Maintenance Booking", "Emergency Cleaning", "Appointment Confirmation"] },
 ];
 
 type Line = { role: "caller" | "agent"; name: string; text: string };
@@ -485,6 +489,7 @@ export default function Hello22Site() {
   const [greet, setGreet] = useState(0);
   const [voice, setVoice] = useState(0);
   const [useCase, setUseCase] = useState(0);
+  const [ucExpanded, setUcExpanded] = useState(false);
   const [demoPlaying, setDemoPlaying] = useState(false);
   const [demoStarted, setDemoStarted] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
@@ -1089,16 +1094,20 @@ export default function Hello22Site() {
         <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 24, marginTop: 40, alignItems: "start" }}>
           <div ref={ucListRef} style={{ willChange: "transform" }}>
           <div data-rv="left" className="ind-list" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {USECASES.map((t, i) => {
+            {(ucExpanded ? USECASES : USECASES.slice(0, 6)).map((t, i) => {
               const active = i === useCase;
               return (
                 <button key={t.name} className="ind-btn" data-active={active} onClick={() => setUseCase(i)} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "15px 18px", borderRadius: 14, fontFamily: "inherit", background: active ? "var(--s2)" : "transparent", border: active ? "1px solid var(--w13)" : "1px solid transparent", color: active ? "var(--tx)" : "var(--mut)" }}>
-                  <span className="ind-num" style={{ fontFamily: SUB, fontSize: 13, fontWeight: 600, opacity: .55, width: 22 }}>{"0" + (i + 1)}</span>
+                  <span className="ind-num" style={{ fontFamily: SUB, fontSize: 13, fontWeight: 600, opacity: .55, width: 22 }}>{(i + 1).toString().padStart(2, "0")}</span>
                   <span style={{ fontSize: 15.5, fontWeight: 600, flex: 1, textAlign: "left" }}>{t.name}</span>
                   <span className="ind-arrow" style={{ opacity: active ? 1 : 0, color: "var(--lime)", transition: "opacity .2s" }}>→</span>
                 </button>
               );
             })}
+            <button className="ind-btn" onClick={() => { if (ucExpanded && useCase > 5) setUseCase(0); setUcExpanded(!ucExpanded); }} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "15px 18px", borderRadius: 14, fontFamily: "inherit", background: "transparent", border: "1px solid transparent", color: "var(--lime)" }}>
+              <span style={{ width: 22, display: "inline-flex", justifyContent: "center" }}><i className={`fa-solid ${ucExpanded ? "fa-chevron-up" : "fa-chevron-down"}`} style={{ fontSize: 12 }} /></span>
+              <span style={{ fontSize: 14.5, fontWeight: 700, flex: 1, textAlign: "left" }}>{ucExpanded ? "See less" : `See more (${USECASES.length - 6})`}</span>
+            </button>
           </div>
           </div>
           <div ref={ucCardRef} style={{ willChange: "transform" }}>
