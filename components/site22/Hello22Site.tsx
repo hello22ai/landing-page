@@ -125,13 +125,15 @@ const USECASES: UC[] = [
 ];
 
 type Line = { role: "caller" | "agent"; name: string; text: string };
+// In lines ka text public/audio/demo/line-<n>.mp3 recordings se word-by-word match hona
+// zaroori hai (scripts/generate-voices.mjs ka DEMO block) — text badlo to audio regenerate karo.
 const TRANSCRIPT: Line[] = [
-  { role: "caller", name: "Megan Lee", text: "Hi, I'd like to book an appointment for this Friday." },
-  { role: "agent", name: "Sarah · hello22", text: "Of course! What time works best? We have openings at 7 PM or 9 PM." },
-  { role: "caller", name: "Megan Lee", text: "7 PM sounds perfect." },
-  { role: "agent", name: "Sarah · hello22", text: "Great — I've noted 7 PM this Friday. Can I get a name for the booking?" },
-  { role: "caller", name: "Megan Lee", text: "Megan Lee. L-E-E." },
-  { role: "agent", name: "Sarah · hello22", text: "Booked! 7 PM Friday under Megan Lee. You'll get a confirmation text shortly. Anything else?" },
+  { role: "caller", name: "Olivia Brown", text: "Hi, my kitchen tap has been leaking all morning. Could someone come take a look this Friday?" },
+  { role: "agent", name: "Sarah · hello22", text: "Of course — we can get a plumber out to you this Friday. What time works best? We have openings at 9 AM or 1 PM." },
+  { role: "caller", name: "Olivia Brown", text: "9 AM sounds perfect." },
+  { role: "agent", name: "Sarah · hello22", text: "Great — I've booked a technician for 9 AM this Friday for the leaking tap. Can I get a name for the booking?" },
+  { role: "caller", name: "Olivia Brown", text: "Sure — it's Olivia Brown. That's B-R-O-W-N." },
+  { role: "agent", name: "Sarah · hello22", text: "All booked, Olivia! Friday at 9 AM under Olivia Brown. You'll get a confirmation text shortly." },
 ];
 
 // Product screenshots — apni software ki images yahan add/remove karein.
@@ -188,8 +190,8 @@ const PLANS: Plan[] = [
       { t: "WhatsApp — summary, transcript & recording", on: true },
       { t: "Email — summary, transcript & recording", on: true },
       { t: "English voice agent", on: true },
-      { t: "Premium AI voices", on: true },
       { t: "Free Nexleon CRM setup", on: true },
+      { t: "Premium AI voices", on: true },
       { t: "Call summary via SMS", on: false },
     ],
   },
@@ -201,9 +203,9 @@ const PLANS: Plan[] = [
       { t: "WhatsApp — summary, transcript & recording", on: true },
       { t: "Email — summary, transcript & recording", on: true },
       { t: "Multilingual voice agent", on: true },
+      { t: "Free Nexleon CRM setup & Custom CRM integration", on: true },
       { t: "Premium AI voices", on: true },
       { t: "Call summary via SMS", on: true },
-      { t: "Free Nexleon CRM setup & Custom CRM integration", on: true },
     ],
   },
 ];
@@ -242,6 +244,8 @@ const CSS = `
 @keyframes h22greet{0%{opacity:0;transform:translateY(22px) rotateX(-55deg);filter:blur(6px)}100%{opacity:1;transform:none;filter:blur(0)}}
 @keyframes h22drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(34px,-28px) scale(1.07)}66%{transform:translate(-26px,20px) scale(.95)}}
 @keyframes h22glowpulse{0%,100%{opacity:.65;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.14)}}
+@keyframes h22popIn{from{opacity:0;transform:scale(.86) translateY(16px)}to{opacity:1;transform:none}}
+@keyframes h22fadeIn{from{opacity:0}to{opacity:1}}
 .h22.rv [data-rv]{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
 .h22.rv [data-rv="left"]{transform:translateX(-44px) scale(.99)}
 .h22.rv [data-rv="right"]{transform:translateX(44px) scale(.99)}
@@ -493,6 +497,9 @@ export default function Hello22Site() {
   const [demoPlaying, setDemoPlaying] = useState(false);
   const [demoStarted, setDemoStarted] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
+  const [ringing, setRinging] = useState(false);     // Play ke foran baad ringback bajti hai
+  const [showBooking, setShowBooking] = useState(false); // call khatam hone par booking popup
+  const ringRef = useRef<HTMLAudioElement | null>(null);
   const [callSecs, setCallSecs] = useState(0);
   const demoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -584,7 +591,7 @@ export default function Hello22Site() {
     return () => window.removeEventListener("scroll", on);
   }, []);
 
-  useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); if (demoAudioRef.current) demoAudioRef.current.pause(); if (tickRef.current) clearInterval(tickRef.current); }, []);
+  useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); if (demoAudioRef.current) demoAudioRef.current.pause(); if (ringRef.current) ringRef.current.pause(); if (tickRef.current) clearInterval(tickRef.current); }, []);
 
   // close lightbox on Escape
   useEffect(() => {
@@ -649,8 +656,10 @@ export default function Hello22Site() {
   function stopDemo() {
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     if (demoAudioRef.current) { demoAudioRef.current.pause(); demoAudioRef.current = null; }
+    if (ringRef.current) { ringRef.current.pause(); ringRef.current = null; }
     if (demoTimer.current) clearTimeout(demoTimer.current);
     stopTick();
+    setRinging(false);
     setDemoPlaying(false);
   }
   function advanceDemo(i: number) {
@@ -677,10 +686,17 @@ export default function Hello22Site() {
     window.speechSynthesis.speak(u);
   }
   function speakFrom(i: number) {
-    if (i >= TRANSCRIPT.length) { setDemoPlaying(false); stopTick(); return; }
+    if (i >= TRANSCRIPT.length) {
+      setDemoPlaying(false); stopTick();
+      // call khatam — booking-confirmed popup + notification chime
+      setShowBooking(true);
+      new Audio("/audio/notify.wav").play().catch(() => { /* autoplay block — popup phir bhi dikhta hai */ });
+      return;
+    }
     setDemoStep(i + 1);
     // Prefer a real recorded line; fall back to the browser engine if missing.
-    const audio = new Audio(`/audio/demo/line-${i}.mp3`);
+    // ?v= cache-buster: demo audio regenerate karo to number badhao, warna browser purani file sunata rehta hai.
+    const audio = new Audio(`/audio/demo/line-${i}.mp3?v=5`);
     demoAudioRef.current = audio;
     let handled = false;
     const fb = () => { if (handled) return; handled = true; demoAudioRef.current = null; ttsLine(i); };
@@ -688,16 +704,31 @@ export default function Hello22Site() {
     audio.onerror = fb;
     audio.play().catch(fb);
   }
+  function connectCall() {
+    setRinging(false);
+    setCallSecs(0);
+    stopTick();
+    tickRef.current = setInterval(() => setCallSecs((s) => s + 1), 1000);
+    speakFrom(0);
+  }
   function playDemo() {
     if (demoPlaying) { stopDemo(); return; }
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    setShowBooking(false);
     setDemoPlaying(true);
     setDemoStarted(true);
     setDemoStep(0);
     setCallSecs(0);
     stopTick();
-    tickRef.current = setInterval(() => setCallSecs((s) => s + 1), 1000);
-    speakFrom(0);
+    // proper call feel: pehle ringback bajti hai, phir call connect ho kar conversation shuru
+    setRinging(true);
+    const ring = new Audio("/audio/ringback.wav");
+    ringRef.current = ring;
+    let done = false;
+    const go = () => { if (done) return; done = true; ringRef.current = null; connectCall(); };
+    ring.onended = go;
+    ring.onerror = go;
+    ring.play().catch(go);
   }
 
   const demoTime = `00:${String(Math.floor(callSecs / 60)).padStart(2, "0")}:${String(callSecs % 60).padStart(2, "0")}`;
@@ -866,15 +897,15 @@ export default function Hello22Site() {
         <div data-rv style={eyebrow}>AI phone agent</div>
         <h2 data-rv style={{ ...h2, maxWidth: 760 }}><b style={BD}>Press play.</b> Hear hello22 handle a <span style={HL}>real call</span>.</h2>
         <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Experience how natural conversations flow</strong> with hello22. It listens, understands, and responds — <span style={HL}>just like a human</span>.</p>
-        <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 13, color: "var(--mut3)" }}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-volume-high" /></span>Hit play — the caller and agent speak aloud using your browser&apos;s voice engine.</div>
+        <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 13, color: "var(--mut3)" }}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-volume-high" /></span>Hit play — hear the real recorded conversation between the caller and the hello22 agent.</div>
 
         <div className="demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 24, marginTop: 42, alignItems: "stretch" }}>
           {/* player */}
-          <div data-rv="left" style={{ background: "var(--card-grad)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+          <div data-rv="left" style={{ position: "relative", background: "var(--card-grad)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", display: "flex", flexDirection: "column" }}>
             <div className="demo-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, padding: "16px 20px", borderBottom: "1px solid var(--w07)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <button onClick={playDemo} style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "var(--lime)", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13.5, padding: "10px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>
-                  <i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-phone"}`} style={{ fontSize: 12 }} />{demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Call"}
+                  <i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-play"}`} style={{ fontSize: 12 }} />{demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Play"}
                 </button>
                 <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--mut3)", padding: "10px 16px" }}>Transcript</span>
               </div>
@@ -883,15 +914,18 @@ export default function Hello22Site() {
             <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 13, minHeight: 340, flex: 1, background: "var(--w04)" }}>
               {/* call-start status chip — transcript ko real chat jaisa frame deta hai */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: 2 }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11.5, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", color: "var(--blue-ink)", background: "rgba(44,118,237,.10)", border: "1px solid rgba(44,118,237,.22)", padding: "6px 14px", borderRadius: 999 }}><i className="fa-solid fa-phone" style={{ fontSize: 10 }} aria-hidden="true" />Call connected · Apex Plumbing</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11.5, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", color: "var(--blue-ink)", background: "rgba(44,118,237,.10)", border: "1px solid rgba(44,118,237,.22)", padding: "6px 14px", borderRadius: 999 }}><i className="fa-solid fa-phone" style={{ fontSize: 10, animation: ringing ? "h22pulse 1.1s infinite" : "none" }} aria-hidden="true" />{ringing ? "Calling Apex Plumbing…" : "Call connected · Apex Plumbing"}</span>
               </div>
               {TRANSCRIPT.map((t, i) => {
+                // Idle mein poori transcript dikhti hai; call ke doran bubbles audio ke saath
+                // ek-ek kar ke slide-in hote hain aur bolti hui line ring se highlight hoti hai (client 2026-07-08).
                 const shown = !demoStarted || i < demoStep;
+                const active = demoPlaying && i === demoStep - 1;
                 const caller = t.role === "caller";
                 return (
-                  <div key={i} style={{ display: "flex", justifyContent: caller ? "flex-end" : "flex-start", alignItems: "flex-end", gap: 10, opacity: shown ? 1 : 0.12, transform: shown ? "none" : "translateY(8px)", transition: "all .5s ease" }}>
+                  <div key={i} style={{ display: "flex", justifyContent: caller ? "flex-end" : "flex-start", alignItems: "flex-end", gap: 10, opacity: shown ? 1 : 0, transform: shown ? "none" : "translateY(14px)", transition: "opacity .45s ease, transform .5s cubic-bezier(.2,.7,.2,1)" }}>
                     {!caller && <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12 }} aria-hidden="true"><i className="fa-solid fa-headset" /></span>}
-                    <div className="bubble" style={{ maxWidth: "78%", padding: "12px 16px", borderRadius: caller ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: caller ? "var(--lime)" : "var(--surface)", border: caller ? "1px solid rgba(44,118,237,.5)" : "1px solid var(--w10)", boxShadow: caller ? "0 10px 26px -14px rgba(44,118,237,.55)" : "0 6px 18px -12px var(--sh2)", color: caller ? "#fff" : "var(--tx)" }}>
+                    <div className="bubble" style={{ maxWidth: "78%", padding: "12px 16px", borderRadius: caller ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: caller ? "var(--lime)" : "var(--surface)", border: caller ? "1px solid rgba(44,118,237,.5)" : "1px solid var(--w10)", boxShadow: caller ? "0 10px 26px -14px rgba(44,118,237,.55)" : "0 6px 18px -12px var(--sh2)", color: caller ? "#fff" : "var(--tx)", outline: active ? "2px solid rgba(44,118,237,.55)" : "none", outlineOffset: 3, transition: "outline-color .3s ease" }}>
                       <div style={{ fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 5, color: caller ? "rgba(255,255,255,.72)" : "var(--blue-ink)" }}>{t.name}</div>
                       <div style={{ fontSize: 14.5, lineHeight: 1.5 }}>{t.text}</div>
                     </div>
@@ -899,11 +933,38 @@ export default function Hello22Site() {
                   </div>
                 );
               })}
-              {/* outcome chip — call ka result; demo chalte waqt last line ke saath reveal hota hai */}
-              <div style={{ display: "flex", justifyContent: "center", marginTop: 2, opacity: !demoStarted || demoStep >= TRANSCRIPT.length ? 1 : 0.12, transition: "opacity .5s ease" }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 700, color: "var(--blue-ink)", background: "rgba(44,118,237,.10)", border: "1px solid rgba(44,118,237,.22)", padding: "7px 15px", borderRadius: 999 }}><i className="fa-regular fa-calendar-check" aria-hidden="true" />Appointment booked · Friday 7:00 PM · Confirmation sent</span>
+              {/* outcome chip — call ka result; idle mein dikhta hai, call ke doran aakhri line ke saath aata hai */}
+              <div style={{ display: "flex", justifyContent: "center", marginTop: 2, opacity: !demoStarted || demoStep >= TRANSCRIPT.length ? 1 : 0, transition: "opacity .5s ease" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 700, color: "var(--blue-ink)", background: "rgba(44,118,237,.10)", border: "1px solid rgba(44,118,237,.22)", padding: "7px 15px", borderRadius: 999 }}><i className="fa-regular fa-calendar-check" aria-hidden="true" />Job booked · Friday 9:00 AM · Confirmation sent</span>
               </div>
             </div>
+            {/* booking-confirmed popup — call khatam hote hi animate ho kar aata hai */}
+            {showBooking && (
+              <div style={{ position: "absolute", inset: 0, zIndex: 6, display: "flex", alignItems: "center", justifyContent: "center", padding: 18, background: "rgba(13,18,32,.42)", backdropFilter: "blur(5px)", WebkitBackdropFilter: "blur(5px)", animation: "h22fadeIn .3s ease both" }}>
+                <div style={{ position: "relative", background: "var(--surface)", border: "1px solid var(--w12)", borderRadius: 20, padding: "30px 26px 24px", width: "min(370px,100%)", textAlign: "center", boxShadow: "0 34px 80px -30px var(--sh1)", animation: "h22popIn .55s cubic-bezier(.2,.9,.3,1.35) .15s both" }}>
+                  <button onClick={() => setShowBooking(false)} aria-label="Close" style={{ position: "absolute", top: 12, right: 12, width: 32, height: 32, borderRadius: "50%", background: "var(--w05)", border: "1px solid var(--w10)", color: "var(--mut)", cursor: "pointer", fontSize: 13, display: "inline-flex", alignItems: "center", justifyContent: "center" }}><i className="fa-solid fa-xmark" /></button>
+                  <div style={{ position: "relative", width: 64, height: 64, margin: "0 auto" }}>
+                    <span style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "2px solid rgba(34,197,94,.55)", animation: "h22ring 1.5s ease-out .4s 2" }} />
+                    <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(34,197,94,.14)", border: "1px solid rgba(34,197,94,.4)", color: "#22b573", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}><i className="fa-solid fa-check" /></span>
+                  </div>
+                  <div style={{ fontFamily: SUB, fontWeight: 700, fontSize: 20, marginTop: 16 }}>Booking confirmed</div>
+                  <p style={{ margin: "6px 0 0", fontSize: 13.5, color: "var(--mut)" }}>Apex Plumbing · new job from this call</p>
+                  <div style={{ marginTop: 16, borderTop: "1px solid var(--w08)", textAlign: "left" }}>
+                    {[
+                      { l: "Customer", v: "Olivia Brown" },
+                      { l: "Service", v: "Leaking kitchen tap" },
+                      { l: "Scheduled", v: "Friday · 9:00 AM" },
+                    ].map((r) => (
+                      <div key={r.l} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "11px 2px", borderBottom: "1px solid var(--w06)" }}>
+                        <span style={{ fontSize: 13, color: "var(--mut2)" }}>{r.l}</span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: "var(--tx2)" }}>{r.v}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 16, fontSize: 12.5, fontWeight: 700, color: "var(--blue-ink)", background: "rgba(44,118,237,.10)", border: "1px solid rgba(44,118,237,.22)", padding: "7px 14px", borderRadius: 999 }}><i className="fa-solid fa-paper-plane" aria-hidden="true" />Confirmation sent · SMS & WhatsApp</span>
+                </div>
+              </div>
+            )}
           </div>
           {/* call summary */}
           <div data-rv="right" style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, padding: "18px 22px 8px", display: "flex", flexDirection: "column" }}>
@@ -912,9 +973,9 @@ export default function Hello22Site() {
               <span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 18 }}>Call summary</span>
             </div>
             {[
-              { ic: "fa-solid fa-bullseye", l: "Intent", v: "Book appointment" },
-              { ic: "fa-regular fa-circle-check", l: "Outcome", v: "Appointment booked" },
-              { ic: "fa-regular fa-calendar", l: "Date & time", v: "Friday at 7:00 PM" },
+              { ic: "fa-solid fa-bullseye", l: "Intent", v: "Book a repair visit" },
+              { ic: "fa-regular fa-circle-check", l: "Outcome", v: "Job booked" },
+              { ic: "fa-regular fa-calendar", l: "Date & time", v: "Friday at 9:00 AM" },
               { ic: "fa-regular fa-face-smile", l: "Sentiment", v: "Positive" },
               { ic: "fa-solid fa-gauge-high", l: "Confidence", v: "98%" },
             ].map((r, idx, arr) => (

@@ -51,16 +51,17 @@ const VOICES = [
   { file: "bill", voiceId: "pqHfZKP75CvOlQylNhV4", text: "Hi, thanks for calling. Rest assured, I'll take good care of this." },
 ];
 
-// Live demo: caller = Sarah, agent = Aria (two distinct hello22 voices)
+// Live demo (plumbing): caller Olivia = Jessica voice (client pick 2026-07-08), agent = Sarah (site ki signature voice).
+// In lines ka text TRANSCRIPT (components/site22/Hello22Site.tsx) se word-by-word match rehna chahiye.
 const SARAH = "EXAVITQu4vr4xnSDxMaL";
-const ARIA = "9BWtsMINqrJLrRacOk9x";
+const JESSICA = "cgSgspJ2msm6clMCkdW9";
 const DEMO = [
-  { file: "line-0", voiceId: SARAH, text: "Hi, I'd like to book a table for four this Friday evening." },
-  { file: "line-1", voiceId: ARIA, text: "Of course! What time works best? We have openings at 7 PM or 9 PM." },
-  { file: "line-2", voiceId: SARAH, text: "7 PM sounds perfect. Can we get a booth by the window?" },
-  { file: "line-3", voiceId: ARIA, text: "Absolutely — I've reserved booth 4 by the window. Can I get a name for the booking?" },
-  { file: "line-4", voiceId: SARAH, text: "Sarah Chen. C-H-E-N." },
-  { file: "line-5", voiceId: ARIA, text: "Booked! Table for four under Sarah Chen, Friday at 7 PM, booth 4. You'll get a confirmation text shortly. Anything else?" },
+  { file: "line-0", voiceId: JESSICA, text: "Hi, my kitchen tap has been leaking all morning. Could someone come take a look this Friday?" },
+  { file: "line-1", voiceId: SARAH, text: "Of course — we can get a plumber out to you this Friday. What time works best? We have openings at 9 AM or 1 PM." },
+  { file: "line-2", voiceId: JESSICA, text: "9 AM sounds perfect." },
+  { file: "line-3", voiceId: SARAH, text: "Great — I've booked a technician for 9 AM this Friday for the leaking tap. Can I get a name for the booking?" },
+  { file: "line-4", voiceId: JESSICA, text: "Sure — it's Olivia Brown. That's B-R-O-W-N." },
+  { file: "line-5", voiceId: SARAH, text: "All booked, Olivia! Friday at 9 AM under Olivia Brown. You'll get a confirmation text shortly." },
 ];
 
 async function tts(item, dir) {
