@@ -138,12 +138,13 @@ const TRANSCRIPT: Line[] = [
 
 // Product screenshots — apni software ki images yahan add/remove karein.
 // File ko public/images/screenshots/ mein daalein, fir niche ek entry bana dein.
+// Image replace karo to ?v= number badhao — warna browser purani cached image dikhata rehta hai.
 type Shot = { src: string; title: string; desc: string; ic: string; c: string; bg: string; pts: string[] };
 const SHOTS: Shot[] = [
-  { src: "/images/screenshots/dashboard.png", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls & minutes at a glance", "Intent & sentiment tracking", "Daily performance trends"] },
-  { src: "/images/screenshots/call-logs.png", title: "Call Logs", desc: "Review conversations and outcomes instantly.", ic: "fa-solid fa-file-lines", c: "var(--violet)", bg: "rgba(157,139,255,.16)", pts: ["Full transcripts & recordings", "Outcome tags on every call", "Search & filter by caller"] },
-  { src: "/images/screenshots/ai-brain.png", title: "AI Agent Builder", desc: "Create and customize your AI agent in minutes.", ic: "fa-solid fa-wand-magic-sparkles", c: "var(--cyan)", bg: "rgba(86,224,224,.15)", pts: ["Set greeting, services & hours", "Pick your agent's voice & style", "Changes go live instantly"] },
-  { src: "/images/screenshots/plans-billing.png", title: "Plans & Billing", desc: "Track minutes, switch plans, and control auto-renew.", ic: "fa-solid fa-credit-card", c: "#22b573", bg: "rgba(34,197,94,.14)", pts: ["Live minute usage meter", "Upgrade or switch anytime", "Full control over auto-renew"] },
+  { src: "/images/screenshots/dashboard.png?v=2", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls & minutes at a glance", "Intent & sentiment tracking", "Daily performance trends"] },
+  { src: "/images/screenshots/call-logs.png?v=2", title: "Call Logs", desc: "Review conversations and outcomes instantly.", ic: "fa-solid fa-file-lines", c: "var(--violet)", bg: "rgba(157,139,255,.16)", pts: ["Full transcripts & recordings", "Outcome tags on every call", "Search & filter by caller"] },
+  { src: "/images/screenshots/ai-brain.png?v=2", title: "AI Agent Builder", desc: "Create and customize your AI agent in minutes.", ic: "fa-solid fa-wand-magic-sparkles", c: "var(--cyan)", bg: "rgba(86,224,224,.15)", pts: ["Set greeting, services & hours", "Pick your agent's voice & style", "Changes go live instantly"] },
+  { src: "/images/screenshots/plans-billing.png?v=2", title: "Plans & Billing", desc: "Track minutes, switch plans, and control auto-renew.", ic: "fa-solid fa-credit-card", c: "#22b573", bg: "rgba(34,197,94,.14)", pts: ["Live minute usage meter", "Upgrade or switch anytime", "Full control over auto-renew"] },
 ];
 
 // FAQ — edit/add questions here. `a` supports **bold** markup (rendered below).
@@ -1127,8 +1128,8 @@ export default function Hello22Site() {
         <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No code, no telephony setup,</strong> no flowcharts. Sarah walks you through every step — confirm your business, create your account, and take your first real call.</p>
         <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42 }}>
           {[
-            { n: "01", c: "var(--lime)", t: "Set up", h: "Sarah builds your agent", d: "hello22 finds your business and sets up your AI receptionist with you — just review the details and confirm.", img: "/images/screenshots/step-1.png" },
-            { n: "02", c: "var(--violet)", t: "Account", h: "Create your account", d: "Add your name, email, and mobile so hello22 can route your calls and text you a summary after every one.", img: "/images/screenshots/step-2.png" },
+            { n: "01", c: "var(--lime)", t: "Set up", h: "Sarah builds your agent", d: "hello22 finds your business and sets up your AI receptionist with you — just review the details and confirm.", img: "/images/screenshots/step-1.png?v=2" },
+            { n: "02", c: "var(--violet)", t: "Account", h: "Create your account", d: "Add your name, email, and mobile so hello22 can route your calls and text you a summary after every one.", img: "/images/screenshots/step-2.png?v=2" },
             { n: "03", c: "var(--cyan)", t: "Go live", h: "Pick a number & go live", d: "Claim your dedicated AI number, point your calls to it, and start handling real conversations in minutes.", img: "/images/screenshots/step-3.png" },
           ].map((s) => (
             <div key={s.n} data-rv className="lift" style={{ ...card, padding: 28 }}>
