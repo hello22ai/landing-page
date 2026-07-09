@@ -11,6 +11,7 @@ const SUB = "var(--font-space), 'Space Grotesk', sans-serif";
 const LOGO = "/hello22-logo.png"; // white wordmark — dark theme
 const LOGO_LIGHT = "/images/hello22-logo-color.svg"; // black + brand-blue wordmark — light theme
 const APP_URL = "https://app.hello22.ai/";
+const LOGIN_URL = "https://app.hello22.ai/login";
 const SUPPORT_EMAIL = "connect@hello22.ai";
 // Web3Forms key — demo-form submissions email to connect@hello22.ai. Client-safe by design.
 const WEB3FORMS_ACCESS_KEY = "42827426-7f8f-4a99-98a9-7aabe3ed8000";
@@ -166,12 +167,12 @@ const FAQS: Faq[] = [
 
 type Cap = { icon: string; label: string; blue?: boolean };
 type Feat = { t: string; on: boolean };
-type Plan = { name: string; blurb: string; price: string; icon: string; violet?: boolean; caps: Cap[]; feats: Feat[]; popular?: boolean };
+type Plan = { name: string; price: string; icon: string; violet?: boolean; caps: Cap[]; feats: Feat[]; popular?: boolean };
 // Pricing (client-final UI, 2026-07-06 raat): icon tile + chips + check/strikethrough list + tinted
 // trial footer band — content: AUD 49/69/89, 200 min, 14-day trial (30 min).
 const PLANS: Plan[] = [
   {
-    name: "Starter", blurb: "For solo operators", price: "49", icon: "fa-solid fa-paper-plane",
+    name: "Starter", price: "49", icon: "fa-solid fa-paper-plane",
     caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp" }, { icon: "fa-regular fa-envelope", label: "Email" }],
     feats: [
       { t: "200 call minutes each month", on: true },
@@ -184,7 +185,7 @@ const PLANS: Plan[] = [
     ],
   },
   {
-    name: "Standard", blurb: "For small teams going live", price: "69", icon: "fa-solid fa-users", popular: true,
+    name: "Standard", price: "69", icon: "fa-solid fa-users", popular: true,
     caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp" }, { icon: "fa-regular fa-envelope", label: "Email" }, { icon: "fa-solid fa-microphone", label: "Premium voices" }],
     feats: [
       { t: "200 call minutes each month", on: true },
@@ -197,7 +198,7 @@ const PLANS: Plan[] = [
     ],
   },
   {
-    name: "Premium", blurb: "For bigger teams", price: "89", icon: "fa-solid fa-crown", violet: true,
+    name: "Premium", price: "89", icon: "fa-solid fa-crown", violet: true,
     caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp" }, { icon: "fa-regular fa-envelope", label: "Email" }, { icon: "fa-solid fa-comment", label: "SMS" }, { icon: "fa-solid fa-microphone", label: "Premium voices" }],
     feats: [
       { t: "200 call minutes each month", on: true },
@@ -773,7 +774,7 @@ export default function Hello22Site() {
             ))}
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
-            <a className="nav-signin" href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--tx)", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
+            <a className="nav-signin" href={LOGIN_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--tx)", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp nav-cta" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 14.5, padding: "11px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
             <button onClick={flipTheme} className="theme-toggle" aria-label={isLight ? "Switch to dark mode" : "Switch to light mode"} title={isLight ? "Dark mode" : "Light mode"} style={{ width: 40, height: 40, borderRadius: "50%", background: "var(--w06)", border: "1px solid var(--w12)", color: "var(--tx)", fontSize: 15, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <i className={`fa-solid ${isLight ? "fa-moon" : "fa-sun"}`} />
@@ -788,7 +789,7 @@ export default function Hello22Site() {
             {NAV_LINKS.map((l) => (
               <a key={l} href={"#" + l.toLowerCase().replace(" ", "")} onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px", borderBottom: "1px solid var(--w06)" }}>{l}</a>
             ))}
-            <a href={APP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px" }}>Sign in</a>
+            <a href={LOGIN_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px" }}>Sign in</a>
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="btnp" style={{ textDecoration: "none", textAlign: "center", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 20px", borderRadius: 999, marginTop: 8, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
           </nav>
         )}
@@ -1353,10 +1354,7 @@ export default function Hello22Site() {
               <div style={{ padding: "38px 24px 0", display: "flex", flexDirection: "column", flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
                   <span style={{ width: 46, height: 46, borderRadius: "50%", flexShrink: 0, background: p.violet ? "rgba(157,139,255,.16)" : "rgba(44,118,237,.12)", border: p.violet ? "1px solid rgba(157,139,255,.32)" : "1px solid rgba(44,118,237,.28)", color: p.violet ? "var(--violet)" : "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}><i className={p.icon} aria-hidden="true" /></span>
-                  <span style={{ minWidth: 0 }}>
-                    <span style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 19 }}>{p.name}</span>
-                    <span style={{ display: "block", fontSize: 13, color: "var(--mut)", marginTop: 2 }}>{p.blurb}</span>
-                  </span>
+                  <span style={{ minWidth: 0, fontFamily: SUB, fontWeight: 700, fontSize: 19 }}>{p.name}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 7, margin: "18px 0 14px" }}><span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 17, color: "var(--tx3)" }}>AUD</span><span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 42, color: "var(--tx)", letterSpacing: "-.02em", lineHeight: 1 }}>{p.price}</span><span style={{ fontSize: 15, fontWeight: 600, color: "var(--mut)" }}>/ month</span></div>
                 <div className="plan-caps" style={{ display: "flex", flexWrap: "wrap", alignContent: "flex-start", gap: 8, marginBottom: 18, minHeight: 82 }}>
