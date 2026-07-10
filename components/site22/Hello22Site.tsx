@@ -16,6 +16,7 @@ const SUPPORT_EMAIL = "connect@hello22.ai";
 // Web3Forms key — demo-form submissions email to connect@hello22.ai. Client-safe by design.
 const WEB3FORMS_ACCESS_KEY = "42827426-7f8f-4a99-98a9-7aabe3ed8000";
 
+
 const GREETS = ["hello"];
 
 // Light/Dark palettes — every colour on the page resolves through these vars.
@@ -137,9 +138,30 @@ const USECASES: UC[] = [
   { name: "Pool Cleaners", icon: "fa-water-ladder", kpi: "2m 41s avg call duration", title: "Keep your schedule full with automated booking.", body: "Book recurring pool cleaning services, answer maintenance enquiries, schedule emergency visits, and send appointment confirmations automatically.", stats: [{ v: "2m 41s", l: "Avg call" }, { v: "94%", l: "Bookings confirmed" }, { v: "4.8/5", l: "Customer rating" }], tags: ["Recurring Services", "Maintenance Booking", "Emergency Cleaning", "Appointment Confirmation"] },
 ];
 
+// Industries UI meta (user mockup 2026-07-10) — list icon colors + detail photo + chat overlay lines.
+// Index USECASES ke order se match karta hai. Photos AI-generated (public/images/ind-*.jpg).
+const IND_META: { c: string; cb: string; photo: string; chat: [string, string] }[] = [
+  { c: "var(--lime)", cb: "rgba(44,118,237,.12)", photo: "/images/ind-hvac.jpg", chat: ["Hi, my AC isn't cooling properly.", "I'm sorry to hear that. I can have a technician available today. Would you like me to check availability?"] },
+  { c: "#14a3a3", cb: "rgba(20,163,163,.12)", photo: "/images/ind-cleaning.jpg", chat: ["Can I book a weekly house clean?", "Absolutely — we have Thursday mornings open. Shall I set up a recurring visit?"] },
+  { c: "var(--violet)", cb: "rgba(157,139,255,.14)", photo: "/images/ind-electrical.jpg", chat: ["Half my power points stopped working.", "That needs a licensed electrician. I can book one for this afternoon — does 2 PM work?"] },
+  { c: "var(--lime)", cb: "rgba(44,118,237,.12)", photo: "/images/ind-plumbing.jpg", chat: ["My hot water system is leaking.", "Let's get that sorted quickly. A plumber can be there tomorrow at 9 AM — shall I book it?"] },
+  { c: "#e2564d", cb: "rgba(226,86,77,.12)", photo: "/images/ind-painting.jpg", chat: ["I'd like a quote to paint my living room.", "Happy to help — I can book a free site visit this week. Does Wednesday suit you?"] },
+  { c: "#f59e0b", cb: "rgba(245,158,11,.14)", photo: "/images/ind-flooring.jpg", chat: ["Do you install hybrid flooring?", "We do! I can arrange a free measure and quote — what day works for you?"] },
+  { c: "#f59e0b", cb: "rgba(245,158,11,.14)", photo: "/images/ind-carpenter.jpg", chat: ["Can you build custom wardrobes?", "Yes — I'll book a consultation so we can discuss your design. How's Friday?"] },
+  { c: "#14a3a3", cb: "rgba(20,163,163,.12)", photo: "/images/ind-handyman.jpg", chat: ["My fence gate won't close properly.", "Easy fix — I can have someone out tomorrow morning. Shall I book it in?"] },
+  { c: "var(--violet)", cb: "rgba(157,139,255,.14)", photo: "/images/ind-fencing.jpg", chat: ["I need a new colorbond fence quoted.", "No problem — I'll schedule a site inspection. Is Saturday morning OK?"] },
+  { c: "var(--lime)", cb: "rgba(44,118,237,.12)", photo: "/images/ind-pool.jpg", chat: ["Can you service my pool before summer?", "Of course — I can book your pre-season service for next week. Which day suits?"] },
+];
+// Detail card ke tag chips ke icons — position se cycle
+const TAG_ICS = ["fa-solid fa-bell", "fa-regular fa-calendar-check", "fa-regular fa-clock", "fa-regular fa-file-lines"];
+
 type Line = { role: "caller" | "agent"; name: string; text: string };
 // In lines ka text public/audio/demo/line-<n>.mp3 recordings se word-by-word match hona
 // zaroori hai (scripts/generate-voices.mjs ka DEMO block) — text badlo to audio regenerate karo.
+// Bubble timestamps — real audio line start-times se computed (line durations 4.5/7.6/1.7/6/4/5.5s + 320ms gaps).
+// Audio files badlein to ye bhi recompute karo. Total: ~31s (DEMO_TOTAL).
+const TIMES = ["00:00", "00:05", "00:13", "00:15", "00:21", "00:25"];
+const DEMO_TOTAL = "00:31";
 const TRANSCRIPT: Line[] = [
   { role: "caller", name: "Olivia Brown", text: "Hi, my kitchen tap has been leaking all morning. Could someone come take a look this Friday?" },
   { role: "agent", name: "Sarah · hello22", text: "Of course — we can get a plumber out to you this Friday. What time works best? We have openings at 9 AM or 1 PM." },
@@ -152,12 +174,31 @@ const TRANSCRIPT: Line[] = [
 // Product screenshots — apni software ki images yahan add/remove karein.
 // File ko public/images/screenshots/ mein daalein, fir niche ek entry bana dein.
 // Image replace karo to ?v= number badhao — warna browser purani cached image dikhata rehta hai.
-type Shot = { src: string; title: string; desc: string; ic: string; c: string; bg: string; pts: string[] };
+// Card visuals ab MiniShot HTML/CSS previews hain (user mockup 2026-07-10) — src ki jagah kind.
+// Purane real screenshots public/images/screenshots/ mein hi hain agar kabhi wapas chahiye hon.
+type Shot = { kind: "dash" | "logs" | "brain" | "billing"; title: string; desc: string; ic: string; c: string; bg: string; pts: string[] };
 const SHOTS: Shot[] = [
-  { src: "/images/screenshots/dashboard.png?v=2", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls & minutes at a glance", "Intent & sentiment tracking", "Daily performance trends"] },
-  { src: "/images/screenshots/call-logs.png?v=2", title: "Call Logs", desc: "Review conversations and outcomes instantly.", ic: "fa-solid fa-file-lines", c: "var(--violet)", bg: "rgba(157,139,255,.16)", pts: ["Full transcripts & recordings", "Outcome tags on every call", "Search & filter by caller"] },
-  { src: "/images/screenshots/ai-brain.png?v=2", title: "AI Agent Builder", desc: "Create and customize your AI agent in minutes.", ic: "fa-solid fa-wand-magic-sparkles", c: "var(--cyan)", bg: "rgba(86,224,224,.15)", pts: ["Set greeting, services & hours", "Pick your agent's voice & style", "Changes go live instantly"] },
-  { src: "/images/screenshots/plans-billing.png?v=2", title: "Plans & Billing", desc: "Track minutes, switch plans, and control auto-renew.", ic: "fa-solid fa-credit-card", c: "#22b573", bg: "rgba(34,197,94,.14)", pts: ["Live minute usage meter", "Upgrade or switch anytime", "Full control over auto-renew"] },
+  { kind: "dash", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls & minutes at a glance", "Intent & sentiment tracking", "Daily performance trends"] },
+  { kind: "logs", title: "Call Logs", desc: "Review conversations and outcomes instantly.", ic: "fa-solid fa-file-lines", c: "var(--violet)", bg: "rgba(157,139,255,.16)", pts: ["Full transcripts & recordings", "Outcome tags on every call", "Search & filter by caller"] },
+  { kind: "brain", title: "AI Agent Builder", desc: "Create and customize your AI agent in minutes.", ic: "fa-solid fa-wand-magic-sparkles", c: "var(--cyan)", bg: "rgba(86,224,224,.15)", pts: ["Set greeting, services & hours", "Pick your agent's voice & style", "Changes go live instantly"] },
+  { kind: "billing", title: "Plans & Billing", desc: "Track minutes, switch plans, and control auto-renew.", ic: "fa-solid fa-credit-card", c: "#22b573", bg: "rgba(34,197,94,.14)", pts: ["Live minute usage meter", "Upgrade or switch anytime", "Full control over auto-renew"] },
+];
+
+// Platform features — horizontal cards with thumbnails (user mockup 2026-07-10).
+// Images AI-generated (public/images/feat-*.jpg). Do columns: left 4, right 3 — mockup ka order.
+type Plat = { ic: string; tb: string; tbd: string; tc: string; t: string; d: string; img: string; bic: string; bc: string };
+const PLAT_COLS: Plat[][] = [
+  [
+    { ic: "fa-solid fa-comments", tb: "rgba(44,118,237,.14)", tbd: "rgba(44,118,237,.3)", tc: "var(--lime)", t: "Conversational, not scripted", d: "Responds to what the caller actually says and keeps track of the conversation as it goes — holding context across the whole call.", img: "/images/feat-conversational.jpg", bic: "fa-solid fa-ellipsis", bc: "var(--lime)" },
+    { ic: "fa-solid fa-language", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "English today — more coming", d: "Answers in natural English now, with more languages on the roadmap.", img: "/images/feat-english.jpg", bic: "fa-solid fa-globe", bc: "#22b573" },
+    { ic: "fa-solid fa-shield-halved", tb: "rgba(157,139,255,.16)", tbd: "rgba(157,139,255,.32)", tc: "var(--violet)", t: "Your data, protected", d: "Encrypted in transit, secrets encrypted at rest, and never sold.", img: "/images/feat-security.jpg", bic: "fa-solid fa-shield-halved", bc: "var(--violet)" },
+    { ic: "fa-solid fa-arrows-rotate", tb: "rgba(245,158,11,.14)", tbd: "rgba(245,158,11,.32)", tc: "#f59e0b", t: "CRM & Calendar", d: "Connect Google Calendar and push leads to your CRM or any webhook.", img: "/images/feat-calendar.jpg", bic: "fa-regular fa-calendar", bc: "#f59e0b" },
+  ],
+  [
+    { ic: "fa-solid fa-microphone-lines", tb: "rgba(157,139,255,.16)", tbd: "rgba(157,139,255,.32)", tc: "var(--violet)", t: "Studio voices", d: "Choose from a library of studio-grade English voices to match your brand.", img: "/images/feat-voices.jpg", bic: "fa-solid fa-wave-square", bc: "var(--violet)" },
+    { ic: "fa-solid fa-wand-magic-sparkles", tb: "rgba(44,118,237,.12)", tbd: "rgba(44,118,237,.28)", tc: "var(--lime)", t: "Post-call automations", d: "After every call, details are captured and pushed to your inbox, CRM, and notifications automatically.", img: "/images/feat-automations.jpg", bic: "fa-solid fa-bolt", bc: "var(--lime)" },
+    { ic: "fa-solid fa-chart-line", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "Call analytics & transcripts", d: "Every call transcribed, summarised, and tagged with intent and sentiment — the summary delivered by email, SMS, and WhatsApp after the call.", img: "/images/feat-analytics.jpg", bic: "fa-solid fa-chart-column", bc: "#14a3a3" },
+  ],
 ];
 
 // FAQ — edit/add questions here. `a` supports **bold** markup (rendered below).
@@ -175,6 +216,22 @@ const FAQS: Faq[] = [
   { q: "Is my data secure?", a: "Yes. Your data is encrypted both in transit and at rest. We never share your call recordings, transcripts, or customer information with third parties." },
   { q: "Can I listen to call recordings?", a: "Yes. When call recording is enabled, recordings are available in the **Call Inbox** section of your dashboard." },
   { q: "How do I update my mobile number or email address?", a: "Go to **Account Settings** in your dashboard to update your mobile number, email address, or password at any time." },
+];
+
+// FAQ items ke icon tiles (user mockup 2026-07-10) — index FAQS ke order se match karta hai
+const FAQ_ICS: { ic: string; c: string; bg: string }[] = [
+  { ic: "fa-regular fa-comment-dots", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
+  { ic: "fa-solid fa-wand-magic-sparkles", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
+  { ic: "fa-solid fa-sliders", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
+  { ic: "fa-solid fa-phone-volume", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
+  { ic: "fa-regular fa-message", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
+  { ic: "fa-solid fa-link", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
+  { ic: "fa-solid fa-microphone-lines", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
+  { ic: "fa-regular fa-clock", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
+  { ic: "fa-solid fa-arrows-rotate", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
+  { ic: "fa-solid fa-shield-halved", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
+  { ic: "fa-solid fa-headphones", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
+  { ic: "fa-solid fa-user-pen", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
 ];
 
 type Cap = { icon: string; label: string; blue?: boolean };
@@ -225,14 +282,14 @@ const PLANS: Plan[] = [
 ];
 
 // Human vs AI comparison table — orbit section ki jagah (client reference).
-type CmpRow = { f: string; ic: string; h: string; a: string };
+type CmpRow = { f: string; ic: string; h: string; a: string; chip: string };
 const COMPARE: CmpRow[] = [
-  { f: "Availability", ic: "fa-regular fa-clock", h: "9am–5pm, weekdays", a: "24/7, 365 days a year" },
-  { f: "Sick Days & Leave", ic: "fa-solid fa-umbrella-beach", h: "Of course! They're human.", a: "Never. Always on duty." },
-  { f: "Cost", ic: "fa-solid fa-sack-dollar", h: "Salary, super, leave", a: "One simple flat rate" },
-  { f: "Setup Time", ic: "fa-solid fa-bolt", h: "Weeks of hiring & training", a: "Live in minutes" },
-  { f: "3 Calls at Once?", ic: "fa-solid fa-phone-volume", h: "\u201CPlease hold.\u201D", a: "Easily." },
-  { f: "Integration", ic: "fa-solid fa-plug", h: "Manual note-taking", a: "Connects to your tools" },
+  { f: "Availability", ic: "fa-regular fa-clock", h: "9am–5pm, weekdays", a: "24/7, 365 days a year", chip: "Always on" },
+  { f: "Sick Days & Leave", ic: "fa-solid fa-umbrella-beach", h: "Of course! They're human.", a: "Never. Always on duty.", chip: "No days off" },
+  { f: "Cost", ic: "fa-solid fa-sack-dollar", h: "Salary, super, leave", a: "One simple flat rate", chip: "Predictable" },
+  { f: "Setup Time", ic: "fa-solid fa-bolt", h: "Weeks of hiring & training", a: "Live in minutes", chip: "Quick & easy" },
+  { f: "3 Calls at Once?", ic: "fa-solid fa-phone-volume", h: "\u201CPlease hold.\u201D", a: "Easily.", chip: "Unlimited" },
+  { f: "Integration", ic: "fa-solid fa-plug", h: "Manual note-taking", a: "Connects to your tools", chip: "Seamless" },
 ];
 
 // Google reviews CTA — apna Google Business review link yahan daal dein.
@@ -322,6 +379,13 @@ const CSS = `
 @media(max-width:920px){
  .h22 .nav-links{display:none!important}
  .h22 .nav-burger{display:inline-flex!important}
+ .h22 .demo-header-grid{grid-template-columns:minmax(0,1fr)!important}
+ .h22 .demo-illus,.h22 .prod-illus{display:none!important}
+ .h22 .plat-cols{grid-template-columns:minmax(0,1fr)!important}
+ .h22 .hiw-arrow{display:none!important}
+ .h22 .uc-detail{grid-template-columns:minmax(0,1fr)!important}
+ .h22 .uc-photo{min-height:240px!important}
+ .h22 .cmp-squig{display:none!important}
  .h22 .nav-logo{height:44px!important}
  .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .price-grid,.h22 .cta-grid,.h22 .cmp-grid{grid-template-columns:minmax(0,1fr)!important}
  .h22 .cmp-grid{gap:28px!important}
@@ -366,7 +430,8 @@ const CSS = `
  .h22 .stat4>div>div:first-child{margin:0!important;width:44px!important;height:44px!important}
  .h22 .stat4>div>div:nth-child(2){margin:0!important;font-size:16px!important}
  .h22 .stat4>div>p{grid-column:2;margin:0!important;font-size:13px!important}
- .h22 .feat-grid>div{padding:22px 20px!important}
+ .h22 .plat-card{padding:20px 18px!important}
+ .h22 .plat-thumb{width:100%!important;height:160px!important}
  .h22 footer{padding-left:18px!important;padding-right:18px!important}
  .h22 .footer-grid{padding:32px 18px 28px!important}
  .h22 .footer-bottom{padding:16px 18px!important}
@@ -434,6 +499,234 @@ function renderAnswer(text: string) {
       )}
     </p>
   ));
+}
+
+// Product cards ke mini-UI previews (user mockup 2026-07-10) — real screenshots ki jagah
+// HTML/CSS mockups: crisp rehte hain, theme ke saath adapt karte hain. Data mockup wala hi.
+function MiniShot({ kind }: { kind: "dash" | "logs" | "brain" | "billing" }) {
+  const wrap: React.CSSProperties = { position: "absolute", inset: 0, background: "var(--surface)", display: "flex", flexDirection: "column", overflow: "hidden", padding: 10, gap: 7 };
+  const tile: React.CSSProperties = { background: "var(--w04)", border: "1px solid var(--w08)", borderRadius: 8, padding: "7px 9px", minWidth: 0 };
+  const lab: React.CSSProperties = { fontSize: 8.5, color: "var(--mut2)", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
+  const num: React.CSSProperties = { fontFamily: SUB, fontSize: 13, fontWeight: 700, color: "var(--tx)", marginTop: 2 };
+  const head = (ic: string, t: string, right?: React.ReactNode) => (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexShrink: 0 }}>
+      <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 10.5, fontWeight: 700, color: "var(--tx)" }}>
+        <span style={{ width: 18, height: 18, borderRadius: 5, background: "rgba(44,118,237,.12)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 8 }}><i className={ic} aria-hidden="true" /></span>{t}
+      </span>
+      {right}
+    </div>
+  );
+
+  if (kind === "dash") return (
+    <div style={wrap} aria-hidden="true">
+      {head("fa-solid fa-chart-column", "Overview")}
+      <div style={{ display: "flex", gap: 6 }}>
+        <div style={{ ...tile, flex: 1 }}><div style={lab}>Total Calls</div><div style={num}>3,246</div><svg viewBox="0 0 60 16" style={{ width: "100%", height: 13, marginTop: 3 }}><path d="M1 13 C 10 12, 14 8, 22 9 C 30 10, 34 5, 42 6 C 50 7, 54 2, 59 3" fill="none" stroke="var(--lime)" strokeWidth="1.7" /></svg></div>
+        <div style={{ ...tile, flex: 1 }}><div style={lab}>Answered</div><div style={num}>2,834</div><div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 2 }}><svg viewBox="0 0 20 20" style={{ width: 15, height: 15 }}><circle cx="10" cy="10" r="7" fill="none" stroke="var(--w10)" strokeWidth="3" /><circle cx="10" cy="10" r="7" fill="none" stroke="#22b573" strokeWidth="3" strokeDasharray="38.3 44" strokeLinecap="round" transform="rotate(-90 10 10)" /></svg><span style={{ fontSize: 8.5, fontWeight: 700, color: "#22b573" }}>87%</span></div></div>
+        <div style={{ ...tile, flex: 1 }}><div style={lab}>Avg. Duration</div><div style={num}>02:48</div><svg viewBox="0 0 60 16" style={{ width: "100%", height: 13, marginTop: 3 }}><path d="M1 12 C 12 13, 18 6, 28 8 C 38 10, 44 4, 59 5" fill="none" stroke="var(--violet)" strokeWidth="1.7" /></svg></div>
+      </div>
+      <div style={{ ...tile, flex: 1, display: "flex", flexDirection: "column" }}>
+        <div style={lab}>Performance</div>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 5, flex: 1, paddingTop: 4 }}>
+          {[38, 55, 44, 70, 58, 82, 66, 90, 74, 60, 78, 52].map((h, i) => <span key={i} style={{ flex: 1, height: `${h}%`, borderRadius: 2, background: "rgba(44,118,237,.5)" }} />)}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (kind === "logs") {
+    const rows: [string, string, string, string, string][] = [
+      ["+1 (555) 123-4567", "9:41 AM", "02:31", "Job Booked", "#22b573"],
+      ["+1 (555) 987-6543", "9:32 AM", "01:45", "Info Provided", "var(--blue-ink)"],
+      ["+1 (555) 456-7890", "9:21 AM", "03:12", "Appointment", "var(--violet)"],
+      ["+1 (555) 234-5678", "9:15 AM", "00:58", "No Answer", "#e2564d"],
+    ];
+    return (
+      <div style={wrap} aria-hidden="true">
+        {head("fa-regular fa-file-lines", "Call Logs", <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 8.5, color: "var(--mut3)", background: "var(--w04)", border: "1px solid var(--w08)", borderRadius: 999, padding: "4px 9px" }}><i className="fa-solid fa-magnifying-glass" style={{ fontSize: 7 }} aria-hidden="true" />Search logs…</span>)}
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr .8fr .7fr 1fr", gap: 6, fontSize: 8, fontWeight: 700, color: "var(--mut3)", padding: "2px 4px 0" }}>
+          <span>Caller</span><span>Time</span><span>Duration</span><span>Outcome</span>
+        </div>
+        {rows.map((r) => (
+          <div key={r[0]} style={{ display: "grid", gridTemplateColumns: "1.4fr .8fr .7fr 1fr", gap: 6, alignItems: "center", fontSize: 8.5, color: "var(--tx3)", background: "var(--w04)", border: "1px solid var(--w07)", borderRadius: 7, padding: "5px 7px", fontVariantNumeric: "tabular-nums" }}>
+            <span style={{ fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r[0]}</span><span>{r[1]}</span><span>{r[2]}</span>
+            <span style={{ justifySelf: "start", fontSize: 7.5, fontWeight: 700, color: r[4], background: "color-mix(in srgb, "+"currentColor 12%, transparent)".replace("currentColor", r[4]), borderRadius: 999, padding: "2px 7px", whiteSpace: "nowrap" }}>{r[3]}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "brain") return (
+    <div style={{ ...wrap, flexDirection: "row", gap: 8 }} aria-hidden="true">
+      <div style={{ width: "34%", flexShrink: 0, display: "flex", flexDirection: "column", gap: 3 }}>
+        {["Agent Info", "Greeting", "Services", "Availability", "Voice & Style", "Review"].map((t, i) => (
+          <span key={t} style={{ fontSize: 8.5, fontWeight: i === 1 ? 700 : 600, color: i === 1 ? "var(--blue-ink)" : "var(--mut2)", background: i === 1 ? "rgba(44,118,237,.12)" : "transparent", borderRadius: 6, padding: "4px 7px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t}</span>
+        ))}
+      </div>
+      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 5 }}>
+        <div style={lab}>Greeting</div>
+        <div style={{ ...tile, fontSize: 8.5, color: "var(--tx3)", fontWeight: 600 }}>Hi! How can I help you today?</div>
+        <div style={{ ...lab, marginTop: 2 }}>Services</div>
+        <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+          {["Plumbing", "Repairs", "Installations"].map((t) => <span key={t} style={{ fontSize: 7.5, fontWeight: 700, color: "var(--tx3)", background: "var(--w05)", border: "1px solid var(--w10)", borderRadius: 999, padding: "2px 7px", whiteSpace: "nowrap" }}>{t} ×</span>)}
+        </div>
+        <div style={{ ...lab, marginTop: 2 }}>Availability</div>
+        <div style={{ ...tile, fontSize: 8.5, color: "var(--tx3)", fontWeight: 600, display: "flex", justifyContent: "space-between", gap: 6 }}><span>Mon – Fri</span><span>8:00 AM – 6:00 PM</span></div>
+      </div>
+    </div>
+  );
+
+  // billing
+  return (
+    <div style={wrap} aria-hidden="true">
+      {head("fa-solid fa-credit-card", "Plans & Billing")}
+      <div style={lab}>Current Plan</div>
+      <div style={{ ...tile, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
+          <span style={{ fontSize: 8, fontWeight: 700, color: "var(--blue-ink)", background: "rgba(44,118,237,.12)", borderRadius: 999, padding: "2px 8px" }}>Pro Plan</span>
+          <span style={{ fontFamily: SUB, fontSize: 11, fontWeight: 700, color: "var(--tx)" }}>$79<span style={{ fontSize: 7.5, color: "var(--mut2)", fontWeight: 600 }}> /month</span></span>
+        </div>
+        <div style={{ height: 5, borderRadius: 3, background: "var(--w08)", overflow: "hidden" }}><span style={{ display: "block", width: "48%", height: "100%", borderRadius: 3, background: "var(--lime)" }} /></div>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 6, fontSize: 7.5, color: "var(--mut2)", fontWeight: 600 }}><span>2,430 / 5,000 mins used</span><span>Renews in 12 days</span></div>
+      </div>
+      <div style={lab}>Add-ons</div>
+      {[["fa-regular fa-clock", "Extra Minutes", "+1,000 mins", "$15"], ["fa-solid fa-headset", "Priority Support", "", "$19"]].map((r) => (
+        <div key={r[1]} style={{ ...tile, display: "flex", alignItems: "center", gap: 6, padding: "5px 8px" }}>
+          <i className={r[0]} style={{ fontSize: 8, color: "var(--blue-ink)" }} aria-hidden="true" />
+          <span style={{ fontSize: 8.5, fontWeight: 700, color: "var(--tx3)", flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r[1]}{r[2] && <span style={{ color: "var(--mut3)", fontWeight: 600 }}> {r[2]}</span>}</span>
+          <span style={{ fontSize: 8.5, fontWeight: 700, color: "var(--tx)" }}>{r[3]}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// How-it-works step cards ke mini-UI windows (user mockup 2026-07-10) — screenshots ki jagah
+// HTML/CSS mockups, hello22-app jaisi chhoti windows. Data mockup wala hi.
+function StepShot({ step }: { step: 1 | 2 | 3 }) {
+  const frame: React.CSSProperties = { position: "relative", borderRadius: 12, overflow: "hidden", border: "1px solid var(--w08)", background: "var(--surface)", height: 226, display: "flex", flexDirection: "column" };
+  const bar: React.CSSProperties = { display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", borderBottom: "1px solid var(--w07)", flexShrink: 0 };
+  const logo = (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 8.5, fontWeight: 800, color: "var(--tx2)" }}>
+      <span style={{ width: 12, height: 12, borderRadius: "50%", background: "rgba(44,118,237,.15)", border: "1px solid rgba(44,118,237,.35)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 6 }}><i className="fa-solid fa-phone" aria-hidden="true" /></span>
+      hello22<span style={{ color: "var(--blue-ink)" }}>.ai</span>
+    </span>
+  );
+  const side: React.CSSProperties = { width: 78, flexShrink: 0, borderRight: "1px solid var(--w07)", padding: "8px 7px", display: "flex", flexDirection: "column", gap: 3 };
+  const sideItem = (t: string, active: boolean, c: string) => (
+    <span key={t} style={{ fontSize: 7.5, fontWeight: active ? 800 : 600, color: active ? c : "var(--mut3)", background: active ? "color-mix(in srgb, " + c + " 12%, transparent)" : "transparent", borderRadius: 5, padding: "4px 6px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t}</span>
+  );
+  const chk = (t: string) => (
+    <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 8, fontWeight: 600, color: "var(--tx3)" }}>
+      <span style={{ width: 10, height: 10, borderRadius: "50%", background: "rgba(34,197,94,.15)", color: "#1a9a5c", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 5.5 }}><i className="fa-solid fa-check" aria-hidden="true" /></span>{t}
+    </span>
+  );
+  const fld = (l: string, v: React.ReactNode) => (
+    <div key={l}>
+      <div style={{ fontSize: 6.5, fontWeight: 700, color: "var(--mut2)", marginBottom: 2 }}>{l}</div>
+      <div style={{ fontSize: 8, fontWeight: 600, color: "var(--tx3)", background: "var(--w04)", border: "1px solid var(--w08)", borderRadius: 5, padding: "4px 7px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{v}</div>
+    </div>
+  );
+  const miniCard: React.CSSProperties = { background: "var(--w04)", border: "1px solid var(--w08)", borderRadius: 8, padding: "7px 8px" };
+
+  if (step === 1) return (
+    <div style={frame} aria-hidden="true">
+      <div style={bar}>{logo}</div>
+      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+        <div style={side}>
+          <span style={{ fontSize: 6.5, fontWeight: 800, letterSpacing: ".08em", color: "var(--mut3)", padding: "0 6px 2px" }}>SETUP</span>
+          {sideItem("Agent details", true, "var(--blue-ink)")}{sideItem("Business info", false, "")}{sideItem("Review", false, "")}
+        </div>
+        <div style={{ flex: 1, minWidth: 0, padding: 9, display: "flex", gap: 8 }}>
+          <div style={{ flex: 1.15, minWidth: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ fontSize: 9.5, fontWeight: 800, color: "var(--tx)" }}>Your AI receptionist is almost ready!</div>
+            {chk("Business found")}{chk("Agent configured")}{chk("Knowledge added")}
+            <span style={{ marginTop: "auto", alignSelf: "flex-start", fontSize: 8, fontWeight: 700, color: "#fff", background: "var(--lime)", borderRadius: 6, padding: "5px 12px" }}>Review &amp; confirm</span>
+          </div>
+          <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 7 }}>
+            <div style={miniCard}>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 8, fontWeight: 800, color: "var(--tx2)" }}><span style={{ width: 12, height: 12, borderRadius: 4, background: "rgba(44,118,237,.14)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 6 }}><i className="fa-solid fa-briefcase" aria-hidden="true" /></span>Business</div>
+              <div style={{ fontSize: 8.5, fontWeight: 700, color: "var(--tx3)", marginTop: 3 }}>Apex Plumbing</div>
+              <div style={{ fontSize: 7, color: "var(--mut3)", marginTop: 2 }}>Industry<br />Plumbing</div>
+            </div>
+            <div style={miniCard}>
+              <div style={{ fontSize: 8, fontWeight: 800, color: "var(--tx2)" }}>Your agent</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/avatar-sarah.jpg" alt="" width={18} height={18} loading="lazy" style={{ width: 18, height: 18, borderRadius: "50%", objectFit: "cover" }} />
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ display: "block", fontSize: 8.5, fontWeight: 700, color: "var(--tx3)" }}>Sarah</span>
+                  <span style={{ display: "block", fontSize: 6.5, color: "var(--mut3)" }}>Natural, Friendly, Professional</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (step === 2) return (
+    <div style={frame} aria-hidden="true">
+      <div style={bar}>{logo}</div>
+      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+        <div style={side}>
+          <span style={{ fontSize: 6.5, fontWeight: 800, letterSpacing: ".08em", color: "var(--mut3)", padding: "0 6px 2px" }}>ACCOUNT</span>
+          {sideItem("Account", true, "var(--violet)")}{sideItem("Details", false, "")}{sideItem("Preferences", false, "")}{sideItem("Notifications", false, "")}
+        </div>
+        <div style={{ flex: 1, minWidth: 0, padding: 9, display: "flex", gap: 8 }}>
+          <div style={{ flex: 1.2, minWidth: 0, display: "flex", flexDirection: "column", gap: 5 }}>
+            <div style={{ fontSize: 9.5, fontWeight: 800, color: "var(--tx)" }}>Create your account</div>
+            {fld("Full name", "John Carter")}
+            {fld("Email", "john@apexplumbing.com")}
+            {fld("Mobile number", <><span aria-hidden="true">🇦🇺</span> +61 412 345 678</>)}
+            <span style={{ marginTop: "auto", alignSelf: "flex-start", fontSize: 8, fontWeight: 700, color: "#fff", background: "var(--violet)", borderRadius: 6, padding: "5px 12px" }}>Create account</span>
+          </div>
+          <div style={{ flex: .9, minWidth: 0 }}>
+            <div style={{ ...miniCard, height: "100%", display: "flex", flexDirection: "column", gap: 5 }}>
+              <div style={{ fontSize: 8, fontWeight: 800, color: "var(--blue-ink)" }}>You&apos;re in good hands</div>
+              <div style={{ fontSize: 7.5, lineHeight: 1.5, color: "var(--mut2)" }}>We&apos;ll only use your info to power your AI receptionist.</div>
+              <span style={{ marginTop: "auto", alignSelf: "center", width: 22, height: 22, borderRadius: "50%", background: "rgba(157,139,255,.16)", border: "1px solid rgba(157,139,255,.35)", color: "var(--violet)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-shield-halved" aria-hidden="true" /></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // step 3
+  const numbers = [
+    { n: "+61 2 5550 1234", sel: true },
+    { n: "+61 2 5550 5678", sel: false },
+    { n: "+61 3 5550 9876", sel: false },
+    { n: "+61 7 5550 4321", sel: false },
+    { n: "+61 8 5550 2468", sel: false },
+  ];
+  return (
+    <div style={frame} aria-hidden="true">
+      <div style={bar}>{logo}</div>
+      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+        <div style={side}>
+          <span style={{ fontSize: 6.5, fontWeight: 800, letterSpacing: ".08em", color: "var(--mut3)", padding: "0 6px 2px" }}>GO LIVE</span>
+          {sideItem("Go live", true, "#1a9a5c")}{sideItem("Phone number", false, "")}{sideItem("Call forwarding", false, "")}{sideItem("All set", false, "")}
+        </div>
+        <div style={{ flex: 1, minWidth: 0, padding: 9, display: "flex", flexDirection: "column", gap: 4 }}>
+          <div style={{ fontSize: 9.5, fontWeight: 800, color: "var(--tx)" }}>Pick your dedicated AI number</div>
+          {numbers.map((x) => (
+            <div key={x.n} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 8, fontWeight: 600, color: "var(--tx3)", background: x.sel ? "rgba(34,197,94,.08)" : "transparent", border: x.sel ? "1px solid rgba(34,197,94,.4)" : "1px solid var(--w07)", borderRadius: 6, padding: "3.5px 7px", fontVariantNumeric: "tabular-nums" }}>
+              {x.sel
+                ? <span style={{ width: 9, height: 9, borderRadius: "50%", background: "#22b573", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 5, flexShrink: 0 }}><i className="fa-solid fa-check" aria-hidden="true" /></span>
+                : <span style={{ width: 9, height: 9, borderRadius: "50%", border: "1px solid var(--w14)", flexShrink: 0 }} />}
+              <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{x.n}</span>
+              {x.sel && <span style={{ fontSize: 6, fontWeight: 800, color: "#1a9a5c", background: "rgba(34,197,94,.14)", border: "1px solid rgba(34,197,94,.3)", borderRadius: 999, padding: "1px 6px", flexShrink: 0 }}>Recommended</span>}
+            </div>
+          ))}
+          <span style={{ marginTop: "auto", alignSelf: "stretch", textAlign: "center", fontSize: 8, fontWeight: 700, color: "#fff", background: "#22b573", borderRadius: 6, padding: "5px 12px" }}>Claim number &amp; go live</span>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // Scroll parallax: translates the element on Y as it moves through the viewport.
@@ -505,7 +798,7 @@ export default function Hello22Site() {
   }, [theme]);
   const isLight = theme === "light";
   const flipTheme = () => setTheme((t) => { const next = t === "dark" ? "light" : "dark"; try { window.localStorage.setItem("h22-theme", next); } catch { /* private mode */ } return next; });
-  const [greet, setGreet] = useState(0);
+  const [greet] = useState(0);
   const [voice, setVoice] = useState(0);
   const [useCase, setUseCase] = useState(0);
   const [ucExpanded, setUcExpanded] = useState(false);
@@ -664,12 +957,6 @@ export default function Hello22Site() {
     audio.play().catch(fb);
   }
 
-  // greeting cycle
-  useEffect(() => {
-    const t = setInterval(() => setGreet((g) => (g + 1) % GREETS.length), 1900);
-    return () => clearInterval(t);
-  }, []);
-
   // speech voices
   useEffect(() => {
     if (!("speechSynthesis" in window)) return;
@@ -763,7 +1050,8 @@ export default function Hello22Site() {
     ring.play().catch(go);
   }
 
-  const demoTime = `00:${String(Math.floor(callSecs / 60)).padStart(2, "0")}:${String(callSecs % 60).padStart(2, "0")}`;
+  // mm:ss format (user mockup 2026-07-10) — pehle hh:mm:ss tha
+  const demoTime = `${String(Math.floor(callSecs / 60)).padStart(2, "0")}:${String(callSecs % 60).padStart(2, "0")}`;
   const uc = USECASES[useCase];
 
   // Eyebrow ab labeled chip hai (boss feedback 2026-07-10) — plain text sections mein ghul jata tha;
@@ -836,7 +1124,9 @@ export default function Hello22Site() {
 
       {/* HERO */}
       <section id="top" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "76px 28px 56px" }}>
-        <div className="hero-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 54, alignItems: "center" }}>
+        {/* decorative sphere card ke peeche (user mockup 2026-07-10) — dono themes mein subtle */}
+        <div aria-hidden="true" style={{ position: "absolute", top: -30, right: -160, width: 620, height: 620, borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, rgba(44,118,237,.16), rgba(44,118,237,.05) 55%, transparent 72%)", pointerEvents: "none", zIndex: 0 }} />
+        <div className="hero-grid" style={{ position: "relative", zIndex: 1, display: "grid", gridTemplateColumns: "1.05fr .95fr", gap: 54, alignItems: "center" }}>
           <div>
             <div className="hin" style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "7px 14px", borderRadius: 999, background: "var(--w05)", border: "1px solid var(--w10)", fontSize: 13, color: "var(--tx3)" }}>
               <span style={{ position: "relative", display: "inline-flex", width: 8, height: 8 }}>
@@ -845,6 +1135,7 @@ export default function Hello22Site() {
               </span>
               <span style={{ fontWeight: 600, color: "var(--tx3)", letterSpacing: ".02em" }}>24/7 AI voice receptionist</span>
             </div>
+            {/* "hello." greeting headline — user ki choice (2026-07-10), mockup ke 2-line headline par revert nahi karna */}
             <h1 className="hero-h1 hin" style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0", animationDelay: ".06s" }}>
               <span style={{ display: "inline-flex", alignItems: "baseline", perspective: "600px" }}>
                 <span key={greet} style={{ display: "inline-block", animation: "h22greet .65s cubic-bezier(.2,.8,.2,1) both" }}>{GREETS[greet]}</span>
@@ -878,8 +1169,8 @@ export default function Hello22Site() {
           </div>
           {/* live call card */}
           <div ref={heroCardRef} style={{ willChange: "transform" }}>
-          <div className="hin" style={{ animationDelay: ".15s" }}>
-            <div className="float-card" style={{ position: "relative", background: "var(--hero-card)", border: "1px solid rgba(44,118,237,.42)", borderRadius: 24, padding: 26, boxShadow: "0 0 0 1px rgba(44,118,237,.08), 0 26px 70px -30px rgba(44,118,237,.4), 0 44px 90px -40px var(--sh1)", animation: "h22float 6.5s ease-in-out infinite" }}>
+          <div className="hin" style={{ animationDelay: ".15s", position: "relative" }}>
+            <div className="float-card" style={{ position: "relative", background: "var(--hero-card)", border: "1px solid rgba(44,118,237,.42)", borderRadius: 28, padding: 28, boxShadow: "0 0 0 1px rgba(44,118,237,.08), 0 26px 70px -30px rgba(44,118,237,.4), 0 44px 90px -40px var(--sh1)", animation: "h22float 6.5s ease-in-out infinite" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 14, minWidth: 0 }}>
                   <div style={{ width: 46, height: 46, borderRadius: 14, background: "var(--lime)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 18, flexShrink: 0, boxShadow: "0 10px 24px -10px rgba(44,118,237,.8)" }}><i className="fa-solid fa-phone" /></div>
@@ -890,26 +1181,37 @@ export default function Hello22Site() {
                   </div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 9, flexShrink: 0 }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: "rgba(255,60,60,.1)", border: "1px solid rgba(255,75,75,.28)", fontSize: 12.5, fontWeight: 700, color: "var(--tx)" }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ff4b4b", animation: "h22pulse 1.4s infinite" }} />Live</div>
+                  {/* Live badge green (user mockup 2026-07-10) — red se friendly green */}
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: "rgba(34,197,94,.12)", border: "1px solid rgba(34,197,94,.32)", fontSize: 12.5, fontWeight: 700, color: "var(--tx)" }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#22b573", animation: "h22pulse 1.4s infinite" }} />Live</div>
                   <span style={{ fontSize: 13.5, color: "var(--tx3)", fontVariantNumeric: "tabular-nums", paddingRight: 2 }}>0:42</span>
                 </div>
               </div>
-              <div className="wave" style={{ display: "flex", alignItems: "center", gap: 3, height: 76, margin: "20px 0 4px", padding: "0 4px" }}>
-                {Array.from({ length: 46 }).map((_, i) => {
-                  const t = i / 45;
+              {/* Waveform (user mockup 2026-07-10): thinner bars, center-weighted intensity — edges halke */}
+              <div className="wave" style={{ display: "flex", alignItems: "center", gap: 3, height: 60, margin: "20px 0 4px", padding: "0 4px" }}>
+                {Array.from({ length: 52 }).map((_, i) => {
+                  const t = i / 51;
                   const env = Math.sin(Math.PI * t);
                   const detail = 0.42 + 0.58 * Math.abs(Math.sin(i * 0.9) + 0.4 * Math.sin(i * 2.3)) / 1.4;
-                  const h = Math.max(4, Math.round(62 * env * detail));
-                  return <span key={i} style={{ width: 4, flex: "1 1 0", maxWidth: 6, borderRadius: 4, background: "var(--lime)", height: h, transformOrigin: "center", animation: `h22eq ${0.7 + (i % 5) * 0.12}s ease-in-out ${(i * 0.045).toFixed(2)}s infinite` }} />;
+                  const h = Math.max(4, Math.round(48 * env * detail));
+                  const strength = Math.min(1, env * detail + 0.15);
+                  return <span key={i} style={{ width: 3.5, flex: "1 1 0", maxWidth: 5, borderRadius: 4, background: "var(--lime)", opacity: 0.3 + 0.7 * strength, height: h, transformOrigin: "center", animation: `h22eq ${0.7 + (i % 5) * 0.12}s ease-in-out ${(i * 0.045).toFixed(2)}s infinite` }} />;
                 })}
               </div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, padding: "8px 14px", borderRadius: 10, background: "var(--w05)", border: "1px solid var(--w10)" }}>EN</span>
                 <span style={{ fontSize: 12, fontWeight: 600, padding: "8px 14px", borderRadius: 10, background: "var(--w05)", border: "1px solid var(--w10)" }}>Voice: Sarah</span>
               </div>
-              <div style={{ marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--w08)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ fontSize: 13.5, color: "var(--mut2)" }}>Intent</span>
-                <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: SUB, fontSize: 16, fontWeight: 700, color: "var(--blue-ink)", textDecoration: "none", cursor: "pointer" }}>Book appointment<i className="fa-solid fa-chevron-right" style={{ fontSize: 11 }} /></a>
+              {/* AI-speaking status panel (user mockup 2026-07-10) */}
+              <div style={{ marginTop: 16, display: "flex", gap: 12, alignItems: "flex-start", background: "rgba(44,118,237,.08)", border: "1px solid rgba(44,118,237,.18)", borderRadius: 14, padding: "13px 16px" }}>
+                <span style={{ color: "var(--blue-ink)", fontSize: 15, marginTop: 1, flexShrink: 0 }} aria-hidden="true">✦</span>
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: "var(--tx2)" }}>AI is speaking…</span>
+                  <span style={{ display: "block", fontSize: 12.5, color: "var(--mut)", marginTop: 2, lineHeight: 1.5 }}>Answering questions and helping the caller.</span>
+                </span>
+              </div>
+              <div style={{ marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--w08)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                <span style={{ fontSize: 13.5, color: "var(--mut2)", minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Intent: Book appointment</span>
+                <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: SUB, fontSize: 16, fontWeight: 700, color: "var(--blue-ink)", textDecoration: "none", cursor: "pointer", flexShrink: 0 }}>Book appointment<i className="fa-solid fa-arrow-right" style={{ fontSize: 12 }} /></a>
               </div>
             </div>
           </div>
@@ -921,12 +1223,13 @@ export default function Hello22Site() {
       <section className="full-bleed" style={{ position: "relative", zIndex: 1, padding: "76px 0 56px" }}>
         <p style={{ textAlign: "center", fontSize: 13, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--tx3)", margin: "0 0 38px", padding: "0 18px" }}>Built on best-in-class voice & infrastructure</p>
         <div style={{ position: "relative", overflow: "hidden", WebkitMaskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)", maskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)" }}>
-          <div className="h22marquee" style={{ display: "flex", gap: 84, width: "max-content", animation: "h22marq 36s linear infinite", paddingRight: 84, willChange: "transform" }}>
+          {/* Logo tiles (user mockup 2026-07-10) — flat row ki jagah white pill cards */}
+          <div className="h22marquee" style={{ display: "flex", gap: 18, width: "max-content", animation: "h22marq 36s linear infinite", paddingRight: 18, willChange: "transform" }}>
             {[...TRUST, ...TRUST].map((t, i) => (
-              <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 11, whiteSpace: "nowrap" }}>
+              <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 12, whiteSpace: "nowrap", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 16, padding: "14px 24px", boxShadow: "0 12px 28px -22px var(--sh2)" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={isLight ? t.src.replace("/logos/white/", "/logos/color/") : t.src} alt={t.name} style={{ height: 26, width: "auto" }} />
-                <span style={{ fontFamily: SUB, fontSize: 19, fontWeight: 600, color: "var(--mut3)", letterSpacing: "-.01em" }}>{t.name}</span>
+                <img src={isLight ? t.src.replace("/logos/white/", "/logos/color/") : t.src} alt={t.name} style={{ height: 24, width: "auto" }} />
+                <span style={{ fontFamily: SUB, fontSize: 17, fontWeight: 600, color: "var(--tx3)", letterSpacing: "-.01em" }}>{t.name}</span>
               </span>
             ))}
           </div>
@@ -935,27 +1238,72 @@ export default function Hello22Site() {
 
       {/* DEMO */}
       <section id="demo" className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "100px 28px 112px", scrollMarginTop: 90 }}>
-        <div data-rv style={eyebrow}>AI phone agent</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 760 }}><b style={BD}>Press play.</b> Hear hello22 handle a <span style={HL}>real call</span>.</h2>
-        <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Experience how natural conversations flow</strong> with hello22. It listens, understands, and responds — <span style={HL}>just like a human</span>.</p>
-        <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 13, color: "var(--mut3)" }}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-volume-high" /></span>Hit play — hear the real recorded conversation between the caller and the hello22 agent.</div>
+        {/* Demo header 2-col (user mockup 2026-07-10): text left + illustration blob right */}
+        <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,600px)", gap: 24, alignItems: "center" }}>
+          <div>
+            <div data-rv style={eyebrow}><span aria-hidden="true" style={{ marginRight: 8, fontSize: 12 }}>✦</span>AI phone agent</div>
+            <h2 data-rv style={{ ...h2, maxWidth: 760 }}><b style={BD}>Press play.</b> Hear hello22 handle a{" "}
+              <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+                <span style={HL}>real call</span>
+                {/* underline swoosh (mockup) */}
+                <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
+              </span>.
+            </h2>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Experience how natural conversations flow</strong> with hello22. It listens, understands, and responds — <span style={HL}>just like a human</span>.</p>
+            <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 13, color: "var(--mut3)" }}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-volume-high" /></span>Hit play — hear the real recorded conversation between the caller and the hello22 agent.</div>
+          </div>
+          {/* illustration: blob + photos + chat bubbles (user mockup 2026-07-10; photos AI-generated to match) */}
+          <div className="demo-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 350 }}>
+            {/* blob left tak extend — bubbles se pehle dead space nahi rehni chahiye (user feedback 2026-07-10) */}
+            <div style={{ position: "absolute", inset: "-26px -40px -20px -60px", background: "radial-gradient(80% 72% at 52% 45%, rgba(44,118,237,.14), rgba(44,118,237,.06) 62%, transparent 82%)", borderRadius: "55% 45% 52% 48% / 58% 46% 54% 42%" }} />
+            {/* photos */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-caller.jpg" alt="" loading="lazy" style={{ position: "absolute", top: -12, right: 30, width: 148, height: 148, borderRadius: "50%", objectFit: "cover", border: "4px solid var(--surface)", boxShadow: "0 18px 40px -18px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-agent.jpg" alt="" loading="lazy" style={{ position: "absolute", bottom: 8, right: 8, width: 124, height: 124, borderRadius: "50%", objectFit: "cover", border: "4px solid var(--surface)", boxShadow: "0 18px 40px -18px var(--sh1)", animation: "h22floatSm 8s ease-in-out -3.5s infinite" }} />
+            {/* caller bubble — blob ke left edge se shuru */}
+            <div style={{ position: "absolute", top: 26, left: -34, maxWidth: 310, display: "flex", gap: 12, alignItems: "flex-start", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "20px 20px 20px 6px", padding: "15px 19px", boxShadow: "0 16px 36px -20px var(--sh1)", animation: "h22floatSm 7s ease-in-out -1.5s infinite" }}>
+              <span style={{ width: 36, height: 36, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.1)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}><i className="fa-solid fa-phone" /></span>
+              <span style={{ fontSize: 15, lineHeight: 1.5, color: "var(--tx2)", fontWeight: 600 }}>Hi, I need someone to fix a leaking tap.</span>
+            </div>
+            {/* agent bubble + mini waveform */}
+            <div style={{ position: "absolute", top: 138, left: 4, maxWidth: 350, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "20px 20px 20px 6px", padding: "15px 19px", boxShadow: "0 16px 36px -20px var(--sh1)", animation: "h22floatSm 7.5s ease-in-out -4s infinite" }}>
+              <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <span style={{ width: 34, height: 34, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>✦</span>
+                <span style={{ fontSize: 14.5, lineHeight: 1.5, color: "var(--tx2)", fontWeight: 600 }}>Of course! We can send a technician this Friday at 9 AM. Does that work for you?</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 2.5, height: 18, marginTop: 10, paddingLeft: 46 }}>
+                {Array.from({ length: 30 }).map((_, i) => {
+                  const env = Math.sin(Math.PI * (i / 29));
+                  return <span key={i} style={{ width: 2.5, borderRadius: 2, background: "var(--lime)", opacity: .35 + .65 * env, height: Math.max(3, Math.round(14 * env * (0.5 + 0.5 * Math.abs(Math.sin(i * 1.3))))) }} />;
+                })}
+              </div>
+            </div>
+            {/* squiggles */}
+            <svg viewBox="0 0 40 24" style={{ position: "absolute", left: -6, bottom: 64, width: 38, height: 22 }} aria-hidden="true"><path d="M2 18 C 8 6, 14 6, 18 14 C 22 22, 30 20, 38 6" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 6" /></svg>
+            <svg viewBox="0 0 40 24" style={{ position: "absolute", right: 10, top: -14, width: 34, height: 20 }} aria-hidden="true"><path d="M2 6 C 10 20, 18 18, 22 10 C 26 2, 34 4, 38 16" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 6" /></svg>
+          </div>
+        </div>
 
         <div className="demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 24, marginTop: 42, alignItems: "stretch" }}>
           {/* player */}
           <div data-rv="left" style={{ position: "relative", background: "var(--card-grad)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", display: "flex", flexDirection: "column" }}>
             <div className="demo-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, padding: "16px 20px", borderBottom: "1px solid var(--w07)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <button onClick={playDemo} style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "var(--lime)", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13.5, padding: "10px 20px", borderRadius: 999, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>
-                  <i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-play"}`} style={{ fontSize: 12 }} />{demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Play"}
+                {/* ghost play button (user mockup 2026-07-10) — solid blue se white + blue outline */}
+                <button onClick={playDemo} className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--surface)", color: "var(--blue-ink)", border: "1.5px solid rgba(44,118,237,.4)", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 14, padding: "10px 20px", borderRadius: 999, boxShadow: "0 8px 20px -14px rgba(44,118,237,.5)" }}>
+                  <span style={{ display: "inline-flex", width: 22, height: 22, borderRadius: "50%", background: "var(--lime)", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 9, flexShrink: 0 }}><i className={`fa-solid ${demoPlaying ? "fa-pause" : "fa-play"}`} style={{ marginLeft: demoPlaying ? 0 : 1 }} /></span>
+                  {demoPlaying ? "Pause" : demoStep > 0 ? "Replay" : "Play call"}
                 </button>
                 <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--mut3)", padding: "10px 16px" }}>Transcript</span>
               </div>
-              <span style={{ fontFamily: SUB, fontSize: 15.5, fontWeight: 600, color: "var(--blue-ink)", fontVariantNumeric: "tabular-nums" }}>{demoTime}</span>
+              <span style={{ fontFamily: SUB, fontSize: 15.5, fontWeight: 600, color: "var(--blue-ink)", fontVariantNumeric: "tabular-nums" }}>{demoTime} <span style={{ color: "var(--mut3)", fontWeight: 500 }}>/ {DEMO_TOTAL}</span></span>
             </div>
             <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 13, minHeight: 340, flex: 1, background: "var(--w04)" }}>
               {/* call-start status chip — transcript ko real chat jaisa frame deta hai */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: 2 }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11.5, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", color: "var(--blue-ink)", background: "rgba(44,118,237,.10)", border: "1px solid rgba(44,118,237,.22)", padding: "6px 14px", borderRadius: 999 }}><i className="fa-solid fa-phone" style={{ fontSize: 10, animation: ringing ? "h22pulse 1.1s infinite" : "none" }} aria-hidden="true" />{ringing ? "Calling Apex Plumbing…" : "Call connected · Apex Plumbing"}</span>
+                {/* green connected chip (user mockup 2026-07-10) */}
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11.5, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", color: "#1a9a5c", background: "rgba(34,197,94,.1)", border: "1px solid rgba(34,197,94,.28)", padding: "6px 14px", borderRadius: 999 }}><i className="fa-solid fa-phone" style={{ fontSize: 10, animation: ringing ? "h22pulse 1.1s infinite" : "none" }} aria-hidden="true" />{ringing ? "Calling Apex Plumbing…" : "Call connected · Apex Plumbing"}</span>
               </div>
               {TRANSCRIPT.map((t, i) => {
                 // Idle mein poori transcript dikhti hai; call ke doran bubbles audio ke saath
@@ -965,12 +1313,16 @@ export default function Hello22Site() {
                 const caller = t.role === "caller";
                 return (
                   <div key={i} style={{ display: "flex", justifyContent: caller ? "flex-end" : "flex-start", alignItems: "flex-end", gap: 10, opacity: shown ? 1 : 0, transform: shown ? "none" : "translateY(14px)", transition: "opacity .45s ease, transform .5s cubic-bezier(.2,.7,.2,1)" }}>
-                    {!caller && <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12 }} aria-hidden="true"><i className="fa-solid fa-headset" /></span>}
-                    <div className="bubble" style={{ maxWidth: "78%", padding: "12px 16px", borderRadius: caller ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: caller ? "var(--lime)" : "var(--surface)", border: caller ? "1px solid rgba(44,118,237,.5)" : "1px solid var(--w10)", boxShadow: caller ? "0 10px 26px -14px rgba(44,118,237,.55)" : "0 6px 18px -12px var(--sh2)", color: caller ? "#fff" : "var(--tx)", outline: active ? "2px solid rgba(44,118,237,.55)" : "none", outlineOffset: 3, transition: "outline-color .3s ease" }}>
-                      <div style={{ fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 5, color: caller ? "rgba(255,255,255,.72)" : "var(--blue-ink)" }}>{t.name}</div>
+                    {!caller && <span style={{ width: 32, height: 32, borderRadius: "50%", flexShrink: 0, background: "var(--surface)", border: "1.5px solid rgba(44,118,237,.4)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }} aria-hidden="true"><i className="fa-solid fa-headset" /></span>}
+                    {/* soft tinted bubbles + timestamps (user mockup 2026-07-10) — caller ab solid blue nahi */}
+                    <div className="bubble" style={{ maxWidth: "78%", padding: "12px 16px", borderRadius: caller ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: caller ? "rgba(44,118,237,.1)" : "var(--surface)", border: caller ? "1px solid rgba(44,118,237,.2)" : "1px solid var(--w10)", boxShadow: "0 6px 18px -12px var(--sh2)", color: "var(--tx)", outline: active ? "2px solid rgba(44,118,237,.55)" : "none", outlineOffset: 3, transition: "outline-color .3s ease" }}>
+                      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginBottom: 5 }}>
+                        <span style={{ fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", color: "var(--blue-ink)" }}>{t.name}</span>
+                        <span style={{ fontSize: 11, color: "var(--mut3)", fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{TIMES[i]}</span>
+                      </div>
                       <div style={{ fontSize: 14.5, lineHeight: 1.5 }}>{t.text}</div>
                     </div>
-                    {caller && <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12.5, fontWeight: 700 }} aria-hidden="true">{t.name.charAt(0)}</span>}
+                    {caller && <span style={{ width: 32, height: 32, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.12)", border: "1px solid rgba(44,118,237,.25)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }} aria-hidden="true"><i className="fa-solid fa-user" /></span>}
                   </div>
                 );
               })}
@@ -1010,7 +1362,7 @@ export default function Hello22Site() {
           {/* call summary */}
           <div data-rv="right" style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, padding: "18px 22px 8px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, paddingBottom: 16, borderBottom: "1px solid var(--w08)" }}>
-              <span style={{ width: 38, height: 38, borderRadius: 12, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 15 }}><i className="fa-solid fa-headset" /></span>
+              <span style={{ width: 38, height: 38, borderRadius: 12, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 15 }}><i className="fa-regular fa-file-lines" /></span>
               <span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 18 }}>Call summary</span>
             </div>
             {[
@@ -1018,13 +1370,16 @@ export default function Hello22Site() {
               { ic: "fa-regular fa-circle-check", l: "Outcome", v: "Job booked" },
               { ic: "fa-regular fa-calendar", l: "Date & time", v: "Friday at 9:00 AM" },
               { ic: "fa-regular fa-face-smile", l: "Sentiment", v: "Positive" },
-              { ic: "fa-solid fa-gauge-high", l: "Confidence", v: "98%" },
+              { ic: "fa-solid fa-chart-simple", l: "Confidence", v: "98%" },
             ].map((r, idx, arr) => (
               <div key={r.l} style={{ display: "flex", gap: 13, alignItems: "flex-start", padding: "13px 0", borderBottom: idx < arr.length - 1 ? "1px solid var(--w06)" : "none" }}>
                 <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.12)", border: "1px solid rgba(44,118,237,.25)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 12 }}><i className={r.ic} /></span>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 600, color: "var(--blue-ink)" }}>{r.l}</div>
-                  <div style={{ fontSize: 14.5, color: "var(--tx2)", marginTop: 3, fontWeight: 600 }}>{r.v}</div>
+                  {/* Sentiment green chip mein (user mockup 2026-07-10) */}
+                  {r.l === "Sentiment"
+                    ? <span style={{ display: "inline-block", marginTop: 5, fontSize: 12.5, fontWeight: 700, color: "#1a9a5c", background: "rgba(34,197,94,.12)", border: "1px solid rgba(34,197,94,.28)", padding: "4px 12px", borderRadius: 999 }}>{r.v}</span>
+                    : <div style={{ fontSize: 14.5, color: "var(--tx2)", marginTop: 3, fontWeight: 600 }}>{r.v}</div>}
                 </div>
               </div>
             ))}
@@ -1034,24 +1389,69 @@ export default function Hello22Site() {
 
       {/* PRODUCT SCREENSHOTS */}
       <section id="product" className="sec-alt" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
-        <div data-rv>
-          <span style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", borderRadius: 999, border: "1px solid rgba(44,118,237,.35)", background: "rgba(44,118,237,.07)", fontFamily: DISP, fontSize: 11.5, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--lime)", fontWeight: 700 }}>See hello22 in action</span>
-          <h2 style={{ ...h2, maxWidth: 700 }}><b style={BD}>One platform.</b><br /><span style={HL}>Endless possibilities.</span></h2>
-          <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 520, margin: "16px 0 0", lineHeight: 1.6 }}>Everything you need to build, manage, and scale AI voice agents that deliver real results.</p>
+        {/* Product header 2-col (user mockup 2026-07-10): text left + floating stats/photos cluster right */}
+        <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,560px)", gap: 24, alignItems: "center" }}>
+          <div data-rv>
+            <span style={{ display: "inline-flex", alignItems: "center", padding: "7px 16px 7px 8px", borderRadius: 999, border: "1px solid rgba(44,118,237,.35)", background: "rgba(44,118,237,.07)", fontFamily: DISP, fontSize: 11.5, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--lime)", fontWeight: 700 }}>
+              <span style={{ width: 20, height: 20, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 8, marginRight: 9, flexShrink: 0 }}><i className="fa-solid fa-play" style={{ marginLeft: 1 }} aria-hidden="true" /></span>
+              See hello22 in action
+            </span>
+            <h2 style={{ ...h2, maxWidth: 700 }}><b style={BD}>One platform.</b><br /><span style={HL}>Endless possibilities.</span></h2>
+            <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 520, margin: "16px 0 0", lineHeight: 1.6 }}>Everything you need to build, manage, and scale AI voice agents that deliver real results.</p>
+          </div>
+          {/* illustration cluster: photos + stat card + chips + dashed arrows (user mockup 2026-07-10) */}
+          <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 300 }}>
+            {/* dashed arrows */}
+            <svg viewBox="0 0 560 300" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+              <path d="M 316 66 C 356 42, 396 44, 424 62" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2 7" />
+              <path d="M 428 64 l 6 -1 l -3 6 z" fill="rgba(44,118,237,.55)" />
+              <path d="M 250 232 C 216 258, 176 262, 140 248" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2 7" />
+              <path d="M 138 250 l -2 -6 l 7 1 z" fill="rgba(44,118,237,.55)" />
+              <path d="M 118 78 C 106 60, 108 42, 122 30" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2 7" />
+              <path d="M 124 28 l -7 0 l 3 6 z" fill="rgba(44,118,237,.55)" />
+            </svg>
+            {/* squiggle */}
+            <svg viewBox="0 0 34 20" style={{ position: "absolute", left: 26, top: 66, width: 30, height: 18 }}><path d="M2 14 C 7 4, 12 4, 15 11 C 18 18, 26 16, 32 4" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="2" strokeLinecap="round" /></svg>
+            {/* woman photo */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-caller.jpg" alt="" loading="lazy" style={{ position: "absolute", top: -8, left: 74, width: 118, height: 118, borderRadius: "50%", objectFit: "cover", border: "4px solid var(--surface)", boxShadow: "0 16px 36px -18px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+            {/* bubble 1 */}
+            <div style={{ position: "absolute", top: 16, left: 204, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "18px 18px 18px 6px", padding: "11px 16px", boxShadow: "0 14px 30px -18px var(--sh1)", display: "flex", alignItems: "center", gap: 9, whiteSpace: "nowrap", animation: "h22floatSm 7s ease-in-out -1.5s infinite" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "var(--tx2)", lineHeight: 1.4 }}>Every call<br />handled perfectly</span>
+              <i className="fa-regular fa-heart" style={{ color: "var(--blue-ink)", fontSize: 13 }} aria-hidden="true" />
+            </div>
+            {/* total calls stat card */}
+            <div style={{ position: "absolute", top: 108, left: 56, width: 212, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 16, padding: "13px 16px", boxShadow: "0 18px 40px -20px var(--sh1)", animation: "h22floatSm 8.5s ease-in-out -3s infinite" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontSize: 10.5, fontWeight: 600, color: "var(--mut2)" }}>Total Calls<i className="fa-solid fa-up-right-and-down-left-from-center" style={{ fontSize: 8, color: "var(--dim2)" }} aria-hidden="true" /></div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 3 }}>
+                <span style={{ fontFamily: SUB, fontSize: 21, fontWeight: 700, color: "var(--tx)" }}>3,246</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#1a9a5c", background: "rgba(34,197,94,.12)", borderRadius: 999, padding: "2px 7px" }}>+18.2%</span>
+              </div>
+              <div style={{ fontSize: 9, color: "var(--mut3)", marginTop: 1 }}>vs last 7 days</div>
+              <svg viewBox="0 0 180 40" style={{ width: "100%", height: 38, marginTop: 6 }}><path d="M2 34 C 20 32, 30 24, 48 26 C 66 28, 76 16, 94 18 C 112 20, 122 10, 140 12 C 156 13.5, 168 6, 178 7" fill="none" stroke="var(--lime)" strokeWidth="2" strokeLinecap="round" /><path d="M2 34 C 20 32, 30 24, 48 26 C 66 28, 76 16, 94 18 C 112 20, 122 10, 140 12 C 156 13.5, 168 6, 178 7 L 178 40 L 2 40 Z" fill="rgba(44,118,237,.1)" /></svg>
+            </div>
+            {/* AI agents chip */}
+            <div style={{ position: "absolute", top: 74, right: 12, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 14, padding: "11px 16px", boxShadow: "0 14px 30px -18px var(--sh1)", display: "flex", alignItems: "center", gap: 10, animation: "h22floatSm 7.5s ease-in-out -5s infinite" }}>
+              <span style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(34,197,94,.14)", color: "#1a9a5c", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}><i className="fa-solid fa-headset" aria-hidden="true" /></span>
+              <span style={{ fontSize: 12.5, fontWeight: 700, color: "var(--tx2)", lineHeight: 1.35 }}>AI Agents<br /><span style={{ color: "var(--mut2)", fontWeight: 600 }}>Always on</span></span>
+            </div>
+            {/* man photo + bubble 2 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-agent.jpg" alt="" loading="lazy" style={{ position: "absolute", bottom: 0, right: 176, width: 104, height: 104, borderRadius: "50%", objectFit: "cover", border: "4px solid var(--surface)", boxShadow: "0 16px 36px -18px var(--sh1)", animation: "h22floatSm 8s ease-in-out -4.5s infinite" }} />
+            <div style={{ position: "absolute", bottom: 26, right: -6, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "18px 18px 6px 18px", padding: "11px 16px", boxShadow: "0 14px 30px -18px var(--sh1)", display: "flex", alignItems: "center", gap: 9, whiteSpace: "nowrap", animation: "h22floatSm 7s ease-in-out -2.5s infinite" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "var(--tx2)", lineHeight: 1.4 }}>Real conversations,<br />real results</span>
+              <i className="fa-solid fa-arrows-rotate" style={{ color: "#1a9a5c", fontSize: 12 }} aria-hidden="true" />
+            </div>
+          </div>
         </div>
         <div ref={shotsRef} style={{ willChange: "transform" }}>
         <div className="shots-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 16, marginTop: 36 }}>
           {SHOTS.map((s) => (
-            <div key={s.src} data-rv className="lift" style={{ ...card, borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              {/* image wrapper — fixed height frame, sab cards me same size/alignment */}
+            <div key={s.title} data-rv className="lift" style={{ ...card, borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              {/* mini-UI preview — fixed height frame, sab cards me same size/alignment */}
               <div style={{ padding: "14px 14px 0" }}>
-                <div style={{ position: "relative", height: 185, borderRadius: 12, overflow: "hidden", border: "1px solid var(--w08)", background: "var(--card-grad)" }}>
-                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 9, color: "var(--dim2)" }}>
-                    <i className="fa-solid fa-image" style={{ fontSize: 28 }} />
-                    <span style={{ fontSize: 12.5 }}>Screenshot coming soon</span>
-                  </div>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={s.src} alt={s.title} loading="lazy" onClick={() => setLightbox(s.src)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", cursor: "zoom-in" }} />
+                <div style={{ position: "relative", height: 202, borderRadius: 12, overflow: "hidden", border: "1px solid var(--w08)", background: "var(--card-grad)" }}>
+                  <MiniShot kind={s.kind} />
                 </div>
               </div>
               <div style={{ padding: "16px 16px 16px", display: "flex", flexDirection: "column", flex: 1 }}>
@@ -1067,7 +1467,7 @@ export default function Hello22Site() {
                     </span>
                   ))}
                 </div>
-                <button onClick={() => setLightbox(s.src)} aria-label={`View ${s.title} screenshot`} style={{ alignSelf: "flex-end", marginTop: "auto", width: 34, height: 34, borderRadius: "50%", border: "none", cursor: "pointer", background: s.c, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }} className="btnp"><i className="fa-solid fa-arrow-right" aria-hidden="true" /></button>
+                <a href={APP_URL} target="_blank" rel="noopener noreferrer" aria-label={`Open ${s.title} in the hello22 app`} style={{ alignSelf: "flex-end", marginTop: "auto", width: 34, height: 34, borderRadius: "50%", textDecoration: "none", background: s.c, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }} className="btnp"><i className="fa-solid fa-arrow-right" aria-hidden="true" /></a>
               </div>
             </div>
           ))}
@@ -1086,6 +1486,12 @@ export default function Hello22Site() {
               <span style={{ minWidth: 0 }}>
                 <span style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 14.5 }}>{x.t}</span>
                 <span style={{ display: "block", fontSize: 12.5, color: "var(--mut)", marginTop: 2 }}>{x.d}</span>
+                {/* stars sirf "Loved by businesses" par (user mockup 2026-07-10) */}
+                {x.t === "Loved by businesses" && (
+                  <span aria-hidden="true" style={{ display: "inline-flex", gap: 3, marginTop: 5, color: "#f6b73c", fontSize: 10.5 }}>
+                    {[0, 1, 2, 3, 4].map((n) => <i key={n} className="fa-solid fa-star" />)}
+                  </span>
+                )}
               </span>
             </div>
           ))}
@@ -1138,89 +1544,236 @@ export default function Hello22Site() {
         </div>
       </section>
 
-      {/* FEATURES */}
+      {/* FEATURES — horizontal thumbnail cards, 2 columns (user mockup 2026-07-10) */}
       <section id="features" className="sec-alt" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
-        <div data-rv style={eyebrow}>The platform</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Everything you need</b> to talk to <span style={HL}>everyone</span>.</h2>
-        <div className="feat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginTop: 40 }}>
-          <div data-rv className="lift" style={{ gridColumn: "span 2", background: "var(--card-grad)", border: "1px solid var(--w09)", borderRadius: 22, padding: 30 }}>
-            <div style={featIcon("rgba(44,118,237,.14)", "rgba(44,118,237,.3)", "var(--lime)")}><i className="fa-solid fa-comments" /></div>
-            <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 24, margin: "18px 0 0" }}>Conversational, not scripted</h3>
-            <p style={{ fontSize: 15.5, color: "var(--mut)", lineHeight: 1.6, margin: "12px 0 0", maxWidth: 520 }}>Responds to what the caller actually says and keeps track of the conversation as it goes — holding context across the whole call.</p>
+        <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
+          <div>
+            <div data-rv style={eyebrow}><span aria-hidden="true" style={{ marginRight: 8, fontSize: 12 }}>✦</span>The platform</div>
+            <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Everything you need</b> to talk to{" "}
+              <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+                <span style={HL}>everyone</span>
+                <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
+              </span>.
+            </h2>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 560, margin: "18px 0 0", lineHeight: 1.6 }}>Built to feel human, work smarter, and scale with you — so every conversation delivers <span style={HL}>real impact</span>.</p>
           </div>
-          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(157,139,255,.16)", "rgba(157,139,255,.32)", "var(--violet)")}><i className="fa-solid fa-microphone-lines" /></div><h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 20, margin: "16px 0 0" }}>Studio voices</h3><p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 0" }}>Choose from a library of studio-grade English voices to match your brand.</p></div>
-          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(86,224,224,.14)", "rgba(86,224,224,.3)", "var(--cyan)")}><i className="fa-solid fa-language" /></div><h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 20, margin: "16px 0 0" }}>English today — more coming</h3><p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 0" }}>Answers in natural English now, with more languages on the roadmap.</p></div>
-          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(44,118,237,.12)", "rgba(44,118,237,.28)", "var(--lime)")}><i className="fa-solid fa-wand-magic-sparkles" /></div><h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 20, margin: "16px 0 0" }}>Post-call automations</h3><p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 0" }}>After every call, details are captured and pushed to your inbox, CRM, and notifications automatically.</p></div>
-          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(157,139,255,.16)", "rgba(157,139,255,.32)", "var(--violet)")}><i className="fa-solid fa-shield-halved" /></div><h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 20, margin: "16px 0 0" }}>Your data, protected</h3><p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 0" }}>Encrypted in transit, secrets encrypted at rest, and never sold.</p></div>
-          <div data-rv className="lift" style={{ gridColumn: "span 2", background: "var(--card-grad)", border: "1px solid var(--w09)", borderRadius: 22, padding: 30 }}>
-            <div style={featIcon("rgba(86,224,224,.14)", "rgba(86,224,224,.3)", "var(--cyan)")}><i className="fa-solid fa-chart-line" /></div>
-            <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 24, margin: "18px 0 0" }}>Call analytics &amp; transcripts</h3>
-            <p style={{ fontSize: 15.5, color: "var(--mut)", lineHeight: 1.6, margin: "12px 0 0", maxWidth: 520 }}>Every call transcribed, summarised, and tagged with intent and sentiment — the summary delivered by email, SMS, and WhatsApp after the call.</p>
-          </div>
-          <div data-rv className="lift" style={{ ...card, padding: 28 }}><div style={featIcon("rgba(44,118,237,.12)", "rgba(44,118,237,.28)", "var(--lime)")}><i className="fa-solid fa-arrows-rotate" /></div><h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 20, margin: "16px 0 0" }}>CRM &amp; Calendar</h3><p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 0" }}>Connect Google Calendar and push leads to your CRM or any webhook.</p></div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px" }}>
-        <div data-rv style={eyebrow}>How it works</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Set up, sign up,</b> go live — with <span style={HL}>hello22</span>.</h2>
-        <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No code, no telephony setup,</strong> no flowcharts. Sarah walks you through every step — confirm your business, create your account, and take your first real call.</p>
-        <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42 }}>
-          {[
-            { n: "01", c: "var(--lime)", t: "Set up", h: "Sarah builds your agent", d: "hello22 finds your business and sets up your AI receptionist with you — just review the details and confirm.", img: "/images/screenshots/step-1.png?v=2" },
-            { n: "02", c: "var(--violet)", t: "Account", h: "Create your account", d: "Add your name, email, and mobile so hello22 can route your calls and text you a summary after every one.", img: "/images/screenshots/step-2.png?v=2" },
-            { n: "03", c: "var(--cyan)", t: "Go live", h: "Pick a number & go live", d: "Claim your dedicated AI number, point your calls to it, and start handling real conversations in minutes.", img: "/images/screenshots/step-3.png" },
-          ].map((s) => (
-            <div key={s.n} data-rv className="lift" style={{ ...card, padding: 28 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}><span style={{ fontFamily: SUB, fontSize: 32, fontWeight: 700, color: s.c }}>{s.n}</span><span style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: ".12em", color: "var(--mut)" }}>{s.t}</span></div>
-              <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 19, margin: "18px 0 0" }}>{s.h}</h3>
-              <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 16px" }}>{s.d}</p>
-              <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", border: "1px solid var(--w08)", background: "var(--card-grad)", minHeight: 120 }}>
-                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, color: "var(--dim2)" }}>
-                  <i className="fa-solid fa-image" style={{ fontSize: 24 }} /><span style={{ fontSize: 12 }}>Screenshot coming soon</span>
-                </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.img} alt={s.h} loading="lazy" onClick={() => setLightbox(s.img)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} style={{ position: "relative", width: "100%", height: "auto", display: "block", cursor: "zoom-in" }} />
+          {/* illustration: woman photo in blob + trusted card (user mockup 2026-07-10) */}
+          <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 290 }}>
+            <div style={{ position: "absolute", inset: "-14px 30px 10px 96px", background: "radial-gradient(75% 70% at 50% 45%, rgba(44,118,237,.15), rgba(44,118,237,.06) 62%, transparent 80%)", borderRadius: "55% 45% 52% 48% / 58% 46% 54% 42%" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-caller.jpg" alt="" loading="lazy" style={{ position: "absolute", top: 2, left: "38%", width: 208, height: 208, borderRadius: "50%", objectFit: "cover", border: "5px solid var(--surface)", boxShadow: "0 20px 44px -20px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+            {/* trusted card */}
+            <div style={{ position: "absolute", right: -8, top: "52%", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 16, padding: "13px 17px", boxShadow: "0 16px 34px -18px var(--sh1)", animation: "h22floatSm 7.5s ease-in-out -3s infinite" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ display: "inline-flex" }}>
+                  {["/images/portrait-melissa.jpg", "/images/portrait-james.jpg", "/images/portrait-priya.jpg"].map((p, i) => (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img key={p} src={p} alt="" width={26} height={26} loading="lazy" style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover", border: "2px solid var(--surface)", marginLeft: i === 0 ? 0 : -9 }} />
+                  ))}
+                </span>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: "var(--tx2)", lineHeight: 1.4 }}>Trusted by 1,000+<br />businesses worldwide</span>
               </div>
+              <span aria-hidden="true" style={{ display: "inline-flex", gap: 3, marginTop: 7, marginLeft: 36, color: "#f6b73c", fontSize: 10.5 }}>{[0, 1, 2, 3, 4].map((n) => <i key={n} className="fa-solid fa-star" />)}</span>
+            </div>
+            {/* heart + dashed arrow + pencil squiggle */}
+            <svg viewBox="0 0 24 22" style={{ position: "absolute", left: 60, top: 56, width: 26, height: 24 }}><path d="M12 19 C 4 13, 1 8, 4 4.5 C 6.5 1.8, 10 2.6, 12 6 C 14 2.6, 17.5 1.8, 20 4.5 C 23 8, 20 13, 12 19 Z" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="2" strokeLinejoin="round" /></svg>
+            <svg viewBox="0 0 60 90" style={{ position: "absolute", left: 40, top: 118, width: 46, height: 70 }}>
+              <path d="M 44 6 C 16 22, 8 50, 22 78" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2 7" />
+              <path d="M 20 80 l -1 -7 l 7 3 z" fill="rgba(44,118,237,.55)" />
+            </svg>
+            <svg viewBox="0 0 30 26" style={{ position: "absolute", right: 26, top: 6, width: 26, height: 22 }}><path d="M4 22 L 20 5 M 9 23 L 25 6" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+          </div>
+        </div>
+        <div className="plat-cols" style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 18, marginTop: 44, alignItems: "start" }}>
+          {PLAT_COLS.map((col, ci) => (
+            <div key={ci} style={{ display: "flex", flexDirection: "column", gap: 18, minWidth: 0 }}>
+              {col.map((f) => (
+                <div key={f.t} data-rv className="lift plat-card" style={{ ...card, padding: "20px 22px", display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap" }}>
+                  <div style={{ ...featIcon(f.tb, f.tbd, f.tc), flexShrink: 0 }}><i className={f.ic} aria-hidden="true" /></div>
+                  <div style={{ flex: "1 1 220px", minWidth: 0 }}>
+                    <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 18.5, margin: 0 }}>{f.t}</h3>
+                    <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "8px 0 0" }}>{f.d}</p>
+                  </div>
+                  <span className="plat-thumb" style={{ position: "relative", flexShrink: 0, width: 168, height: 116 }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={f.img} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 14, border: "1px solid var(--w08)", display: "block" }} />
+                    <span aria-hidden="true" style={{ position: "absolute", top: -10, right: -10, width: 34, height: 34, borderRadius: "50%", background: f.bc, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12, border: "3px solid var(--surface)", boxShadow: "0 8px 18px -8px var(--sh2)" }}><i className={f.bic} /></span>
+                  </span>
+                </div>
+              ))}
             </div>
           ))}
         </div>
       </section>
 
-      {/* USE CASES */}
+      {/* HOW IT WORKS — mockup layout (user mockup 2026-07-10): 2-col header + mini-UI step cards + band */}
+      <section className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px" }}>
+        <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
+          <div>
+            <div data-rv style={eyebrow}><span aria-hidden="true" style={{ marginRight: 8, fontSize: 12 }}>✦</span>How it works</div>
+            <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Set up, sign up,</b> go live — with{" "}
+              <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+                <span style={HL}>hello22</span>
+                <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
+              </span>.
+            </h2>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No code, no telephony setup,</strong> no flowcharts. Sarah walks you through every step — confirm your business, create your account, and take your first real call.</p>
+          </div>
+          {/* illustration: Sarah photo + speech bubble (user mockup 2026-07-10) */}
+          <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 280 }}>
+            <div style={{ position: "absolute", inset: "-10px 120px 20px 60px", background: "radial-gradient(75% 70% at 50% 45%, rgba(44,118,237,.15), rgba(44,118,237,.06) 62%, transparent 80%)", borderRadius: "50%" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-caller.jpg" alt="" loading="lazy" style={{ position: "absolute", top: -4, left: "22%", width: 200, height: 200, borderRadius: "50%", objectFit: "cover", border: "5px solid var(--surface)", boxShadow: "0 20px 44px -20px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+            {/* Sarah speech bubble */}
+            <div style={{ position: "absolute", right: -4, top: 44, maxWidth: 210, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "20px 20px 20px 6px", padding: "14px 17px", boxShadow: "0 16px 36px -20px var(--sh1)", animation: "h22floatSm 7.5s ease-in-out -3s infinite" }}>
+              <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "flex-end", gap: 2, height: 12, marginBottom: 7 }}>
+                {[5, 9, 12, 8, 5].map((h, i) => <span key={i} style={{ width: 2.5, height: h, borderRadius: 2, background: "var(--blue-ink)" }} />)}
+              </span>
+              <div style={{ fontSize: 14.5, lineHeight: 1.45, color: "var(--tx2)", fontWeight: 600 }}>Hi, I&apos;m Sarah.<br />Let&apos;s get you live<br />in minutes.</div>
+              <i className="fa-regular fa-heart" style={{ position: "absolute", right: 14, bottom: 12, color: "var(--blue-ink)", fontSize: 14 }} aria-hidden="true" />
+            </div>
+            {/* hearts + dashed arrow + sparkle lines */}
+            <svg viewBox="0 0 24 22" style={{ position: "absolute", left: 34, top: 66, width: 24, height: 22 }}><path d="M12 19 C 4 13, 1 8, 4 4.5 C 6.5 1.8, 10 2.6, 12 6 C 14 2.6, 17.5 1.8, 20 4.5 C 23 8, 20 13, 12 19 Z" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="2" strokeLinejoin="round" /></svg>
+            <svg viewBox="0 0 90 70" style={{ position: "absolute", left: 6, bottom: 8, width: 84, height: 64 }}>
+              <path d="M 84 8 C 46 14, 22 32, 14 58" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2 7" />
+              <path d="M 10 62 l 1 -8 l 7 4 z" fill="rgba(44,118,237,.55)" />
+            </svg>
+            <svg viewBox="0 0 26 24" style={{ position: "absolute", right: 96, top: -12, width: 24, height: 22 }}><path d="M4 20 L 10 10 M 12 22 L 16 12 M 19 18 L 24 11" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+          </div>
+        </div>
+        {/* step cards + connecting arrows */}
+        <div style={{ position: "relative" }}>
+          <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42 }}>
+            {([
+              { n: "01", c: "var(--lime)", cb: "rgba(44,118,237,.12)", t: "Set up", h: "Sarah builds your agent", d: "hello22 finds your business and sets up your AI receptionist with you — just review the details and confirm.", ic: "fa-regular fa-user", step: 1 },
+              { n: "02", c: "var(--violet)", cb: "rgba(157,139,255,.14)", t: "Account", h: "Create your account", d: "Add your name, email, and mobile so hello22 can route your calls and text you a summary after every one.", ic: "fa-solid fa-user-plus", step: 2 },
+              { n: "03", c: "#22b573", cb: "rgba(34,197,94,.12)", t: "Go live", h: "Pick a number & go live", d: "Claim your dedicated AI number, point your calls to it, and start handling real conversations in minutes.", ic: "fa-solid fa-phone-volume", step: 3 },
+            ] as { n: string; c: string; cb: string; t: string; h: string; d: string; ic: string; step: 1 | 2 | 3 }[]).map((s) => (
+              <div key={s.n} data-rv className="lift" style={{ ...card, padding: "24px 24px 20px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
+                  <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: s.c, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: SUB, fontSize: 12.5, fontWeight: 700 }}>{s.n}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".12em", color: s.c, flex: 1 }}>{s.t}</span>
+                  <span style={{ width: 40, height: 40, borderRadius: 12, background: s.cb, color: s.c, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 15 }} aria-hidden="true"><i className={s.ic} /></span>
+                </div>
+                <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 19, margin: "16px 0 0" }}>{s.h}</h3>
+                <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 16px" }}>{s.d}</p>
+                <StepShot step={s.step} />
+              </div>
+            ))}
+          </div>
+          {/* dashed arrows cards ke beech — mobile par hide */}
+          {[1, 2].map((i) => (
+            <svg key={i} className="hiw-arrow" viewBox="0 0 40 14" aria-hidden="true" style={{ position: "absolute", left: `calc(${(i * 100) / 3}% - 20px)`, top: "46%", width: 38, height: 14, zIndex: 2 }}>
+              <path d="M 2 7 C 12 3, 26 11, 34 7" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="2 5" />
+              <path d="M 34 3.5 l 5 3.5 l -5 3.5 z" fill="rgba(44,118,237,.65)" />
+            </svg>
+          ))}
+        </div>
+        {/* bottom band */}
+        <div data-rv style={{ ...card, borderRadius: 18, marginTop: 22, padding: "16px 24px", display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
+            <span style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(44,118,237,.12)", border: "1px solid rgba(44,118,237,.28)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 15 }} aria-hidden="true"><i className="fa-solid fa-headset" /></span>
+            <span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 16.5, color: "var(--blue-ink)" }}>Done in minutes.</span>
+          </span>
+          <span style={{ fontSize: 14.5, color: "var(--mut)", flex: 1, minWidth: 180 }}>No contracts. No hidden setup.</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            <span style={{ display: "inline-flex" }}>
+              {["/images/portrait-james.jpg", "/images/portrait-melissa.jpg", "/images/portrait-priya.jpg"].map((p, i) => (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img key={p} src={p} alt="" width={28} height={28} loading="lazy" style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover", border: "2px solid var(--surface)", marginLeft: i === 0 ? 0 : -9 }} />
+              ))}
+            </span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: "var(--tx2)" }}>Loved by 1,000+ businesses</span>
+            <span aria-hidden="true" style={{ display: "inline-flex", gap: 3, color: "#f6b73c", fontSize: 12 }}>{[0, 1, 2, 3, 4].map((n) => <i key={n} className="fa-solid fa-star" />)}</span>
+          </span>
+        </div>
+      </section>
+
+      {/* USE CASES — mockup layout (user mockup 2026-07-10): 2-col header + icon list + photo/chat detail */}
       <section id="industries" className="sec-alt" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
-        <div data-rv style={eyebrow}>Industries</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Built for the trades</b> that run on <span style={HL}>phone calls</span>.</h2>
-        <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>It&apos;s the same hello22 agent</strong> — you just configure it for your business in the AI Brain. No separate setup per industry.</p>
-        <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: 24, marginTop: 40, alignItems: "start" }}>
+        <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
+          <div>
+            <div data-rv style={eyebrow}><i className="fa-regular fa-building" style={{ marginRight: 8, fontSize: 11 }} aria-hidden="true" />Industries</div>
+            <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Built for the trades</b> that run on{" "}
+              <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+                <span style={HL}>phone calls</span>
+                <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
+              </span>.
+            </h2>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>It&apos;s the same <span style={HL}>hello22 agent</span></strong> — you just configure it for your business in the AI Brain. No separate setup per industry.</p>
+          </div>
+          {/* illustration: photo + "One agent. Any trade." card (user mockup 2026-07-10) */}
+          <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 280 }}>
+            <div style={{ position: "absolute", inset: "-8px 130px 16px 70px", background: "radial-gradient(75% 70% at 50% 45%, rgba(44,118,237,.15), rgba(44,118,237,.06) 62%, transparent 80%)", borderRadius: "55% 45% 52% 48% / 58% 46% 54% 42%" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-caller.jpg" alt="" loading="lazy" style={{ position: "absolute", top: -2, left: "26%", width: 196, height: 196, borderRadius: "50%", objectFit: "cover", border: "5px solid var(--surface)", boxShadow: "0 20px 44px -20px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+            <div style={{ position: "absolute", right: -4, top: 66, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 18, padding: "15px 19px", boxShadow: "0 16px 36px -20px var(--sh1)", display: "flex", alignItems: "center", gap: 12, animation: "h22floatSm 7.5s ease-in-out -3s infinite" }}>
+              <span style={{ width: 38, height: 38, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.12)", border: "1px solid rgba(44,118,237,.28)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}><i className="fa-solid fa-phone-volume" aria-hidden="true" /></span>
+              <span>
+                <span style={{ display: "block", fontSize: 15, fontWeight: 800, color: "var(--tx)", lineHeight: 1.35 }}>One agent.<br />Any trade.</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11.5, fontWeight: 700, color: "var(--blue-ink)", marginTop: 5 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#22b573" }} />Always on call.</span>
+              </span>
+            </div>
+            <svg viewBox="0 0 26 24" style={{ position: "absolute", left: "20%", top: 6, width: 22, height: 20 }}><path d="M4 20 L 9 10 M 12 22 L 15 12" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+            <svg viewBox="0 0 26 24" style={{ position: "absolute", right: 118, top: -12, width: 24, height: 22 }}><path d="M4 20 L 10 10 M 12 22 L 16 12 M 19 18 L 24 11" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+            <svg viewBox="0 0 100 70" style={{ position: "absolute", left: -6, bottom: 0, width: 92, height: 64 }}>
+              <path d="M 94 10 C 56 8, 28 26, 16 52" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2 7" />
+              <path d="M 12 56 l 2 -8 l 6 5 z" fill="rgba(44,118,237,.55)" />
+            </svg>
+          </div>
+        </div>
+        <div className="uc-grid" style={{ display: "grid", gridTemplateColumns: "330px 1fr", gap: 20, marginTop: 40, alignItems: "start" }}>
           <div ref={ucListRef} style={{ willChange: "transform" }}>
-          <div data-rv="left" className="ind-list" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div data-rv="left" className="ind-list" style={{ display: "flex", flexDirection: "column", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 18, padding: 8, boxShadow: "0 14px 34px -26px var(--sh2)" }}>
             {(ucExpanded ? USECASES : USECASES.slice(0, 6)).map((t, i) => {
               const active = i === useCase;
+              const m = IND_META[i];
               return (
-                <button key={t.name} className="ind-btn" data-active={active} onClick={() => setUseCase(i)} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "15px 18px", borderRadius: 14, fontFamily: "inherit", background: active ? "var(--s2)" : "transparent", border: active ? "1px solid var(--w13)" : "1px solid transparent", color: active ? "var(--tx)" : "var(--mut)" }}>
-                  <span className="ind-num" style={{ fontFamily: SUB, fontSize: 13, fontWeight: 600, opacity: .55, width: 22 }}>{(i + 1).toString().padStart(2, "0")}</span>
-                  <span style={{ fontSize: 15.5, fontWeight: 600, flex: 1, textAlign: "left" }}>{t.name}</span>
-                  <span className="ind-arrow" style={{ opacity: active ? 1 : 0, color: "var(--lime)", transition: "opacity .2s" }}>→</span>
+                <button key={t.name} className="ind-btn" data-active={active} onClick={() => setUseCase(i)} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "13px 14px", borderRadius: 12, fontFamily: "inherit", background: active ? "rgba(44,118,237,.08)" : "transparent", border: "1px solid transparent", boxShadow: active ? "inset 3px 0 0 var(--lime)" : "none", color: active ? "var(--tx)" : "var(--mut)", borderBottom: "1px solid var(--w06)" }}>
+                  <span className="ind-num" style={{ fontFamily: SUB, fontSize: 12.5, fontWeight: 600, opacity: .55, width: 20 }}>{(i + 1).toString().padStart(2, "0")}</span>
+                  <span style={{ width: 30, height: 30, borderRadius: 9, flexShrink: 0, background: m.cb, color: m.c, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }} aria-hidden="true"><i className={`fa-solid ${t.icon}`} /></span>
+                  <span style={{ fontSize: 15, fontWeight: 600, flex: 1, textAlign: "left" }}>{t.name}</span>
+                  <span className="ind-arrow" style={{ color: active ? "var(--lime)" : "var(--dim2)", transition: "color .2s", fontSize: active ? 15 : 11 }} aria-hidden="true">{active ? "→" : <i className="fa-solid fa-chevron-right" />}</span>
                 </button>
               );
             })}
-            <button className="ind-btn" onClick={() => { if (ucExpanded && useCase > 5) setUseCase(0); setUcExpanded(!ucExpanded); }} style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "15px 18px", borderRadius: 14, fontFamily: "inherit", background: "transparent", border: "1px solid transparent", color: "var(--lime)" }}>
-              <span style={{ width: 22, display: "inline-flex", justifyContent: "center" }}><i className={`fa-solid ${ucExpanded ? "fa-chevron-up" : "fa-chevron-down"}`} style={{ fontSize: 12 }} /></span>
+            <button className="ind-btn" onClick={() => { if (ucExpanded && useCase > 5) setUseCase(0); setUcExpanded(!ucExpanded); }} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", cursor: "pointer", transition: "all .22s ease", padding: "13px 14px", borderRadius: 12, fontFamily: "inherit", background: "transparent", border: "1px solid transparent", color: "var(--lime)" }}>
+              <span style={{ width: 22, height: 22, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10 }} aria-hidden="true"><i className={`fa-solid ${ucExpanded ? "fa-chevron-up" : "fa-chevron-down"}`} /></span>
               <span style={{ fontSize: 14.5, fontWeight: 700, flex: 1, textAlign: "left" }}>{ucExpanded ? "See less" : `See more (${USECASES.length - 6})`}</span>
             </button>
           </div>
           </div>
           <div ref={ucCardRef} style={{ willChange: "transform" }}>
-          <div data-rv="right" className="uc-card" style={{ background: "var(--card-grad)", border: "1px solid var(--w10)", borderRadius: 24, padding: 34, minHeight: 380 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              <div style={{ width: 50, height: 50, borderRadius: 14, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 22 }}><i className={`fa-solid ${uc.icon}`} /></div>
-              <div><div style={{ fontFamily: SUB, fontWeight: 700, fontSize: 22 }}>{uc.name}</div><div style={{ fontSize: 13, color: "var(--lime)" }}>Configured in your AI Brain</div></div>
+          <div data-rv="right" className="uc-card" style={{ background: "var(--card-grad)", border: "1px solid var(--w10)", borderRadius: 24, padding: 30, minHeight: 380 }}>
+            <div className="uc-detail" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,44%)", gap: 26, alignItems: "stretch" }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <div style={{ width: 50, height: 50, borderRadius: 14, background: IND_META[useCase].cb, border: `1px solid ${IND_META[useCase].c}33`, display: "flex", alignItems: "center", justifyContent: "center", color: IND_META[useCase].c, fontSize: 20 }}><i className={`fa-solid ${uc.icon}`} /></div>
+                  <div>
+                    <div style={{ fontFamily: SUB, fontWeight: 700, fontSize: 21 }}>{uc.name}</div>
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 700, color: "#1a9a5c", marginTop: 2 }}><i className="fa-solid fa-circle-check" style={{ fontSize: 11 }} aria-hidden="true" />Configured in your AI Brain</div>
+                  </div>
+                </div>
+                {/* title — pehle 3 words dark, baaki blue (mockup ka do-tone style) */}
+                <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 25, letterSpacing: "-.02em", lineHeight: 1.25, margin: "22px 0 0" }}>
+                  {uc.title.split(" ").slice(0, 3).join(" ")}{" "}
+                  <span style={{ color: "var(--blue-ink)" }}>{uc.title.split(" ").slice(3).join(" ")}</span>
+                </h3>
+                <p style={{ fontSize: 15.5, color: "var(--mut)", lineHeight: 1.65, margin: "14px 0 0" }}>{uc.body}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 24 }}>
+                  {uc.tags.map((tg, ti) => (
+                    <span key={tg} style={{ ...pill, display: "inline-flex", alignItems: "center", gap: 7, color: "var(--tx3)", background: "var(--surface)", fontSize: 12.5, fontWeight: 600 }}>
+                      <i className={TAG_ICS[ti % TAG_ICS.length]} style={{ fontSize: 10.5, color: IND_META[useCase].c }} aria-hidden="true" />{tg}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              {/* industry photo — chat bubbles overlay hataya (user feedback 2026-07-10: photo saaf chahiye) */}
+              <div className="uc-photo" style={{ position: "relative", borderRadius: 16, overflow: "hidden", border: "1px solid var(--w09)", minHeight: 300 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img key={IND_META[useCase].photo} src={IND_META[useCase].photo} alt={uc.name} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
             </div>
-            <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 26, letterSpacing: "-.02em", margin: "26px 0 0", maxWidth: 560 }}>{uc.title}</h3>
-            <p style={{ fontSize: 16, color: "var(--mut)", lineHeight: 1.65, margin: "14px 0 0", maxWidth: 600 }}>{uc.body}</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 9, marginTop: 28 }}>{uc.tags.map((tg) => <span key={tg} style={{ ...pill, color: "var(--tx3)" }}>{tg}</span>)}</div>
           </div>
           </div>
         </div>
@@ -1229,13 +1782,37 @@ export default function Hello22Site() {
       {/* HUMAN VS AI COMPARISON */}
       <section id="compare" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
         <div className="cmp-grid" style={{ display: "grid", gridTemplateColumns: ".85fr 1.3fr", gap: 54, alignItems: "center" }}>
-        <div data-rv="left">
-          <div style={eyebrow}>Comparison</div>
-          <h2 style={{ ...h2 }}><b style={BD}>The Ultimate Assistant:</b> <span style={HL}>Human vs. AI</span></h2>
-          <p style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 560, lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Discover why</strong> AI receptionists are transforming Australian businesses.</p>
+        <div data-rv="left" style={{ position: "relative" }}>
+          <div style={eyebrow}><i className="fa-solid fa-scale-balanced" style={{ marginRight: 8, fontSize: 11 }} aria-hidden="true" />Comparison</div>
+          <h2 style={{ ...h2 }}>
+            <b style={BD}>The Ultimate<br />Assistant:</b><br />
+            <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+              <span style={HL}>Human vs. AI</span>
+              <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -10, width: "100%", height: 11, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="4" strokeLinecap="round" opacity=".8" /></svg>
+            </span>
+          </h2>
+          {/* sparkle heading ke paas (user mockup 2026-07-10) */}
+          <svg viewBox="0 0 26 24" aria-hidden="true" style={{ position: "absolute", left: 300, top: 44, width: 24, height: 22 }}><path d="M4 20 L 10 10 M 12 22 L 16 12" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+          <p style={{ fontSize: 17.5, color: "var(--mut)", margin: "24px 0 0", maxWidth: 460, lineHeight: 1.65 }}>AI receptionists are changing the way Australian businesses handle calls — <strong style={{ fontWeight: 700, color: "var(--tx2)" }}>saving time, cutting costs, and never missing an opportunity.</strong></p>
+          {/* join card */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(44,118,237,.07)", border: "1px solid rgba(44,118,237,.18)", borderRadius: 16, padding: "16px 20px", marginTop: 28, maxWidth: 440 }}>
+            <span style={{ display: "inline-flex", flexShrink: 0 }}>
+              {["/images/portrait-melissa.jpg", "/images/portrait-james.jpg", "/images/portrait-priya.jpg"].map((p, i) => (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img key={p} src={p} alt="" width={34} height={34} loading="lazy" style={{ width: 34, height: 34, borderRadius: "50%", objectFit: "cover", border: "2.5px solid var(--surface)", marginLeft: i === 0 ? 0 : -11 }} />
+              ))}
+            </span>
+            <span style={{ fontSize: 14.5, lineHeight: 1.5, color: "var(--mut)" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Join 1,000+ Australian businesses</strong> already using hello22 every day.</span>
+          </div>
+          {/* curly dashed arrow table ki taraf */}
+          <svg viewBox="0 0 120 60" aria-hidden="true" className="cmp-squig" style={{ position: "absolute", left: 240, bottom: -58, width: 110, height: 56 }}>
+            <path d="M 6 14 C 22 44, 44 52, 56 40 C 64 32, 54 24, 48 32 C 42 42, 62 50, 88 40" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="3 6" />
+            <path d="M 90 44 l 10 -6 l -4 11 z" fill="rgba(44,118,237,.55)" />
+          </svg>
         </div>
         <div data-rv="right" style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22, overflow: "hidden", boxShadow: "0 24px 60px -44px var(--sh2)" }}>
-          <div className="cmp-row cmp-head" style={{ display: "grid", gridTemplateColumns: "1.05fr 1.1fr 1.25fr", alignItems: "stretch", borderBottom: "1px solid var(--w10)" }}>
+          {/* AI column chaudi (1.45fr) — chip text ke saath ek hi line par fit ho (user feedback 2026-07-10) */}
+          <div className="cmp-row cmp-head" style={{ display: "grid", gridTemplateColumns: "1fr .95fr 1.45fr", alignItems: "stretch", borderBottom: "1px solid var(--w10)" }}>
             <div className="cmp-fh" style={{ padding: "18px 24px", display: "flex", alignItems: "center", fontSize: 12.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--dim)", background: "var(--w04)" }}>Feature</div>
             <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 10, background: "var(--w04)" }}>
               <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "var(--w06)", border: "1px solid var(--w10)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--mut)", fontSize: 12 }}><i className="fa-solid fa-user" /></span>
@@ -1247,19 +1824,41 @@ export default function Hello22Site() {
             </div>
           </div>
           {COMPARE.map((r, i) => (
-            <div key={r.f} className="cmp-row" style={{ display: "grid", gridTemplateColumns: "1.05fr 1.1fr 1.25fr", alignItems: "stretch", borderTop: i === 0 ? "none" : "1px solid var(--w08)" }}>
-              <div className="cmp-f" style={{ padding: "14px 24px", display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ width: 32, height: 32, borderRadius: 9, flexShrink: 0, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.22)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 13 }}><i className={r.ic} /></span>
-                <span style={{ fontSize: 14.5, fontWeight: 600, color: "var(--tx)" }}>{r.f}</span>
+            <div key={r.f} className="cmp-row" style={{ display: "grid", gridTemplateColumns: "1fr .95fr 1.45fr", alignItems: "stretch", borderTop: i === 0 ? "none" : "1px solid var(--w08)" }}>
+              <div className="cmp-f" style={{ padding: "15px 24px", display: "flex", alignItems: "center", gap: 12 }}>
+                {/* round icon circle (user mockup 2026-07-10) */}
+                <span style={{ width: 38, height: 38, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.1)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--blue-ink)", fontSize: 14 }}><i className={r.ic} /></span>
+                <span style={{ fontSize: 14.5, fontWeight: 700, color: "var(--tx)" }}>{r.f}</span>
               </div>
-              <div style={{ padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", textAlign: "left", fontSize: 14, color: "var(--mut)", lineHeight: 1.5 }}>{r.h}</div>
-              <div className="cmp-ai" style={{ padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 9, textAlign: "left" }}>
-                <span style={{ width: 17, height: 17, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-check" /></span>
-                <span style={{ fontSize: 14, fontWeight: 700, color: "var(--blue-ink)", lineHeight: 1.45 }}>{r.a}</span>
+              <div style={{ padding: "15px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", textAlign: "left", fontSize: 14, color: "var(--mut)", lineHeight: 1.5 }}>{r.h}</div>
+              {/* chip text ke saath inline flow karta hai — wrap par icon ke neeche nahi girta (alignment fix 2026-07-10) */}
+              <div className="cmp-ai" style={{ padding: "15px 20px", display: "flex", alignItems: "flex-start", justifyContent: "flex-start", gap: 10, textAlign: "left" }}>
+                <span style={{ width: 18, height: 18, borderRadius: "50%", flexShrink: 0, marginTop: 2, background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9 }}><i className="fa-solid fa-check" /></span>
+                <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, fontWeight: 700, color: "var(--blue-ink)", lineHeight: 1.6, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {r.a}
+                  <span style={{ display: "inline-block", marginLeft: 8, verticalAlign: "baseline", fontSize: 11, fontWeight: 700, color: "#1a9a5c", background: "rgba(34,197,94,.12)", border: "1px solid rgba(34,197,94,.25)", borderRadius: 8, padding: "2px 8px" }}>{r.chip}</span>
+                </span>
               </div>
             </div>
           ))}
         </div>
+        </div>
+        {/* bottom band — 4 quick-value items (user mockup 2026-07-10) */}
+        <div data-rv className="plat-stats" style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 18, marginTop: 28, padding: "20px 22px", display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 18 }}>
+          {[
+            { ic: "fa-solid fa-phone-volume", c: "#fff", bg: "var(--lime)", t: "The smarter way to answer.", d: "Save time. Reduce costs. Deliver a better caller experience.", big: true },
+            { ic: "fa-solid fa-dollar-sign", c: "#1a9a5c", bg: "rgba(34,197,94,.13)", t: "Save up to 80%", d: "compared to hiring in-house staff." },
+            { ic: "fa-regular fa-clock", c: "var(--violet)", bg: "rgba(157,139,255,.15)", t: "Never miss a call", d: "Capture every lead, every time." },
+            { ic: "fa-regular fa-face-smile", c: "#f59e0b", bg: "rgba(245,158,11,.14)", t: "Delight your callers", d: "Fast, friendly, human-like conversations." },
+          ].map((x) => (
+            <div key={x.t} style={{ display: "flex", alignItems: "center", gap: 13, minWidth: 0 }}>
+              <span style={{ width: x.big ? 52 : 44, height: x.big ? 52 : 44, borderRadius: "50%", flexShrink: 0, background: x.bg, color: x.c, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: x.big ? 18 : 16, boxShadow: x.big ? "0 12px 26px -12px rgba(44,118,237,.7)" : "none" }}><i className={x.ic} aria-hidden="true" /></span>
+              <span style={{ minWidth: 0 }}>
+                <span style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 14.5 }}>{x.t}</span>
+                <span style={{ display: "block", fontSize: 12.5, color: "var(--mut)", marginTop: 2 }}>{x.d}</span>
+              </span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -1285,21 +1884,97 @@ export default function Hello22Site() {
         </div>
       </section>
 
-      {/* EARLY ACCESS */}
+      {/* EARLY ACCESS — mockup layout (user mockup 2026-07-10): 2-col header + doodle cards */}
       <section style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px" }}>
-        <div data-rv style={eyebrow}>Early access</div>
-        <h2 data-rv style={{ ...h2, maxWidth: 640, margin: "14px 0 12px" }}><b style={BD}>What you get</b> from <span style={HL}>day one</span>.</h2>
-        <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "0 0 34px", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 is in early access.</strong> Here&apos;s exactly what your AI receptionist does the moment you go live — no inflated claims.</p>
+        <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center", marginBottom: 34 }}>
+          <div>
+            <div data-rv style={eyebrow}><i className="fa-solid fa-champagne-glasses" style={{ marginRight: 8, fontSize: 11 }} aria-hidden="true" />Early access</div>
+            <h2 data-rv style={{ ...h2, maxWidth: 640, margin: "14px 0 12px" }}><b style={BD}>What you get</b> from{" "}
+              <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+                <span style={HL}>day one</span>
+                <svg viewBox="0 0 120 16" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -12, width: "100%", height: 14, overflow: "visible" }}>
+                  <path d="M30 4 C 55 1, 90 1, 112 3" fill="none" stroke="var(--lime)" strokeWidth="3" strokeLinecap="round" opacity=".8" />
+                  <path d="M3 11 C 35 7, 85 7, 117 9" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" />
+                </svg>
+              </span>.
+            </h2>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 is in early access.</strong> Here&apos;s exactly what your AI receptionist does the moment you go live — no inflated claims.</p>
+          </div>
+          {/* illustration: photo + "Always here" card (user mockup 2026-07-10) */}
+          <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 280 }}>
+            <div style={{ position: "absolute", inset: "-10px 130px 12px 66px", background: "radial-gradient(75% 70% at 50% 45%, rgba(44,118,237,.15), rgba(44,118,237,.06) 62%, transparent 80%)", borderRadius: "55% 45% 52% 48% / 58% 46% 54% 42%" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-caller.jpg" alt="" loading="lazy" style={{ position: "absolute", top: -2, left: "25%", width: 198, height: 198, borderRadius: "50%", objectFit: "cover", border: "5px solid var(--surface)", boxShadow: "0 20px 44px -20px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+            <div style={{ position: "absolute", right: -4, top: 62, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 18, padding: "15px 19px", boxShadow: "0 16px 36px -20px var(--sh1)", display: "flex", alignItems: "flex-start", gap: 12, animation: "h22floatSm 7.5s ease-in-out -3s infinite" }}>
+              <span style={{ width: 38, height: 38, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 10px 22px -10px rgba(44,118,237,.8)" }} aria-hidden="true">
+                <span style={{ display: "inline-flex", alignItems: "flex-end", gap: 2, height: 13 }}>{[6, 10, 13, 9, 5].map((h, i) => <span key={i} style={{ width: 2.5, height: h, borderRadius: 2, background: "#fff" }} />)}</span>
+              </span>
+              <span>
+                <span style={{ display: "block", fontSize: 14.5, fontWeight: 700, color: "var(--tx)", lineHeight: 1.4 }}>Hi, this is hello22.<br />How can I help you?</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11.5, fontWeight: 700, color: "var(--mut2)", marginTop: 5 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#22b573" }} />Always here</span>
+              </span>
+            </div>
+            <svg viewBox="0 0 24 22" style={{ position: "absolute", left: 34, top: 74, width: 24, height: 22 }}><path d="M12 19 C 4 13, 1 8, 4 4.5 C 6.5 1.8, 10 2.6, 12 6 C 14 2.6, 17.5 1.8, 20 4.5 C 23 8, 20 13, 12 19 Z" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="2" strokeLinejoin="round" /></svg>
+            <svg viewBox="0 0 26 24" style={{ position: "absolute", right: 128, top: -12, width: 24, height: 22 }}><path d="M4 20 L 10 10 M 12 22 L 16 12" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+            <svg viewBox="0 0 70 80" style={{ position: "absolute", right: 34, bottom: -8, width: 56, height: 64 }}>
+              <path d="M 60 74 C 34 62, 26 40, 40 16" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2 7" />
+              <path d="M 42 12 l -8 2 l 5 6 z" fill="rgba(44,118,237,.55)" />
+            </svg>
+          </div>
+        </div>
         <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }}>
-          {[
-            { ic: "fa-phone-volume", t: "Answers every call", d: "24/7 — no missed calls, no hold music, no voicemail. Every caller gets a real, natural conversation.", bg: "rgba(44,118,237,.16)", c: "var(--lime)" },
-            { ic: "fa-bolt", t: "Live in minutes", d: "Describe your agent, connect your tools, pick a number. No code, no telephony setup, no flowcharts.", bg: "rgba(86,224,224,.16)", c: "var(--cyan)" },
-            { ic: "fa-file-lines", t: "Every call captured", d: "Transcribed, summarised, and analysed automatically — delivered by SMS, WhatsApp, and email the moment the call ends.", bg: "rgba(157,139,255,.16)", c: "var(--violet)" },
-          ].map((t) => (
+          {([
+            { ic: "fa-phone-volume", t: "Answers every call", d: "24/7 — no missed calls, no hold music, no voicemail. Every caller gets a real, natural conversation.", bg: "rgba(44,118,237,.16)", c: "var(--lime)", doodle: 1 },
+            { ic: "fa-bolt", t: "Live in minutes", d: "Describe your agent, connect your tools, pick a number. No code, no telephony setup, no flowcharts.", bg: "rgba(86,224,224,.16)", c: "var(--cyan)", doodle: 2 },
+            { ic: "fa-file-lines", t: "Every call captured", d: "Transcribed, summarised, and analysed automatically — delivered by SMS, WhatsApp, and email the moment the call ends.", bg: "rgba(157,139,255,.16)", c: "var(--violet)", doodle: 3 },
+          ] as { ic: string; t: string; d: string; bg: string; c: string; doodle: 1 | 2 | 3 }[]).map((t) => (
             <div key={t.t} data-rv className="lift" style={{ ...card, padding: 28, display: "flex", flexDirection: "column" }}>
               <div style={{ width: 46, height: 46, borderRadius: 13, background: t.bg, color: t.c, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 19 }}><i className={`fa-solid ${t.ic}`} /></div>
               <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 19, margin: "18px 0 0" }}>{t.t}</h3>
               <p style={{ fontSize: 15, lineHeight: 1.6, color: "var(--mut)", margin: "10px 0 0" }}>{t.d}</p>
+              {/* line-art doodle card ke bottom par (user mockup 2026-07-10) */}
+              {t.doodle === 1 && (
+                <svg viewBox="0 0 280 70" aria-hidden="true" style={{ width: "100%", maxWidth: 280, height: 66, marginTop: "auto", paddingTop: 18, alignSelf: "center" }}>
+                  <circle cx="46" cy="38" r="22" fill="rgba(44,118,237,.08)" stroke="rgba(44,118,237,.6)" strokeWidth="2" />
+                  <path d="M 28 34 C 28 22, 64 22, 64 34" fill="none" stroke="rgba(44,118,237,.7)" strokeWidth="2.5" strokeLinecap="round" />
+                  <rect x="24" y="33" width="7" height="11" rx="3.5" fill="rgba(44,118,237,.7)" />
+                  <rect x="61" y="33" width="7" height="11" rx="3.5" fill="rgba(44,118,237,.7)" />
+                  <circle cx="39" cy="38" r="1.8" fill="rgba(44,118,237,.8)" />
+                  <circle cx="53" cy="38" r="1.8" fill="rgba(44,118,237,.8)" />
+                  <path d="M 38 46 C 42 50, 50 50, 54 46" fill="none" stroke="rgba(44,118,237,.8)" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M 72 40 C 100 28, 120 52, 150 40 C 170 32, 180 38, 190 40" fill="none" stroke="rgba(44,118,237,.45)" strokeWidth="1.8" strokeLinecap="round" />
+                  <rect x="192" y="18" width="62" height="34" rx="16" fill="rgba(44,118,237,.08)" stroke="rgba(44,118,237,.5)" strokeWidth="2" />
+                  <path d="M 208 34 C 210 38, 214 38, 216 34 M 228 34 C 230 38, 234 38, 236 34" fill="none" stroke="rgba(44,118,237,.7)" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              )}
+              {t.doodle === 2 && (
+                <svg viewBox="0 0 280 70" aria-hidden="true" style={{ width: "100%", maxWidth: 280, height: 66, marginTop: "auto", paddingTop: 18, alignSelf: "center" }}>
+                  <rect x="26" y="8" width="44" height="54" rx="8" fill="rgba(20,163,163,.06)" stroke="rgba(20,163,163,.55)" strokeWidth="2" />
+                  {[22, 34, 46].map((y) => (
+                    <g key={y}>
+                      <path d={`M 34 ${y} l 3 3 l 5 -6`} fill="none" stroke="rgba(20,163,163,.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d={`M 48 ${y + 1} h 14`} stroke="rgba(20,163,163,.45)" strokeWidth="2" strokeLinecap="round" />
+                    </g>
+                  ))}
+                  <path d="M 78 38 C 110 26, 130 52, 162 38 C 180 31, 190 36, 198 38" fill="none" stroke="rgba(20,163,163,.45)" strokeWidth="1.8" strokeLinecap="round" />
+                  <circle cx="222" cy="38" r="20" fill="rgba(34,197,94,.08)" stroke="rgba(34,197,94,.55)" strokeWidth="2" />
+                  <path d="M 213 38 l 6 6 l 12 -13" fill="none" stroke="rgba(34,197,94,.8)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M 246 16 L 250 8 M 252 20 L 258 14" fill="none" stroke="rgba(34,197,94,.6)" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              )}
+              {t.doodle === 3 && (
+                <svg viewBox="0 0 280 70" aria-hidden="true" style={{ width: "100%", maxWidth: 280, height: 66, marginTop: "auto", paddingTop: 18, alignSelf: "center" }}>
+                  <rect x="22" y="20" width="52" height="34" rx="10" fill="rgba(157,139,255,.1)" stroke="rgba(157,139,255,.55)" strokeWidth="2" />
+                  <path d="M 32 32 h 32 M 32 42 h 22" stroke="rgba(157,139,255,.7)" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M 80 38 C 108 26, 126 50, 152 38 C 168 31, 176 36, 184 38" fill="none" stroke="rgba(157,139,255,.45)" strokeWidth="1.8" strokeLinecap="round" />
+                  <circle cx="176" cy="24" r="12" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.5)" strokeWidth="1.6" />
+                  <text x="176" y="29" textAnchor="middle" fontSize="13" fill="#1a9a5c" fontFamily="'Font Awesome 6 Brands','Font Awesome 7 Brands'" aria-hidden="true">&#xf232;</text>
+                  <rect x="228" y="12" width="34" height="24" rx="7" fill="rgba(157,139,255,.1)" stroke="rgba(157,139,255,.55)" strokeWidth="2" />
+                  <path d="M 230 15 L 245 27 L 260 15" fill="none" stroke="rgba(157,139,255,.6)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <rect x="196" y="42" width="42" height="22" rx="11" fill="rgba(44,118,237,.08)" stroke="rgba(44,118,237,.5)" strokeWidth="1.8" />
+                  <circle cx="209" cy="53" r="2" fill="rgba(44,118,237,.7)" /><circle cx="217" cy="53" r="2" fill="rgba(44,118,237,.7)" /><circle cx="225" cy="53" r="2" fill="rgba(44,118,237,.7)" />
+                </svg>
+              )}
             </div>
           ))}
         </div>
@@ -1424,10 +2099,39 @@ export default function Hello22Site() {
 
       {/* FAQ */}
       <section id="faq" className="sec-alt" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
-        <div data-rv>
-          <div style={eyebrow}>FAQ</div>
-          <h2 style={{ ...h2 }}><b style={BD}>Frequently asked</b> <span style={HL}>questions.</span></h2>
-          <p style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 520, lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Everything you need to know</strong> about hello22. Can&apos;t find your answer? <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--lime)", textDecoration: "none", fontWeight: 600 }}>Get in touch →</a></p>
+        <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
+          <div data-rv>
+            <div style={eyebrow}><span aria-hidden="true" style={{ width: 16, height: 16, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9, marginRight: 8 }}>?</span>FAQ</div>
+            <h2 style={{ ...h2 }}><b style={BD}>Frequently asked</b><br />
+              <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+                <span style={HL}>questions.</span>
+                <svg viewBox="0 0 120 14" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -11, width: "100%", height: 12, overflow: "visible" }}>
+                  <path d="M3 8 C 30 3, 90 3, 117 6" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" />
+                  <path d="M14 12 C 38 9, 70 9, 92 11" fill="none" stroke="var(--lime)" strokeWidth="2.5" strokeLinecap="round" opacity=".6" />
+                </svg>
+              </span>
+            </h2>
+            <p style={{ fontSize: 18, color: "var(--mut)", margin: "22px 0 0", maxWidth: 520, lineHeight: 1.65 }}>Everything you need to know about hello22.<br />Can&apos;t find your answer? <a href="/contact" style={{ color: "var(--blue-ink)", textDecoration: "none", fontWeight: 700 }}>Get in touch →</a></p>
+          </div>
+          {/* illustration: photo + "Still have questions?" bubble (user mockup 2026-07-10) */}
+          <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 280 }}>
+            <div style={{ position: "absolute", inset: "-10px 130px 12px 66px", background: "radial-gradient(75% 70% at 50% 45%, rgba(44,118,237,.15), rgba(44,118,237,.06) 62%, transparent 80%)", borderRadius: "55% 45% 52% 48% / 58% 46% 54% 42%" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/demo-caller.jpg" alt="" loading="lazy" style={{ position: "absolute", top: -2, left: "24%", width: 198, height: 198, borderRadius: "50%", objectFit: "cover", border: "5px solid var(--surface)", boxShadow: "0 20px 44px -20px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+            <div style={{ position: "absolute", right: -4, top: 70, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "20px 20px 20px 6px", padding: "15px 19px", boxShadow: "0 16px 36px -20px var(--sh1)", display: "flex", alignItems: "flex-start", gap: 10, animation: "h22floatSm 7.5s ease-in-out -3s infinite" }}>
+              <span aria-hidden="true" style={{ fontSize: 17 }}>👏</span>
+              <span>
+                <span style={{ display: "block", fontSize: 14.5, fontWeight: 700, color: "var(--tx)" }}>Still have questions?</span>
+                <a href="/contact" style={{ display: "inline-block", fontSize: 13, fontWeight: 700, color: "var(--blue-ink)", textDecoration: "none", marginTop: 3 }}>We&apos;re here to help!</a>
+              </span>
+              <svg viewBox="0 0 24 22" aria-hidden="true" style={{ width: 18, height: 17, marginTop: 14 }}><path d="M12 19 C 4 13, 1 8, 4 4.5 C 6.5 1.8, 10 2.6, 12 6 C 14 2.6, 17.5 1.8, 20 4.5 C 23 8, 20 13, 12 19 Z" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="2" strokeLinejoin="round" /></svg>
+            </div>
+            {/* "?" marks + star + sparkles */}
+            <svg viewBox="0 0 30 40" style={{ position: "absolute", left: 28, top: 8, width: 26, height: 36 }}><path d="M8 12 C 8 5, 20 5, 20 12 C 20 17, 14 16, 14 22 M 14 30 l 0 .5" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="2.5" strokeLinecap="round" /></svg>
+            <svg viewBox="0 0 30 40" style={{ position: "absolute", left: 4, top: 66, width: 20, height: 28 }}><path d="M8 12 C 8 5, 20 5, 20 12 C 20 17, 14 16, 14 22 M 14 30 l 0 .5" fill="none" stroke="rgba(44,118,237,.4)" strokeWidth="2.5" strokeLinecap="round" /></svg>
+            <svg viewBox="0 0 20 20" style={{ position: "absolute", left: 44, bottom: 42, width: 16, height: 16 }}><path d="M10 2 L 12 8 L 18 10 L 12 12 L 10 18 L 8 12 L 2 10 L 8 8 Z" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="1.6" strokeLinejoin="round" /></svg>
+            <svg viewBox="0 0 26 24" style={{ position: "absolute", right: 130, top: -12, width: 24, height: 22 }}><path d="M4 20 L 10 10 M 12 22 L 16 12" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+          </div>
         </div>
         {/* 2 columns — wide container ka space cover hota hai; har column apni height pe stack karta hai */}
         <div data-rv className="faq-list faq-cols" style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 14, marginTop: 42, alignItems: "start" }}>
@@ -1443,9 +2147,11 @@ export default function Hello22Site() {
                   const open = faqOpen === i;
                   return (
                     <div key={i} style={{ ...card, overflow: "hidden", borderColor: open ? "rgba(44,118,237,.35)" : "var(--w09)", transition: "border-color .25s ease" }}>
-                      <button className="faq-q" onClick={() => setFaqOpen(open ? null : i)} aria-expanded={open} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, width: "100%", textAlign: "left", cursor: "pointer", background: "transparent", border: "none", color: "var(--tx)", fontFamily: "inherit", padding: "20px 24px" }}>
-                        <span style={{ fontSize: 16.5, fontWeight: 600 }}>{f.q}</span>
-                        <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: "50%", background: open ? "var(--lime)" : "var(--w06)", border: open ? "none" : "1px solid var(--w14)", color: open ? "#fff" : "var(--mut)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12, transition: "all .25s ease", transform: open ? "rotate(180deg)" : "none" }}><i className="fa-solid fa-chevron-down" /></span>
+                      {/* icon tile + plain chevron (user mockup 2026-07-10) */}
+                      <button className="faq-q" onClick={() => setFaqOpen(open ? null : i)} aria-expanded={open} style={{ display: "flex", alignItems: "center", gap: 15, width: "100%", textAlign: "left", cursor: "pointer", background: "transparent", border: "none", color: "var(--tx)", fontFamily: "inherit", padding: "18px 24px" }}>
+                        <span aria-hidden="true" style={{ flexShrink: 0, width: 42, height: 42, borderRadius: "50%", background: FAQ_ICS[i % FAQ_ICS.length].bg, color: FAQ_ICS[i % FAQ_ICS.length].c, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}><i className={FAQ_ICS[i % FAQ_ICS.length].ic} /></span>
+                        <span style={{ flex: 1, fontSize: 16.5, fontWeight: 700 }}>{f.q}</span>
+                        <i className="fa-solid fa-chevron-down" style={{ flexShrink: 0, fontSize: 13, color: "var(--mut2)", transition: "transform .25s ease", transform: open ? "rotate(180deg)" : "none" }} aria-hidden="true" />
                       </button>
                       <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .3s ease" }}>
                         <div style={{ overflow: "hidden" }}>
@@ -1459,19 +2165,36 @@ export default function Hello22Site() {
             );
           })}
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-start", marginTop: 24 }}>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
           <button
             onClick={() => {
               if (showAllFaqs && faqOpen !== null && faqOpen >= FAQ_PREVIEW) setFaqOpen(null);
               setShowAllFaqs((s) => !s);
             }}
             className="btnp"
-            style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--w06)", color: "var(--tx)", border: "1px solid var(--w14)", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, fontSize: 15, padding: "13px 26px", borderRadius: 999 }}
+            style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--surface)", color: "var(--blue-ink)", border: "1.5px solid rgba(44,118,237,.4)", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 15, padding: "13px 26px", borderRadius: 999, boxShadow: "0 8px 20px -14px rgba(44,118,237,.5)" }}
           >
             {showAllFaqs
               ? <><BtnTxt t="Show fewer questions" /> <i className="fa-solid fa-chevron-up" style={{ fontSize: 11 }} /></>
               : <><BtnTxt t={"Show all " + FAQS.length + " questions"} /> <i className="fa-solid fa-chevron-down" style={{ fontSize: 11 }} /></>}
           </button>
+        </div>
+        {/* bottom band — "Can't find what you're looking for?" (user mockup 2026-07-10) */}
+        <div data-rv style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap", background: "rgba(44,118,237,.06)", border: "1px solid rgba(44,118,237,.16)", borderRadius: 18, padding: "18px 24px", marginTop: 28 }}>
+          <span style={{ display: "inline-flex", flexShrink: 0 }}>
+            {["/images/portrait-melissa.jpg", "/images/portrait-james.jpg", "/images/portrait-priya.jpg"].map((p, i) => (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img key={p} src={p} alt="" width={38} height={38} loading="lazy" style={{ width: 38, height: 38, borderRadius: "50%", objectFit: "cover", border: "2.5px solid var(--surface)", marginLeft: i === 0 ? 0 : -12 }} />
+            ))}
+          </span>
+          <span style={{ flex: 1, minWidth: 200 }}>
+            <span style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 16.5 }}>Can&apos;t find what you&apos;re looking for?</span>
+            <span style={{ display: "block", fontSize: 14, color: "var(--mut)", marginTop: 2 }}>Our team is happy to help.</span>
+          </span>
+          <a href="/contact" className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none", background: "var(--surface)", color: "var(--blue-ink)", border: "1.5px solid rgba(44,118,237,.4)", fontWeight: 700, fontSize: 15, padding: "12px 24px", borderRadius: 999 }}>
+            <span style={{ display: "inline-flex", width: 24, height: 24, borderRadius: "50%", background: "var(--lime)", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 10, flexShrink: 0 }}><i className="fa-solid fa-comment" aria-hidden="true" /></span>
+            Get in touch
+          </a>
         </div>
       </section>
 
@@ -1481,13 +2204,33 @@ export default function Hello22Site() {
         <div data-rv className="cta-pad" style={{ position: "relative", overflow: "hidden", background: "var(--card-grad)", border: "1px solid var(--w10)", borderRadius: 30, padding: "56px 48px" }}>
           {!isLight && <div style={{ position: "absolute", top: -120, left: "20%", width: 520, height: 340, background: "radial-gradient(circle,rgba(44,118,237,.18),transparent 70%)", filter: "blur(20px)", pointerEvents: "none", animation: "h22glowpulse 5.5s ease-in-out infinite" }} />}
           <div className="cta-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
-            {/* LEFT — say hello */}
+            {/* LEFT — say hello (mockup layout 2026-07-10: chip + swoosh + illustration, button hataya) */}
             <div>
-              <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", fontSize: "clamp(44px,6vw,80px)", lineHeight: .95, margin: 0 }}>say hello<span style={{ color: "var(--lime)" }}>.</span></h2>
-              <p style={{ fontFamily: SUB, fontSize: "clamp(20px,2.2vw,26px)", fontWeight: 600, color: "var(--tx2)", margin: "12px 0 0" }}>to your new <span style={HL}>voice agent</span>.</p>
-              <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 440, margin: "20px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Deploy your first voice agent</strong> in minutes. 14-day free trial with 30 call minutes — a card is required to activate.</p>
-              <div style={{ display: "flex", gap: 14, marginTop: 30, flexWrap: "wrap" }}>
-                <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "15px 26px", borderRadius: 999, boxShadow: "0 16px 38px -14px rgba(44,118,237,.7)" }}><BtnTxt t="Start free trial" /></a>
+              <div style={eyebrow}><span aria-hidden="true" style={{ marginRight: 8, fontSize: 13 }}>👏</span>Get started</div>
+              <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", fontSize: "clamp(44px,6vw,80px)", lineHeight: .95, margin: "18px 0 0" }}>say hello<span style={{ color: "var(--lime)" }}>.</span></h2>
+              <p style={{ fontFamily: SUB, fontSize: "clamp(20px,2.2vw,26px)", fontWeight: 600, color: "var(--tx2)", margin: "12px 0 0" }}>to your new{" "}
+                <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
+                  <span style={HL}>voice agent</span>
+                  <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -8, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3" strokeLinecap="round" opacity=".8" /></svg>
+                </span>.
+              </p>
+              {/* Note: mockup mein "no card required" likha tha — current policy wording (card required) rakhi hai */}
+              <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 440, margin: "22px 0 0", lineHeight: 1.65 }}>Deploy your <strong style={{ fontWeight: 800, color: "var(--tx2)" }}>first voice agent</strong> in minutes.<br />14-day free trial with 30 call minutes —<br />a card is required to activate.</p>
+              {/* illustration: photo + greeting bubble + squiggles (user mockup 2026-07-10) */}
+              <div className="prod-illus" aria-hidden="true" style={{ position: "relative", minHeight: 250, marginTop: 18, maxWidth: 520 }}>
+                <div style={{ position: "absolute", left: 150, top: 8, width: 250, height: 240, background: "radial-gradient(circle at 55% 45%, rgba(44,118,237,.14), rgba(44,118,237,.05) 62%, transparent 80%)", borderRadius: "50%" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/cta-wave.jpg" alt="" loading="lazy" style={{ position: "absolute", left: 168, top: 4, width: 232, height: 232, borderRadius: "50%", objectFit: "cover", border: "5px solid var(--surface)", boxShadow: "0 20px 44px -20px var(--sh1)", animation: "h22floatSm 8s ease-in-out infinite" }} />
+                <div style={{ position: "absolute", left: 0, top: 64, maxWidth: 190, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "18px 18px 6px 18px", padding: "13px 16px", boxShadow: "0 16px 36px -20px var(--sh1)", animation: "h22floatSm 7.5s ease-in-out -3s infinite" }}>
+                  <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "flex-end", gap: 2, height: 11, marginBottom: 6 }}>{[5, 8, 11, 7, 4].map((h, i) => <span key={i} style={{ width: 2.5, height: h, borderRadius: 2, background: "var(--blue-ink)" }} />)}</span>
+                  <div style={{ fontSize: 13.5, fontWeight: 700, color: "var(--tx)", lineHeight: 1.4 }}>Hi there! <span aria-hidden="true">👋</span><br />I&apos;m hello22.</div>
+                  <div style={{ fontSize: 11.5, color: "var(--mut)", marginTop: 4, lineHeight: 1.45 }}>How can I help<br />your business today?</div>
+                </div>
+                <svg viewBox="0 0 26 24" style={{ position: "absolute", left: 6, top: 12, width: 24, height: 22 }}><path d="M4 20 L 10 10 M 12 22 L 16 12" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
+                <svg viewBox="0 0 80 90" style={{ position: "absolute", right: 30, bottom: 4, width: 62, height: 70 }}>
+                  <path d="M 20 84 C 8 62, 20 52, 32 58 C 42 63, 36 74, 26 70 C 16 65, 24 40, 52 14" fill="none" stroke="rgba(44,118,237,.55)" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M 54 10 l -9 2 l 6 7 z" fill="rgba(44,118,237,.6)" />
+                </svg>
               </div>
               <div style={{ display: "flex", gap: 20, marginTop: 26, flexWrap: "wrap", fontSize: 13.5, color: "var(--mut)" }}>
                 {[
@@ -1504,8 +2247,15 @@ export default function Hello22Site() {
             </div>
             {/* RIGHT — demo form */}
             <div ref={ctaFormRef} style={{ willChange: "transform" }}>
-            <div className="form-card" style={{ background: "var(--form-bg)", border: "1px solid var(--w10)", borderRadius: 22, padding: 26 }}>
-              <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 24, margin: 0 }}>Book a <span style={HL}>Free Demo</span></h3>
+            <div className="form-card" style={{ background: "var(--surface)", border: "1px solid var(--w10)", borderRadius: 24, padding: 26 }}>
+              {/* form header: calendar icon tile + subline (user mockup 2026-07-10) */}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+                <span aria-hidden="true" style={{ width: 48, height: 48, borderRadius: 14, flexShrink: 0, background: "rgba(44,118,237,.12)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 19 }}><i className="fa-regular fa-calendar-check" /></span>
+                <span>
+                  <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 24, margin: 0 }}>Book a <span style={HL}>Free Demo</span></h3>
+                  <p style={{ fontSize: 14, color: "var(--mut)", margin: "5px 0 0" }}>See hello22 in action and get your questions answered.</p>
+                </span>
+              </div>
               {demoStatus === "ok" ? (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, textAlign: "center", padding: "40px 10px" }}>
                   <span style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(44,118,237,.16)", color: "var(--lime)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}><i className="fa-solid fa-check" /></span>
