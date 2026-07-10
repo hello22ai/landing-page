@@ -37,7 +37,7 @@ export default function ContactPage() {
       {/* ===== HERO ===== */}
       <div style={chip}>Contact us</div>
       <h1 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.03em", fontSize: "clamp(30px,4.8vw,50px)", lineHeight: 1.08, margin: "18px 0 0", maxWidth: 760 }}>
-        We&apos;d love to <span style={{ color: "var(--num)" }}>hear from you</span>.
+        We&apos;d Love to <span style={{ color: "var(--num)" }}>Hear From You</span>.
       </h1>
       <p style={{ fontSize: 17, lineHeight: 1.7, color: "var(--mut)", maxWidth: 720, margin: "20px 0 0" }}>
         Have a query concerning hello22 AI, or do you have any questions about the features or pricing of our voice agents? Whether you&apos;re new or trying to figure out which plan is best for you, we can assist. Send us an email and we&apos;ll respond to your enquiry as soon as we can.
@@ -48,7 +48,7 @@ export default function ContactPage() {
         {/* form card */}
         <div style={{ ...cardBase, borderRadius: 24, padding: "clamp(24px,4vw,36px)" }}>
           <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(21px,2.8vw,27px)", margin: 0 }}>
-            Send us a <span style={{ color: "var(--num)" }}>message</span>.
+            Send Us a <span style={{ color: "var(--num)" }}>Message</span>.
           </h2>
           <p style={{ fontSize: 14.5, color: "var(--mut)", margin: "10px 0 24px" }}>Fill out the form below and we&apos;ll get back to you as soon as possible.</p>
           <ContactForm />
@@ -68,7 +68,7 @@ export default function ContactPage() {
 
           {/* need help with */}
           <div style={{ ...cardBase, padding: "24px 26px" }}>
-            <h2 style={cardTitle}>Need help with?</h2>
+            <h2 style={cardTitle}>Need Help With?</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 9, marginTop: 16 }}>
               {HELP_TOPICS.map((t) => (
                 <span key={t.t} style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, fontWeight: 600, color: "var(--tx2)", background: "var(--toggle-bg)", border: "1px solid var(--toggle-bd)", borderRadius: 999, padding: "8px 14px" }}>
@@ -80,7 +80,7 @@ export default function ContactPage() {
 
           {/* serving countries */}
           <div style={{ ...cardBase, padding: "24px 26px" }}>
-            <h2 style={cardTitle}>Serving businesses across</h2>
+            <h2 style={cardTitle}>Serving Businesses Across</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16 }}>
               {COUNTRIES.map((c) => (
                 <span key={c.name} style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
@@ -98,7 +98,7 @@ export default function ContactPage() {
       <div style={{ background: "var(--tint)", border: "1px solid var(--tint-bd)", borderRadius: 24, padding: "clamp(28px,4vw,44px)", marginTop: 64, textAlign: "center" }}>
         <div style={chip}>We&apos;re here to help</div>
         <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(22px,3vw,30px)", maxWidth: 640, margin: "14px auto 0" }}>
-          Smarter, more natural <span style={{ color: "var(--num)" }}>customer interactions</span>.
+          Smarter, More Natural <span style={{ color: "var(--num)" }}>Customer Interactions</span>.
         </h2>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: "var(--mut)", maxWidth: 620, margin: "16px auto 0" }}>
           Our goal is to assist you in making each customer interaction smarter and more organic. Whether you&apos;re new to hello22 AI or already using our solution, we&apos;re always pleased to help.
