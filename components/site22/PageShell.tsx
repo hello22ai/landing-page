@@ -31,6 +31,7 @@ const PAL = {
     "--nav": "rgba(7,7,13,.72)", "--foot": "#090910", "--num": "#4d8ef5",
     "--toggle-bg": "rgba(255,255,255,.06)", "--toggle-bd": "rgba(255,255,255,.12)",
     "--tint": "rgba(44,118,237,.12)", "--tint-bd": "rgba(44,118,237,.3)",
+    "--sh1": "rgba(0,0,0,.75)", "--sh2": "rgba(0,0,0,.6)",
   },
   light: {
     "--bg": "#f5f6fa", "--tx": "#10131c", "--tx2": "#1d2433", "--mut": "#4a5266", "--dim": "#6c7488",
@@ -38,6 +39,8 @@ const PAL = {
     "--nav": "rgba(255,255,255,.82)", "--foot": "#eceef5", "--num": "#1e63d6",
     "--toggle-bg": "rgba(13,18,32,.05)", "--toggle-bd": "rgba(13,18,32,.1)",
     "--tint": "rgba(44,118,237,.1)", "--tint-bd": "rgba(44,118,237,.28)",
+    // Homepage jaisi soft shadows — heavy hardcoded shadows in vars se replace (2026-07-10)
+    "--sh1": "rgba(28,42,84,.16)", "--sh2": "rgba(28,42,84,.12)",
   },
 } as const;
 
