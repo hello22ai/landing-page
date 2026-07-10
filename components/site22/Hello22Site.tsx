@@ -31,6 +31,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--plan-pop": "linear-gradient(160deg,rgba(44,118,237,.12),rgba(157,139,255,.08)),#12121d",
     "--core-bg": "radial-gradient(circle at 50% 32%,#16161f,#101019)",
     "--sec-alt": "#10101a",
+    "--sec-tint": "#0c1322",
     "--nav-bg": "rgba(7,7,13,.72)", "--nav-bg2": "rgba(7,7,13,.94)", "--form-bg": "rgba(8,8,14,.55)",
     "--tx": "#f4f4f7", "--tx2": "#e4e4ec", "--tx3": "#c9c9d4",
     "--mut": "#9594a6", "--mut2": "#8b8a9c", "--mut3": "#7a7a8c", "--dim": "#6f6f80", "--dim2": "#5d5d70",
@@ -54,6 +55,7 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--plan-pop": "#f4f8fe",
     "--core-bg": "#ffffff",
     "--sec-alt": "#ffffff",
+    "--sec-tint": "#edf3fd",
     "--nav-bg": "rgba(255,255,255,.82)", "--nav-bg2": "rgba(255,255,255,.97)", "--form-bg": "rgba(255,255,255,.72)",
     "--tx": "#10131c", "--tx2": "#1d2433", "--tx3": "#3e4658",
     "--mut": "#4a5266", "--mut2": "#555d72", "--mut3": "#60687e", "--dim": "#6c7488", "--dim2": "#838b9e",
@@ -68,7 +70,17 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
   },
 };
 
-const NAV_LINKS = ["Demo", "Product", "Voices", "Features", "Industries", "Pricing", "FAQ"];
+// Nav (2026-07-10): About us/Contact pages add hue; Product/Voices nav se hataye (sections
+// page par maujood hain aur footer se linked) — 9 links crowded ho jaate the.
+const NAV_LINKS: { n: string; h: string }[] = [
+  { n: "Demo", h: "#demo" },
+  { n: "Features", h: "#features" },
+  { n: "Industries", h: "#industries" },
+  { n: "Pricing", h: "#pricing" },
+  { n: "FAQ", h: "#faq" },
+  { n: "About us", h: "/about" },
+  { n: "Contact", h: "/contact" },
+];
 
 // Kitni voices pehle dikhani hain — baaki "See all voices" se khulti hain.
 const VOICE_PREVIEW = 6;
@@ -270,7 +282,8 @@ const CSS = `
 .h22 .snap-x::-webkit-scrollbar{display:none}
 .h22 .nav-burger{display:none}
 .h22 img{max-width:100%}
-.h22 section.sec-alt::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:var(--sec-alt);z-index:-1;pointer-events:none}
+.h22 section.sec-alt::before,.h22 section.sec-tint::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;background:var(--sec-alt);border-top:1px solid var(--w08);border-bottom:1px solid var(--w08);z-index:-1;pointer-events:none}
+.h22 section.sec-tint::before{background:var(--sec-tint)}
 .h22 .cmp-ai{background:rgba(44,118,237,.07);border-left:1px solid rgba(44,118,237,.16)}
 @media(hover:hover){.h22 .cmp-row:not(.cmp-head):hover{background:var(--w04)}}
 .h22 .plat-stats>div+div{border-left:1px solid var(--w08);padding-left:18px}
@@ -566,6 +579,23 @@ export default function Hello22Site() {
   useEffect(() => { setRvOn(true); }, []);
   useReveal(rootRef);
 
+  // Scrollspy — jis section mein reader hai, navbar mein wahi link highlight (boss feedback 2026-07-10:
+  // scroll karte waqt pata nahi chalta kaunsa section chal raha hai).
+  const [activeSec, setActiveSec] = useState("");
+  useEffect(() => {
+    // sirf hash wale links (sections) — About us/Contact alag pages hain, unpar spy nahi chalta
+    const ids = NAV_LINKS.filter((l) => l.h.startsWith("#")).map((l) => l.h.slice(1));
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (ents) => { ents.forEach((e) => { if (e.isIntersecting) setActiveSec(e.target.id); }); },
+      // viewport ke beech wali patti cross karne par section "active" — upar/niche wale nahi
+      { rootMargin: "-35% 0px -55% 0px", threshold: 0 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   // Scroll progress bar (top) — rAF se direct width write, koi re-render nahi.
   const progRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -736,7 +766,9 @@ export default function Hello22Site() {
   const demoTime = `00:${String(Math.floor(callSecs / 60)).padStart(2, "0")}:${String(callSecs % 60).padStart(2, "0")}`;
   const uc = USECASES[useCase];
 
-  const eyebrow: React.CSSProperties = { fontFamily: DISP, fontSize: 11.5, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--lime)", fontWeight: 700 };
+  // Eyebrow ab labeled chip hai (boss feedback 2026-07-10) — plain text sections mein ghul jata tha;
+  // chip har section ko clear naam deta hai. Style #product ke existing chip se match karta hai.
+  const eyebrow: React.CSSProperties = { display: "inline-flex", alignItems: "center", padding: "8px 16px", borderRadius: 999, border: "1px solid rgba(44,118,237,.35)", background: "rgba(44,118,237,.07)", fontFamily: DISP, fontSize: 11.5, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--lime)", fontWeight: 700 };
   const h2: React.CSSProperties = { fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(25px,4.6vw,44px)", lineHeight: 1.14, margin: "14px 0 0" };
   const card: React.CSSProperties = { background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 22 };
   const featIcon = (bg: string, bd: string, col: string): React.CSSProperties => ({ width: 44, height: 44, borderRadius: 12, background: bg, border: `1px solid ${bd}`, display: "flex", alignItems: "center", justifyContent: "center", color: col, fontSize: 18 });
@@ -769,9 +801,16 @@ export default function Hello22Site() {
         <div className="nav-bar" style={{ maxWidth: 1536, margin: "0 auto", padding: "0 28px", height: scrolled ? 62 : 74, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, transition: "height .3s ease" }}>
           <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={isLight ? LOGO_LIGHT : LOGO} alt="hello22.ai" className="nav-logo" style={{ height: 50, width: "auto", display: "block", filter: "var(--logo-filter)" }} /></a>
           <nav className="nav-links" style={{ display: "flex", alignItems: "center", gap: 30, fontSize: 14.5, fontWeight: 500 }}>
-            {NAV_LINKS.map((l) => (
-              <a key={l} className="nl" href={"#" + l.toLowerCase().replace(" ", "")}>{l}</a>
-            ))}
+            {NAV_LINKS.map((l) => {
+              const active = l.h.startsWith("#") && activeSec === l.h.slice(1);
+              return (
+                <a key={l.n} className="nl" href={l.h} aria-current={active ? "true" : undefined} style={active ? { color: "var(--blue-ink)", fontWeight: 700 } : undefined}>
+                  {l.n}
+                  {/* active dot — underline shift se bachne ke liye chhota marker */}
+                  <span aria-hidden="true" style={{ display: "block", height: 3, borderRadius: 3, marginTop: 3, background: active ? "var(--lime)" : "transparent", transition: "background .25s ease" }} />
+                </a>
+              );
+            })}
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
             <a className="nav-signin" href={LOGIN_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--tx)", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
@@ -787,7 +826,7 @@ export default function Hello22Site() {
         {menuOpen && (
           <nav className="nav-mobile" style={{ borderTop: "1px solid var(--w07)", background: "var(--nav-bg2)", padding: "8px 18px 18px", display: "flex", flexDirection: "column" }}>
             {NAV_LINKS.map((l) => (
-              <a key={l} href={"#" + l.toLowerCase().replace(" ", "")} onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px", borderBottom: "1px solid var(--w06)" }}>{l}</a>
+              <a key={l.n} href={l.h} onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px", borderBottom: "1px solid var(--w06)" }}>{l.n}</a>
             ))}
             <a href={LOGIN_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px" }}>Sign in</a>
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="btnp" style={{ textDecoration: "none", textAlign: "center", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 20px", borderRadius: 999, marginTop: 8, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
@@ -895,7 +934,7 @@ export default function Hello22Site() {
       </section>
 
       {/* DEMO */}
-      <section id="demo" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "100px 28px 112px", scrollMarginTop: 90 }}>
+      <section id="demo" className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "100px 28px 112px", scrollMarginTop: 90 }}>
         <div data-rv style={eyebrow}>AI phone agent</div>
         <h2 data-rv style={{ ...h2, maxWidth: 760 }}><b style={BD}>Press play.</b> Hear hello22 handle a <span style={HL}>real call</span>.</h2>
         <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Experience how natural conversations flow</strong> with hello22. It listens, understands, and responds — <span style={HL}>just like a human</span>.</p>
@@ -1123,7 +1162,7 @@ export default function Hello22Site() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px" }}>
+      <section className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px" }}>
         <div data-rv style={eyebrow}>How it works</div>
         <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Set up, sign up,</b> go live — with <span style={HL}>hello22</span>.</h2>
         <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No code, no telephony setup,</strong> no flowcharts. Sarah walks you through every step — confirm your business, create your account, and take your first real call.</p>
@@ -1334,12 +1373,12 @@ export default function Hello22Site() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section  style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
+      {/* PRICING — id niche ke <p> par hai (user ki choice 2026-07-10, wahi original placement) */}
+      <section className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
         <div data-rv>
           <div style={eyebrow}>Pricing</div>
           <h2 style={{ ...h2 }}><b style={BD}>Simple plans.</b> <span style={HL}>Cancel anytime.</span></h2>
-          <p  id="pricing"style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 520, lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No setup fees, no contracts.</strong> Pick a plan and go live today — secure checkout powered by Stripe.</p>
+          <p id="pricing" style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 520, lineHeight: 1.6, scrollMarginTop: 90 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No setup fees, no contracts.</strong> Pick a plan and go live today — secure checkout powered by Stripe.</p>
           <div style={{ display: "flex", justifyContent: "flex-start", marginTop: 20 }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 18px 8px 9px", borderRadius: 999, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.24)", color: "var(--blue-ink)", fontSize: 14, fontWeight: 600 }}>
               <span style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(44,118,237,.16)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}><i className="fa-solid fa-gift" /></span>
@@ -1522,8 +1561,8 @@ export default function Hello22Site() {
             </div>
             {([
               { t: "Product", l: [{ n: "Features", h: "#features" }, { n: "Voices", h: "#voices" }, { n: "Pricing", h: "#pricing" }, { n: "Live demo", h: "#demo" }, { n: "FAQ", h: "#faq" }] },
-              // Company pages abhi bane nahi hain — un links ko plain text rakha hai; Support email pe jata hai
-              { t: "Company", l: [{ n: "About" }, { n: "Contact" }, { n: "Blog" }, { n: "Reviews", h: "#testimonials" }, { n: "Support", h: `mailto:${SUPPORT_EMAIL}` }] },
+              // About/Contact pages naye design mein ban gaye (2026-07-10) — ab linked; Blog abhi nahi bana.
+              { t: "Company", l: [{ n: "About us", h: "/about" }, { n: "Contact", h: "/contact" }, { n: "Blog" }, { n: "Reviews", h: "#testimonials" }, { n: "Support", h: `mailto:${SUPPORT_EMAIL}` }] },
             ] as { t: string; l: { n: string; h?: string }[] }[]).map((col) => (
               <div key={col.t}>
                 <div style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".1em", color: "var(--dim)", marginBottom: 16 }}>{col.t}</div>
