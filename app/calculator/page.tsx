@@ -16,7 +16,7 @@ const CAVEAT = "var(--font-caveat), 'Segoe Script', cursive";
 
 export default function CalculatorPage() {
   return (
-    <PageShell current="/calculator" maxWidth={1200}>
+    <PageShell current="/calculator" maxWidth={1536}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,440px),1fr))", gap: "clamp(32px,4vw,64px)", alignItems: "center" }}>
         {/* ===== LEFT — heading + illustration + doodles ===== */}
         <div style={{ position: "relative" }}>

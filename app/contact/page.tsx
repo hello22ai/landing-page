@@ -34,7 +34,7 @@ const cardTitle: React.CSSProperties = { fontFamily: SUB, fontWeight: 700, fontS
 
 export default function ContactPage() {
   return (
-    <PageShell current="/contact" maxWidth={1200}>
+    <PageShell current="/contact" maxWidth={1536}>
       {/* ===== HERO ===== */}
       <div style={chip}>Contact us</div>
       <h1 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.03em", fontSize: "clamp(30px,4.8vw,50px)", lineHeight: 1.08, margin: "18px 0 0", maxWidth: 760 }}>

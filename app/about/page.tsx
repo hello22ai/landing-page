@@ -53,7 +53,7 @@ const cardBase: React.CSSProperties = { background: "var(--surface)", border: "1
 
 export default function AboutPage() {
   return (
-    <PageShell current="/about" maxWidth={1200}>
+    <PageShell current="/about" maxWidth={1536}>
       {/* ===== HERO — 2-col: text + photo ===== */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))", gap: 40, alignItems: "center" }}>
         <div>
