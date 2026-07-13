@@ -284,6 +284,9 @@ const PLANS: Plan[] = [
   },
 ];
 
+// ROI calculator ab apne page par hai — /calculator (components/site22/CalcCard.tsx).
+// Pricing section ke andar uska CTA link hai (user request 2026-07-13 v3).
+
 // Human vs AI comparison table — orbit section ki jagah (client reference).
 type CmpRow = { f: string; ic: string; h: string; a: string; chip: string };
 const COMPARE: CmpRow[] = [
@@ -2185,7 +2188,8 @@ export default function Hello22Site() {
       </section>
 
       {/* PRICING — id niche ke <p> par hai (user ki choice 2026-07-10, wahi original placement) */}
-      <section className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
+      {/* bottom 112→72 — ROI CTA ke baad neeche bahut khali lag raha tha (user feedback 2026-07-13) */}
+      <section className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 72px", scrollMarginTop: 90 }}>
         {/* Header — reference UI (2026-07-13): heading ke neeche hand-drawn underline + sparkle,
             right mein handwritten note bubble (arrow + heart doodles). Note <=1080px par hidden. */}
         <div data-rv style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 36 }}>
@@ -2267,13 +2271,33 @@ export default function Hello22Site() {
             </div>
           ))}
         </div>
+        {/* ROI CALCULATOR CTA — pricing section ka hissa (user request 2026-07-13 v3:
+            alag section nahi; click par /calculator page khulta hai, popup nahi). */}
+        {/* marginTop 18 = price-grid ka gap — cards ke saath same rhythm (user feedback 2026-07-13) */}
+        <div data-rv style={{ position: "relative", marginTop: 18, background: "var(--surface)", border: "1.5px solid var(--w14)", borderRadius: 22, padding: "26px 30px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, flexWrap: "wrap", boxShadow: "0 10px 30px -24px var(--sh2)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 18, minWidth: 0, flex: "1 1 380px" }}>
+            <span aria-hidden="true" style={{ width: 54, height: 54, borderRadius: 15, flexShrink: 0, background: "rgba(44,118,237,.13)", border: "1px solid rgba(44,118,237,.3)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}><i className="fa-solid fa-calculator" /></span>
+            <div>
+              <h3 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.015em", fontSize: "clamp(17px,2.2vw,23px)", lineHeight: 1.2, margin: 0 }}><b style={BD}>Not Sure It&apos;s Worth It?</b> <span style={HL}>See What Missed Calls Cost You.</span></h3>
+              <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.55, margin: "7px 0 0", maxWidth: 600 }}>Pick your industry, move three sliders, and compare your lost revenue with these plans — takes about 10 seconds.</p>
+            </div>
+          </div>
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            <span className="price-note" style={{ position: "absolute", top: -30, right: 4, fontFamily: "var(--font-caveat), 'Segoe Script', cursive", fontSize: 18, fontWeight: 600, color: "var(--blue-ink)", whiteSpace: "nowrap" }}>Takes 10 seconds!</span>
+            <a href="/calculator" className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 11, textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 26px", borderRadius: 999, boxShadow: "0 16px 34px -14px rgba(44,118,237,.7)" }}>
+              Calculate my lost revenue <i className="fa-solid fa-arrow-right" aria-hidden="true" style={{ fontSize: 13 }} />
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* FAQ */}
       <section id="faq" className="sec-alt" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
         <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
           <div data-rv>
-            <div style={eyebrow}><span aria-hidden="true" style={{ width: 16, height: 16, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9, marginRight: 8 }}>?</span>FAQ</div>
+            {/* filled circle "?" badge chip mein bhara-bhara lag raha tha (user feedback 2026-07-13) —
+                baaki chips (Pricing fa-tag, Why fa-heart) jaisa flat FA icon */}
+            <div style={eyebrow}><i className="fa-regular fa-circle-question" aria-hidden="true" style={{ marginRight: 8, fontSize: 12 }} />FAQ</div>
             <h2 style={{ ...h2 }}><b style={BD}>Frequently Asked</b><br />
               <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
                 <span style={HL}>Questions.</span>

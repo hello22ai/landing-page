@@ -9,8 +9,9 @@ import { useMemo, useState } from "react";
 import { BLOG_POSTS, CATEGORY_STYLE, PASTELS, formatDate, type BlogPost } from "./blogData";
 import { DISP, SUB } from "./PageShell";
 
-const NAVY = "#0c1e40";
-const NAVY_LINE = "rgba(255,255,255,.09)";
+// 2026-07-13 (user feedback): almost-black navy se deep royal blue — brand #2c76ed family.
+const NAVY = "#12358f";
+const NAVY_LINE = "rgba(255,255,255,.14)";
 const CATEGORIES = ["All", "Growth", "Product", "Guides", "Industries"] as const;
 
 const CSS = `

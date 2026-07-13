@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://www.hello22.ai/about", lastModified, priority: 0.8 },
     { url: "https://www.hello22.ai/contact", lastModified, priority: 0.8 },
     { url: "https://www.hello22.ai/blog", lastModified, priority: 0.8 },
+    { url: "https://www.hello22.ai/calculator", lastModified, priority: 0.7 },
     ...BLOG_POSTS.map((p) => ({
       url: `https://www.hello22.ai/blog/${p.slug}`,
       lastModified: new Date(p.date),

@@ -65,29 +65,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound();
 
   const cat = CATEGORY_STYLE[post.category];
-  const related = BLOG_POSTS.filter((p) => p.slug !== post.slug).sort((a, b) => (a.category === post.category ? -1 : 0) - (b.category === post.category ? -1 : 0)).slice(0, 3);
+  // 4 related — 3 cards wide container mein row aadha khali chhod rahe the (user feedback 2026-07-13)
+  const related = BLOG_POSTS.filter((p) => p.slug !== post.slug).sort((a, b) => (a.category === post.category ? -1 : 0) - (b.category === post.category ? -1 : 0)).slice(0, 4);
   const shareUrl = `https://www.hello22.ai/blog/${post.slug}`;
   const shareTitle = encodeURIComponent(post.title);
 
   return (
-    <PageShell current="/blog" maxWidth={860}>
+    // maxWidth 1536 = homepage sections ka container (user feedback 2026-07-13: 860/1200 dono
+    // wide screens par narrow lage); header/cover container-wide, article text readable width par.
+    <PageShell current="/blog" maxWidth={1536}>
       {/* ===== BREADCRUMB ===== */}
       <a href="/blog" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", fontFamily: SUB, fontSize: 13.5, fontWeight: 700, color: "var(--mut)" }}>
         <i className="fa-solid fa-arrow-left" aria-hidden="true" style={{ fontSize: 11 }} /> All articles
       </a>
 
-      {/* ===== HEADER ===== */}
-      <header style={{ marginTop: 26 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+      {/* ===== HEADER — centered, container-wide ===== */}
+      <header style={{ marginTop: 30, textAlign: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
           <span style={{ display: "inline-flex", alignItems: "center", padding: "6px 14px", borderRadius: 999, background: cat.bg, border: `1px solid ${cat.bd}`, color: cat.c, fontFamily: SUB, fontSize: 12, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase" }}>{post.category}</span>
           <span style={{ fontSize: 13.5, color: "var(--dim)" }}>{formatDate(post.date)} · {post.readMins} min read</span>
         </div>
-        <h1 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.025em", fontSize: "clamp(27px,4.2vw,42px)", lineHeight: 1.16, margin: "20px 0 0" }}>{post.title}</h1>
-        <p style={{ fontFamily: SUB, fontSize: "clamp(16px,2vw,19px)", fontWeight: 500, lineHeight: 1.6, color: "var(--mut)", margin: "18px 0 0" }}>{post.excerpt}</p>
+        <h1 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.025em", fontSize: "clamp(27px,4vw,46px)", lineHeight: 1.15, maxWidth: 980, margin: "22px auto 0" }}>{post.title}</h1>
+        <p style={{ fontFamily: SUB, fontSize: "clamp(16px,2vw,19px)", fontWeight: 500, lineHeight: 1.6, color: "var(--mut)", maxWidth: 760, margin: "18px auto 0" }}>{post.excerpt}</p>
         {/* author row */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 26, paddingTop: 22, borderTop: "1px solid var(--line2)" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginTop: 28, textAlign: "left" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={post.author.avatar} alt="" style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", border: "1px solid var(--line2)", display: "block" }} />
+          <img src={post.author.avatar} alt="" style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", border: "1px solid var(--line2)", display: "block" }} />
           <span>
             <span style={{ display: "block", fontFamily: SUB, fontSize: 15, fontWeight: 700, color: "var(--tx)" }}>{post.author.name}</span>
             <span style={{ display: "block", fontSize: 13, color: "var(--dim)", marginTop: 2 }}>{post.author.role}</span>
@@ -95,15 +98,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </header>
 
-      {/* ===== COVER ===== */}
-      <div style={{ borderRadius: 26, overflow: "hidden", border: "1px solid var(--line2)", boxShadow: "0 26px 54px -32px var(--sh1)", marginTop: 34, aspectRatio: "21 / 9" }} aria-hidden="true">
+      {/* ===== COVER — full container width ===== */}
+      <div style={{ borderRadius: 26, overflow: "hidden", border: "1px solid var(--line2)", boxShadow: "0 26px 54px -32px var(--sh1)", marginTop: 38, aspectRatio: "21 / 9" }} aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {/* center 30% — portrait covers mein 21:9 crop face kaat raha tha (visual audit 2026-07-13) */}
         <img src={post.cover} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }} />
       </div>
 
-      {/* ===== BODY ===== */}
-      <article style={{ maxWidth: 720, margin: "22px auto 0" }}>
+      {/* ===== BODY — FULL container width, no centered column (user ka clear order 2026-07-13:
+          "content width mein karo taaki left-right space cover ho") ===== */}
+      <article style={{ margin: "30px 0 0" }}>
         {post.blocks.map((b, i) => <Block key={i} b={b} />)}
 
         {/* share */}
@@ -126,7 +130,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {/* ===== KEEP READING ===== */}
       <div style={{ marginTop: 72 }}>
         <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(19px,2.4vw,24px)", margin: 0 }}>Keep Reading</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,240px),1fr))", gap: 16, marginTop: 20 }}>
+        {/* auto-fit (not auto-fill) — khali tracks collapse hote hain, cards poori row bharte hain */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,240px),1fr))", gap: 16, marginTop: 20 }}>
           {related.map((p) => {
             const rc = CATEGORY_STYLE[p.category];
             return (

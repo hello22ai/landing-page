@@ -246,6 +246,79 @@ export const BLOG_POSTS: BlogPost[] = [
   },
 ];
 
+// 2 naye articles (user request 2026-07-13) — array ke END mein taaki "Latest" order na bigde.
+BLOG_POSTS.push(
+  {
+    slug: "ai-receptionist-for-clinics",
+    title: "The Front Desk Cure: How Clinics Keep Every Patient Call From Slipping Away",
+    excerpt:
+      "Dental and medical clinics lose bookings every day to busy signals and hold music. Here's how practices are using AI reception to answer every patient — without adding staff.",
+    category: "Industries",
+    date: "2026-04-28",
+    readMins: 6,
+    cover: "/images/industry-dental.jpg",
+    short: "Every Patient, Answered",
+    pastel: "mint",
+    author: AUTHORS.sarah,
+    blocks: [
+      { t: "p", x: "Walk past any clinic's front desk at 9am on a Monday and you'll see the same scene: two phones ringing, a patient checking in at the counter, and a receptionist doing their best to be three people at once. Every ring that goes unanswered is a patient who may book elsewhere — and in healthcare, they usually don't call back." },
+      { t: "h2", x: "Why clinic calls are different" },
+      { t: "p", x: "Clinic calls are rarely casual. Patients call to book, reschedule, chase results, or because something hurts. They're often anxious, and hold music makes anxious people hang up. Unlike retail, a lost clinic call isn't just lost revenue — it's a person who needed help and didn't get through." },
+      { t: "list", items: [
+        "Peak call times collide with peak front-desk times — mornings and lunch",
+        "Reschedules and cancellations clog the line for new-patient bookings",
+        "After-hours callers get voicemail exactly when they finally have time to call",
+        "Every missed new-patient call can be worth thousands in lifetime value",
+      ] },
+      { t: "h2", x: "What an AI receptionist handles at a clinic" },
+      { t: "p", x: "hello22 answers on the first ring, every time. It books and reschedules appointments straight into the practice calendar, answers the routine questions that eat the front desk's day — hours, parking, insurance, pricing for common treatments — and captures new-patient details completely and legibly." },
+      { t: "quote", x: "Our receptionist used to dread Mondays. Now the AI catches the morning rush, and she actually gets to look up and greet the patients standing in front of her.", by: "hello22 customer, dental clinic" },
+      { t: "h2", x: "The human front desk gets better, not smaller" },
+      { t: "p", x: "The goal isn't replacing the front desk — it's letting the people at the desk focus on the patients who are physically there, while no caller ever hits voicemail. Practices tell us the biggest change isn't even the recovered bookings; it's the calm." },
+      { t: "tip", x: "Clinics get the best results by connecting their practice calendar first — when the AI can offer real appointment slots on the first call, booking rates jump immediately." },
+    ],
+  },
+  {
+    slug: "choosing-an-ai-receptionist",
+    title: "10 Questions to Ask Before You Choose an AI Receptionist",
+    excerpt:
+      "Every AI phone product promises the same magic. These ten questions — from setup time to what happens on a bad call — will show you which ones can actually deliver.",
+    category: "Guides",
+    date: "2026-04-15",
+    readMins: 7,
+    cover: "/images/feat-voices.jpg",
+    short: "Choose the Right AI",
+    pastel: "lavender",
+    author: AUTHORS.james,
+    blocks: [
+      { t: "p", x: "The AI receptionist market is crowded, and every landing page sounds identical: natural voice, 24/7 answering, happy customers. The differences only show up after you've signed up — unless you know what to ask first. Here are the ten questions we'd ask any vendor, including us." },
+      { t: "h2", x: "Setup and knowledge" },
+      { t: "list", items: [
+        "1. How long does setup actually take — minutes, or a project plan?",
+        "2. How does it learn my business — can it read my website, or do I fill in forms for hours?",
+        "3. Can I edit what it says after going live, and do changes apply instantly?",
+      ] },
+      { t: "p", x: "If the answer to question one involves an onboarding call with a solutions engineer, that tells you everything about the next twelve months. Modern platforms learn from your website in minutes and let you correct any answer yourself, instantly." },
+      { t: "h2", x: "The conversation itself" },
+      { t: "list", items: [
+        "4. Does it actually converse, or walk callers through a disguised phone menu?",
+        "5. What happens when a caller goes off-script or changes topic mid-call?",
+        "6. Can it book real appointments into my real calendar during the call?",
+        "7. What does it do with an emergency or an angry caller — and can I set those rules?",
+      ] },
+      { t: "quote", x: "Ask every vendor the same question: 'What happens when it doesn't know the answer?' The honest ones have a real fallback. The rest change the subject.", by: "James Carter, Customer Success at hello22" },
+      { t: "h2", x: "Trust and follow-through" },
+      { t: "list", items: [
+        "8. Do I get a transcript and summary of every call, delivered where I work — email, SMS, WhatsApp?",
+        "9. Where does my data live, and is it ever sold or used to train other businesses' agents?",
+        "10. What does it cost when my call volume doubles — flat rate, or a surprise invoice?",
+      ] },
+      { t: "p", x: "A good AI receptionist should feel like hiring a brilliant employee who never sleeps — not like adopting a software project. Ask the ten questions, take the free trials, and call your own number often. The right answer will be obvious within a week." },
+      { t: "tip", x: "Run the same three test calls on every product you trial: a booking, an oddball question, and a fake emergency. Compare the transcripts side by side." },
+    ],
+  },
+);
+
 export function getPost(slug: string): BlogPost | undefined {
   return BLOG_POSTS.find((p) => p.slug === slug);
 }

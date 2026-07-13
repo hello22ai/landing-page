@@ -34,8 +34,8 @@ const PAL = {
     "--toggle-bg": "rgba(255,255,255,.06)", "--toggle-bd": "rgba(255,255,255,.12)",
     "--tint": "rgba(44,118,237,.12)", "--tint-bd": "rgba(44,118,237,.3)",
     "--sh1": "rgba(0,0,0,.75)", "--sh2": "rgba(0,0,0,.6)",
-    // Homepage footer port (2026-07-13) — Hello22Site THEMES se same values
-    "--w05": "rgba(255,255,255,.05)", "--w07": "rgba(255,255,255,.07)", "--w09": "rgba(255,255,255,.09)", "--w10": "rgba(255,255,255,.1)",
+    // Homepage footer port (2026-07-13) — Hello22Site THEMES se same values; --w04 CalcCard ke liye
+    "--w04": "rgba(255,255,255,.04)", "--w05": "rgba(255,255,255,.05)", "--w07": "rgba(255,255,255,.07)", "--w09": "rgba(255,255,255,.09)", "--w10": "rgba(255,255,255,.1)",
     "--lime": "#2c76ed", "--blue-ink": "#4d8ef5",
   },
   light: {
@@ -46,7 +46,7 @@ const PAL = {
     "--tint": "rgba(44,118,237,.1)", "--tint-bd": "rgba(44,118,237,.28)",
     // Homepage jaisi soft shadows — heavy hardcoded shadows in vars se replace (2026-07-10)
     "--sh1": "rgba(28,42,84,.16)", "--sh2": "rgba(28,42,84,.12)",
-    "--w05": "rgba(13,18,32,.04)", "--w07": "rgba(13,18,32,.06)", "--w09": "rgba(13,18,32,.08)", "--w10": "rgba(13,18,32,.09)",
+    "--w04": "rgba(13,18,32,.03)", "--w05": "rgba(13,18,32,.04)", "--w07": "rgba(13,18,32,.06)", "--w09": "rgba(13,18,32,.08)", "--w10": "rgba(13,18,32,.09)",
     "--lime": "#2c76ed", "--blue-ink": "#1e63d6",
   },
 } as const;

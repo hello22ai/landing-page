@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  // 1536 = homepage sections ka container — 1200 wide screens par narrow lag raha tha (user feedback)
   return (
-    <PageShell current="/blog" maxWidth={1200}>
+    <PageShell current="/blog" maxWidth={1536}>
       <BlogIndex />
     </PageShell>
   );
