@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter_Tight, Manrope, Space_Grotesk } from "next/font/google";
+import { Caveat, Fraunces, Inter_Tight, Manrope, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -8,6 +8,8 @@ import "./globals.css";
 // No weight array = single variable-font file per family (fewer preloads).
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 const space = Space_Grotesk({ subsets: ["latin"], variable: "--font-space", display: "swap" });
+// Pricing section ke handwritten doodle-note ke liye (reference UI 2026-07-13) — accent only.
+const caveat = Caveat({ subsets: ["latin"], variable: "--font-caveat", display: "swap", preload: false });
 // Conthrax is a manual @font-face in globals.css (stable /fonts URL) + preload link below —
 // next/font hid it in hashed CSS with no preload, so the LCP headline swapped fonts at ~9.7s.
 
@@ -53,7 +55,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${space.variable} ${fraunces.variable} ${interTight.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${space.variable} ${fraunces.variable} ${interTight.variable} ${caveat.variable}`}>
       <body>
         {/* LCP-critical: the hero headline renders in Conthrax */}
         <link rel="preload" href="/fonts/conthrax-sb.woff" as="font" type="font/woff" crossOrigin="anonymous" />

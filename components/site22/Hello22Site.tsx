@@ -73,12 +73,13 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
 
 // Nav (2026-07-10): About us/Contact pages add hue; Product/Voices nav se hataye (sections
 // page par maujood hain aur footer se linked) — 9 links crowded ho jaate the.
+// 2026-07-13: Blog add, FAQ removed (section footer se linked hai) — 7 par cap.
 const NAV_LINKS: { n: string; h: string }[] = [
   { n: "Demo", h: "#demo" },
   { n: "Features", h: "#features" },
   { n: "Industries", h: "#industries" },
   { n: "Pricing", h: "#pricing" },
-  { n: "FAQ", h: "#faq" },
+  { n: "Blog", h: "/blog" },
   { n: "About us", h: "/about" },
   { n: "Contact", h: "/contact" },
 ];
@@ -198,6 +199,8 @@ const PLAT_COLS: Plat[][] = [
     { ic: "fa-solid fa-microphone-lines", tb: "rgba(157,139,255,.16)", tbd: "rgba(157,139,255,.32)", tc: "var(--violet)", t: "Studio Voices", d: "Choose from a library of studio-grade English voices to match your brand.", img: "/images/feat-voices.jpg", bic: "fa-solid fa-wave-square", bc: "var(--violet)" },
     { ic: "fa-solid fa-wand-magic-sparkles", tb: "rgba(44,118,237,.12)", tbd: "rgba(44,118,237,.28)", tc: "var(--lime)", t: "Post-Call Automations", d: "After every call, details are captured and pushed to your inbox, CRM, and notifications automatically.", img: "/images/feat-automations.jpg", bic: "fa-solid fa-bolt", bc: "var(--lime)" },
     { ic: "fa-solid fa-chart-line", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "Call Analytics & Transcripts", d: "Every call transcribed, summarised, and tagged with intent and sentiment — the summary delivered by email, SMS, and WhatsApp after the call.", img: "/images/feat-analytics.jpg", bic: "fa-solid fa-chart-column", bc: "#14a3a3" },
+    // 4th card (2026-07-13): right column 3 cards par gap chhod raha tha — 4/4 balance.
+    { ic: "fa-solid fa-headset", tb: "rgba(34,197,94,.14)", tbd: "rgba(34,197,94,.32)", tc: "#22b573", t: "Smart Human Handoff", d: "Set your rules — urgent or complex calls transfer straight to your team, with the conversation context passed along.", img: "/images/demo-agent.jpg", bic: "fa-solid fa-user-check", bc: "#22b573" },
   ],
 ];
 
@@ -234,7 +237,7 @@ const FAQ_ICS: { ic: string; c: string; bg: string }[] = [
   { ic: "fa-solid fa-user-pen", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
 ];
 
-type Cap = { icon: string; label: string; blue?: boolean };
+type Cap = { icon: string; label: string; blue?: boolean; ic?: string }; // ic = icon color (reference UI: WhatsApp green etc.)
 type Feat = { t: string; on: boolean };
 type Plan = { name: string; price: string; icon: string; violet?: boolean; caps: Cap[]; feats: Feat[]; popular?: boolean };
 // Pricing (client-final UI, 2026-07-06 raat): icon tile + chips + check/strikethrough list + tinted
@@ -242,7 +245,7 @@ type Plan = { name: string; price: string; icon: string; violet?: boolean; caps:
 const PLANS: Plan[] = [
   {
     name: "Starter", price: "49", icon: "fa-solid fa-paper-plane",
-    caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp" }, { icon: "fa-regular fa-envelope", label: "Email" }],
+    caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp", ic: "#25D366" }, { icon: "fa-regular fa-envelope", label: "Email" }],
     feats: [
       { t: "200 call minutes each month", on: true },
       { t: "WhatsApp — summary, transcript & recording", on: true },
@@ -255,7 +258,7 @@ const PLANS: Plan[] = [
   },
   {
     name: "Standard", price: "69", icon: "fa-solid fa-users", popular: true,
-    caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp" }, { icon: "fa-regular fa-envelope", label: "Email" }, { icon: "fa-solid fa-microphone", label: "Premium voices" }],
+    caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp", ic: "#25D366" }, { icon: "fa-regular fa-envelope", label: "Email" }, { icon: "fa-solid fa-microphone", label: "Premium voices", ic: "var(--violet)" }],
     feats: [
       { t: "200 call minutes each month", on: true },
       { t: "WhatsApp — summary, transcript & recording", on: true },
@@ -268,7 +271,7 @@ const PLANS: Plan[] = [
   },
   {
     name: "Premium", price: "89", icon: "fa-solid fa-crown", violet: true,
-    caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp" }, { icon: "fa-regular fa-envelope", label: "Email" }, { icon: "fa-solid fa-comment", label: "SMS" }, { icon: "fa-solid fa-microphone", label: "Premium voices" }],
+    caps: [{ icon: "fa-solid fa-phone-volume", label: "200 min / month", blue: true }, { icon: "fa-brands fa-whatsapp", label: "WhatsApp", ic: "#25D366" }, { icon: "fa-regular fa-envelope", label: "Email" }, { icon: "fa-solid fa-comment", label: "SMS" }, { icon: "fa-solid fa-microphone", label: "Premium voices", ic: "var(--violet)" }],
     feats: [
       { t: "200 call minutes each month", on: true },
       { t: "WhatsApp — summary, transcript & recording", on: true },
@@ -327,6 +330,7 @@ const CSS = `
 .h22 .lift{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s}
 .h22 .btnp{transition:transform .18s ease,box-shadow .25s ease}
 .h22 .btnp:active{transform:translateY(1px) scale(.98)}
+@media(max-width:1080px){.h22 .price-note{display:none!important}}
 @media(hover:hover){
  .h22 .lift:hover{transform:translateY(-7px);box-shadow:0 30px 64px -32px var(--sh1)}
  .h22 .btnp:hover{transform:translateY(-2px)}
@@ -387,7 +391,7 @@ const CSS = `
  .h22 .uc-photo{min-height:240px!important}
  .h22 .cmp-squig{display:none!important}
  .h22 .nav-logo{height:44px!important}
- .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .price-grid,.h22 .cta-grid,.h22 .cmp-grid{grid-template-columns:minmax(0,1fr)!important}
+ .h22 .hero-grid,.h22 .demo-grid,.h22 .uc-grid,.h22 .price-grid,.h22 .cta-grid,.h22 .cmp-grid,.h22 .why-grid{grid-template-columns:minmax(0,1fr)!important}
  .h22 .cmp-grid{gap:28px!important}
  .h22 .feat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .h22 .feat-grid>div{grid-column:auto!important}
@@ -430,6 +434,8 @@ const CSS = `
  .h22 .stat4>div>div:first-child{margin:0!important;width:44px!important;height:44px!important}
  .h22 .stat4>div>div:nth-child(2){margin:0!important;font-size:16px!important}
  .h22 .stat4>div>p{grid-column:2;margin:0!important;font-size:13px!important}
+ .h22 .stat4>div>.why-pill{grid-column:2;justify-self:start;margin-top:6px!important}
+ .h22 .why-deco{display:none!important}
  .h22 .plat-card{padding:20px 18px!important}
  .h22 .plat-thumb{width:100%!important;height:160px!important}
  .h22 footer{padding-left:18px!important;padding-right:18px!important}
@@ -1862,24 +1868,107 @@ export default function Hello22Site() {
         </div>
       </section>
 
-      {/* VALUE BAND */}
+      {/* VALUE BAND — reference redesign (2026-07-13): 2-col header (photo blob + notification
+          card + doodles), white cards with status pills + corner illustrations, handwritten
+          sign-off. Doodles/illustrations inline SVG hain; <=680px par .why-deco hide. */}
       <section style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 100px" }}>
-        <div data-rv className="band-pad" style={{ position: "relative", overflow: "hidden", background: "var(--band-bg)", border: "1px solid var(--w10)", borderRadius: 26, padding: "56px 40px", textAlign: "center" }}>
-          <div style={{ ...eyebrow }}>Why hello22</div>
-          <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(23px,4.2vw,40px)", lineHeight: 1.14, margin: "12px 0 0", maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}><b style={BD}>Every Missed Call</b> Is a <span style={HL}>Missed Customer</span>.</h2>
-          <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 560, margin: "16px auto 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 picks up every time</strong> — turning your phone into booked jobs, captured leads, and happy callers instead of voicemail.</p>
-          <div className="stat4" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 40, maxWidth: 820, marginLeft: "auto", marginRight: "auto" }}>
+        <div data-rv className="band-pad" style={{ position: "relative", overflow: "hidden", background: "var(--band-bg)", border: "1px solid var(--w10)", borderRadius: 26, padding: "56px 40px" }}>
+          <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.12fr) minmax(0,.88fr)", gap: "clamp(28px,4vw,56px)", alignItems: "center" }}>
+            {/* left — text */}
+            <div>
+              <div style={eyebrow}><i className="fa-solid fa-heart" style={{ marginRight: 8, fontSize: 10 }} aria-hidden="true" />Why hello22</div>
+              <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(23px,4.2vw,40px)", lineHeight: 1.16, margin: "14px 0 0" }}>
+                <b style={BD}>Every Missed Call</b> Is a{" "}
+                <span style={{ position: "relative", display: "inline-block", whiteSpace: "nowrap" }}>
+                  <span style={HL}>Missed Customer</span>
+                  <svg aria-hidden="true" viewBox="0 0 220 12" style={{ position: "absolute", left: "2%", bottom: -12, width: "96%", height: 12, overflow: "visible" }}><path d="M4 9 C 62 3, 152 2, 216 6" stroke="var(--blue-ink)" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".85" /></svg>
+                </span>.
+              </h2>
+              <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 500, margin: "26px 0 0", lineHeight: 1.75 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 picks up every time</strong> — turning your phone into booked jobs, captured leads, and happy callers instead of voicemail.</p>
+            </div>
+            {/* right — photo blob + notification card + doodles */}
+            <div className="why-photo" style={{ position: "relative", width: "100%", maxWidth: 430, justifySelf: "center", aspectRatio: "1 / 0.96" }}>
+              <div aria-hidden="true" style={{ position: "absolute", inset: "8% -3% -3% 10%", background: "rgba(44,118,237,.13)", borderRadius: "58% 42% 55% 45% / 52% 55% 45% 48%" }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/customer-on-call.jpg" alt="Business owner taking a call" loading="lazy" style={{ position: "absolute", inset: "0 4% 2% 0", width: "96%", height: "98%", objectFit: "cover", objectPosition: "center 18%", borderRadius: "56% 44% 52% 48% / 50% 52% 48% 50%" }} />
+              {/* notification card */}
+              <div style={{ position: "absolute", top: "4%", right: 0, display: "flex", gap: 10, alignItems: "flex-start", background: "var(--surface)", border: "1px solid var(--w10)", borderRadius: 14, padding: "11px 14px", boxShadow: "0 18px 38px -20px var(--sh1)", maxWidth: 224 }}>
+                <span style={{ width: 34, height: 34, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.13)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }} aria-hidden="true"><i className="fa-solid fa-phone-volume" /></span>
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ display: "block", fontSize: 12.5, fontWeight: 800, color: "var(--tx)", lineHeight: 1.35 }}>hello22 just answered another call!</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11.5, fontWeight: 600, color: "var(--mut)", marginTop: 4 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#22b573", animation: "h22pulse 1.6s infinite" }} />Lead captured</span>
+                </span>
+              </div>
+              {/* doodles: sparkle / dashed squiggle / star / heart */}
+              <svg aria-hidden="true" viewBox="0 0 34 34" style={{ position: "absolute", top: "1%", left: "2%", width: 30, height: 30, overflow: "visible" }}>
+                <path d="M6 26 L13 15" stroke="var(--blue-ink)" strokeWidth="3" strokeLinecap="round" />
+                <path d="M17 28 L21 20" stroke="var(--blue-ink)" strokeWidth="3" strokeLinecap="round" />
+                <path d="M22 12 L29 3" stroke="var(--blue-ink)" strokeWidth="3" strokeLinecap="round" />
+              </svg>
+              <svg aria-hidden="true" viewBox="0 0 70 110" style={{ position: "absolute", left: "-4%", bottom: "8%", width: 56, height: 88, overflow: "visible" }}>
+                <path d="M62 6 C 22 18, 10 44, 30 58 C 48 70, 40 92, 12 102" stroke="var(--blue-ink)" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeDasharray="1 9" opacity=".75" />
+              </svg>
+              <svg aria-hidden="true" viewBox="0 0 34 34" style={{ position: "absolute", right: "-2%", top: "48%", width: 26, height: 26, overflow: "visible" }}>
+                <path d="M17 3 C 18.5 11, 23 15.5, 31 17 C 23 18.5, 18.5 23, 17 31 C 15.5 23, 11 18.5, 3 17 C 11 15.5, 15.5 11, 17 3 Z" stroke="var(--blue-ink)" strokeWidth="2.4" fill="none" strokeLinejoin="round" />
+              </svg>
+              <i className="fa-regular fa-heart" aria-hidden="true" style={{ position: "absolute", right: "2%", bottom: "4%", fontSize: 24, color: "var(--blue-ink)", transform: "rotate(-10deg)" }} />
+            </div>
+          </div>
+          {/* cards — white surface, status pill, corner illustrations */}
+          <div className="stat4" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 44, maxWidth: 980, marginLeft: "auto", marginRight: "auto" }}>
             {[
-              { ic: "fa-phone-volume", t: "Answers 24/7", d: "Never sends a caller to voicemail again — day, night, weekends, holidays." },
-              { ic: "fa-user-plus", t: "Captures Every Lead", d: "Gets the caller's name, number, and what they need on every call — so you never lose a lead." },
-              { ic: "fa-comment-dots", t: "Summary Every Call", d: "Texts and emails you the caller's details and a summary the moment they hang up." },
-            ].map((x) => (
-              <div key={x.t} style={{ background: "var(--w04)", border: "1px solid var(--w09)", borderRadius: 18, padding: "26px 22px" }}>
-                <div style={{ width: 46, height: 46, margin: "0 auto", borderRadius: 13, background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 18 }}><i className={`fa-solid ${x.ic}`} /></div>
-                <div style={{ fontFamily: SUB, fontWeight: 700, fontSize: 18, marginTop: 16 }}>{x.t}</div>
-                <p style={{ fontSize: 14, color: "var(--mut)", lineHeight: 1.55, margin: "8px 0 0" }}>{x.d}</p>
+              { ic: "fa-phone-volume", t: "Answers 24/7", d: "Never sends a caller to voicemail again — day, night, weekends, holidays.", pill: "Always here" },
+              { ic: "fa-user-plus", t: "Captures Every Lead", d: "Gets the caller's name, number, and what they need on every call — so you never lose a lead.", pill: "Never miss a lead" },
+              { ic: "fa-comment-dots", t: "Summary Every Call", d: "Texts and emails you the caller's details and a summary the moment they hang up.", pill: "Instant updates" },
+            ].map((x, i) => (
+              <div key={x.t} style={{ position: "relative", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 20, padding: "30px 22px 26px", textAlign: "center", boxShadow: "0 14px 34px -26px var(--sh2)" }}>
+                <div style={{ width: 56, height: 56, margin: "0 auto", borderRadius: "50%", background: "rgba(44,118,237,.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 20 }}><i className={`fa-solid ${x.ic}`} /></div>
+                <div style={{ fontFamily: SUB, fontWeight: 700, fontSize: 18, marginTop: 18 }}>{x.t}</div>
+                <p style={{ fontSize: 14, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 0" }}>{x.d}</p>
+                <span className="why-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 18, padding: "9px 18px", borderRadius: 999, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.22)", color: "var(--blue-ink)", fontSize: 13.5, fontWeight: 700 }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22b573" }} />{x.pill}</span>
+                {i === 0 && (
+                  <span className="why-deco" aria-hidden="true">
+                    <svg viewBox="0 0 56 66" style={{ position: "absolute", left: -16, bottom: -10, width: 50, height: 60, overflow: "visible" }}>
+                      <path d="M28 34 C 27 24, 20 16, 10 13 C 12 24, 19 31, 28 34 Z" fill="#8fbe8a" />
+                      <path d="M29 34 C 31 25, 38 18, 47 16 C 45 27, 38 33, 29 34 Z" fill="#a9cf9f" />
+                      <path d="M28 36 C 28 28, 28 20, 28 12" stroke="#6f9e6b" strokeWidth="2" fill="none" strokeLinecap="round" />
+                      <path d="M15 38 L41 38 L37 62 L19 62 Z" fill="#e6c49d" />
+                      <path d="M15 38 L41 38 L40 44 L16 44 Z" fill="#d9b489" />
+                    </svg>
+                    <svg viewBox="0 0 30 30" style={{ position: "absolute", left: -12, top: -14, width: 24, height: 24, overflow: "visible" }}>
+                      <path d="M5 22 L11 13" stroke="var(--blue-ink)" strokeWidth="2.6" strokeLinecap="round" />
+                      <path d="M15 25 L18 18" stroke="var(--blue-ink)" strokeWidth="2.6" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                )}
+                {i === 1 && (
+                  <span className="why-deco" aria-hidden="true">
+                    <svg viewBox="0 0 70 60" style={{ position: "absolute", right: -30, bottom: -20, width: 60, height: 52, overflow: "visible" }}>
+                      <path d="M4 52 C 22 50, 26 40, 18 36 C 10 32, 12 22, 28 18 C 44 14, 56 10, 66 6" stroke="var(--blue-ink)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+                      <path d="M56 2 L 66 6 L 60 15" stroke="var(--blue-ink)" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                )}
+                {i === 2 && (
+                  <span className="why-deco" aria-hidden="true">
+                    <svg viewBox="0 0 64 52" style={{ position: "absolute", right: -18, bottom: -12, width: 58, height: 47, overflow: "visible", transform: "rotate(8deg)" }}>
+                      <rect x="6" y="14" width="48" height="32" rx="4" fill="#f3e7d3" stroke="#d9c4a4" strokeWidth="1.6" />
+                      <path d="M6 18 L30 34 L54 18" stroke="#d9c4a4" strokeWidth="1.6" fill="none" strokeLinejoin="round" />
+                      <path d="M50 8 L55 1" stroke="var(--blue-ink)" strokeWidth="2.4" strokeLinecap="round" />
+                      <path d="M57 12 L62 7" stroke="var(--blue-ink)" strokeWidth="2.4" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                )}
               </div>
             ))}
+          </div>
+          {/* handwritten sign-off */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 36 }}>
+            <span style={{ position: "relative", fontFamily: "var(--font-caveat), 'Segoe Script', cursive", fontSize: "clamp(21px,2.6vw,27px)", fontWeight: 600, color: "var(--blue-ink)" }}>
+              More time for what matters
+              <svg aria-hidden="true" viewBox="0 0 220 10" style={{ position: "absolute", left: "8%", bottom: -8, width: "84%", height: 9, overflow: "visible" }}><path d="M4 7 C 62 2, 152 2, 216 5" stroke="var(--blue-ink)" strokeWidth="2.6" fill="none" strokeLinecap="round" opacity=".8" /></svg>
+            </span>
+            <i className="fa-regular fa-heart" aria-hidden="true" style={{ color: "var(--blue-ink)", fontSize: 17 }} />
           </div>
         </div>
       </section>
@@ -1982,10 +2071,45 @@ export default function Hello22Site() {
 
       {/* TESTIMONIALS */}
       <section id="testimonials" className="sec-alt" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "96px 28px 112px", scrollMarginTop: 90 }}>
-        <div data-rv>
-          <div style={eyebrow}>Testimonials</div>
-          <h2 style={{ ...h2 }}><b style={BD}>What Our Clients</b> <span style={HL}>Say.</span></h2>
-          <p style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 560, lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>We&apos;re proud</strong> of every call we answer. Here&apos;s what business owners had to say after putting hello22 on their front desk.</p>
+        {/* Header — reference redesign (2026-07-13): 2-col, left text + right photo blob with
+            handwritten "Real stories. Real impact." + doodles. why-grid = same responsive rule. */}
+        <div data-rv className="why-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.1fr) minmax(0,.9fr)", gap: "clamp(24px,4vw,52px)", alignItems: "center" }}>
+          <div>
+            <div style={eyebrow}><i className="fa-solid fa-heart" style={{ marginRight: 8, fontSize: 10 }} aria-hidden="true" />Testimonials</div>
+            <h2 style={{ ...h2 }}>
+              <b style={BD}>What Our Clients</b><br />
+              <span style={{ position: "relative", display: "inline-block", whiteSpace: "nowrap" }}>
+                <span style={HL}>Say.</span>
+                {/* scribble underline — reference jaisa double stroke + zigzag */}
+                <svg aria-hidden="true" viewBox="0 0 110 22" style={{ position: "absolute", left: 0, bottom: -18, width: "115%", height: 20, overflow: "visible" }}>
+                  <path d="M4 6 C 34 2, 74 2, 106 5" stroke="var(--blue-ink)" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".85" />
+                  <path d="M8 15 L 26 12 L 16 18 L 34 15" stroke="var(--blue-ink)" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity=".8" />
+                </svg>
+              </span>
+            </h2>
+            <p style={{ fontSize: 18, color: "var(--mut)", margin: "26px 0 0", maxWidth: 520, lineHeight: 1.65 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>We&apos;re proud</strong> of every call we answer. Here&apos;s what business owners had to say after putting hello22 on their front desk.</p>
+          </div>
+          {/* right — handwritten note + photo blob + doodles */}
+          <div className="testi-hero" style={{ position: "relative", display: "flex", alignItems: "center", gap: 10, justifySelf: "center", width: "100%", maxWidth: 500 }}>
+            <div style={{ position: "relative", flexShrink: 0, paddingBottom: 34 }}>
+              <span style={{ display: "block", fontFamily: "var(--font-caveat), 'Segoe Script', cursive", fontSize: "clamp(20px,2.2vw,26px)", fontWeight: 600, lineHeight: 1.3, color: "var(--blue-ink)", whiteSpace: "nowrap" }}>Real stories.<br />Real impact.</span>
+              <i className="fa-regular fa-heart" aria-hidden="true" style={{ position: "absolute", left: "34%", bottom: 26, fontSize: 17, color: "var(--blue-ink)" }} />
+              <svg aria-hidden="true" viewBox="0 0 60 40" style={{ position: "absolute", right: -16, bottom: 0, width: 54, height: 36, overflow: "visible" }}>
+                <path d="M4 6 C 12 26, 32 34, 52 28" stroke="var(--blue-ink)" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+                <path d="M42 24 L 52 28 L 48 38" stroke="var(--blue-ink)" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div style={{ position: "relative", flex: "1 1 auto", minWidth: 0, aspectRatio: "1 / 0.88" }}>
+              <div aria-hidden="true" style={{ position: "absolute", inset: "10% -2% -2% 6%", background: "rgba(44,118,237,.12)", borderRadius: "55% 45% 58% 42% / 50% 55% 45% 50%" }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/demo-caller.jpg" alt="Happy hello22 customer" loading="lazy" style={{ position: "absolute", inset: "0 4% 4% 0", width: "96%", height: "96%", objectFit: "cover", objectPosition: "center 20%", borderRadius: "58% 42% 52% 48% / 52% 50% 50% 48%" }} />
+              <svg aria-hidden="true" viewBox="0 0 30 30" style={{ position: "absolute", top: "-2%", right: "2%", width: 26, height: 26, overflow: "visible" }}>
+                <path d="M5 24 L11 15" stroke="var(--blue-ink)" strokeWidth="2.8" strokeLinecap="round" />
+                <path d="M16 27 L19 20" stroke="var(--blue-ink)" strokeWidth="2.8" strokeLinecap="round" />
+                <path d="M20 12 L26 4" stroke="var(--blue-ink)" strokeWidth="2.8" strokeLinecap="round" />
+              </svg>
+            </div>
+          </div>
         </div>
         <div className="testi-grid">
           {/* rating column — slider arrows ke saath */}
@@ -2009,7 +2133,7 @@ export default function Hello22Site() {
                 </div>
               </div>
             </div>
-            <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: 0 }}>Real reviews from businesses using hello22 as their 24/7 front desk.</p>
+            <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: 0 }}>Real reviews from businesses using hello22 as their 24/7 front desk.<br /><span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontWeight: 700, color: "var(--tx2)", marginTop: 4 }}>Thank you! <i className="fa-regular fa-heart" aria-hidden="true" style={{ color: "var(--blue-ink)", fontSize: 14 }} /></span></p>
             <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 24px", borderRadius: 999, boxShadow: "0 14px 30px -14px rgba(44,118,237,.7)" }}><BtnTxt t="Read Google Reviews" /> <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: 12 }} aria-hidden="true" /></a>
             {/* slider arrows */}
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4 }}>
@@ -2046,25 +2170,70 @@ export default function Hello22Site() {
             </div>
           </div>
         </div>
+        {/* handwritten sign-off — reference jaisa */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 44 }}>
+          <svg aria-hidden="true" viewBox="0 0 26 26" style={{ width: 20, height: 20, overflow: "visible", flexShrink: 0 }}>
+            <path d="M4 22 L9 14" stroke="var(--blue-ink)" strokeWidth="2.4" strokeLinecap="round" />
+            <path d="M13 24 L15 18" stroke="var(--blue-ink)" strokeWidth="2.4" strokeLinecap="round" />
+          </svg>
+          <span style={{ position: "relative", fontFamily: "var(--font-caveat), 'Segoe Script', cursive", fontSize: "clamp(20px,2.5vw,26px)", fontWeight: 600, color: "var(--blue-ink)", textAlign: "center" }}>
+            Trusted by businesses. Loved by customers.
+            <svg aria-hidden="true" viewBox="0 0 220 10" style={{ position: "absolute", left: "22%", bottom: -8, width: "56%", height: 9, overflow: "visible" }}><path d="M4 7 C 62 2, 152 2, 216 5" stroke="var(--blue-ink)" strokeWidth="2.6" fill="none" strokeLinecap="round" opacity=".8" /></svg>
+          </span>
+          <i className="fa-regular fa-heart" aria-hidden="true" style={{ color: "var(--blue-ink)", fontSize: 17, flexShrink: 0 }} />
+        </div>
       </section>
 
       {/* PRICING — id niche ke <p> par hai (user ki choice 2026-07-10, wahi original placement) */}
       <section className="sec-tint" style={{ position: "relative", zIndex: 1, maxWidth: 1536, margin: "0 auto", padding: "64px 28px 112px", scrollMarginTop: 90 }}>
-        <div data-rv>
-          <div style={eyebrow}>Pricing</div>
-          <h2 style={{ ...h2 }}><b style={BD}>Simple Plans.</b> <span style={HL}>Cancel Anytime.</span></h2>
-          <p id="pricing" style={{ fontSize: 18, color: "var(--mut)", margin: "16px 0 0", maxWidth: 520, lineHeight: 1.6, scrollMarginTop: 90 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No setup fees, no contracts.</strong> Pick a plan and go live today — secure checkout powered by Stripe.</p>
-          <div style={{ display: "flex", justifyContent: "flex-start", marginTop: 20 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 18px 8px 9px", borderRadius: 999, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.24)", color: "var(--blue-ink)", fontSize: 14, fontWeight: 600 }}>
-              <span style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(44,118,237,.16)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}><i className="fa-solid fa-gift" /></span>
-              All plans include a 14-day free trial (30 call minutes)
-            </span>
+        {/* Header — reference UI (2026-07-13): heading ke neeche hand-drawn underline + sparkle,
+            right mein handwritten note bubble (arrow + heart doodles). Note <=1080px par hidden. */}
+        <div data-rv style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 36 }}>
+          <div style={{ maxWidth: 560 }}>
+            <div style={eyebrow}><i className="fa-solid fa-tag" aria-hidden="true" style={{ marginRight: 8, fontSize: 10 }} />Pricing</div>
+            <h2 style={{ ...h2 }}>
+              <b style={BD}>Simple Plans.</b>{" "}
+              <span style={{ position: "relative", display: "inline-block", whiteSpace: "nowrap" }}>
+                <span style={HL}>Cancel Anytime.</span>
+                <svg aria-hidden="true" viewBox="0 0 220 12" style={{ position: "absolute", left: "2%", bottom: -12, width: "96%", height: 12, overflow: "visible" }}><path d="M4 9 C 62 3, 152 2, 216 6" stroke="var(--blue-ink)" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".85" /></svg>
+                <svg aria-hidden="true" viewBox="0 0 30 30" style={{ position: "absolute", right: -38, top: -18, width: 26, height: 26, overflow: "visible" }}>
+                  <path d="M8 22 L14 12" stroke="var(--blue-ink)" strokeWidth="2.6" strokeLinecap="round" />
+                  <path d="M18 20 L26 8" stroke="var(--blue-ink)" strokeWidth="2.6" strokeLinecap="round" />
+                </svg>
+              </span>
+            </h2>
+            <p id="pricing" style={{ fontSize: 18, color: "var(--mut)", margin: "22px 0 0", maxWidth: 520, lineHeight: 1.6, scrollMarginTop: 90 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No setup fees, no contracts.</strong> Pick a plan and go live today — secure checkout powered by Stripe.</p>
+            <div style={{ display: "flex", justifyContent: "flex-start", marginTop: 20 }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 18px 8px 9px", borderRadius: 999, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.24)", color: "var(--blue-ink)", fontSize: 14, fontWeight: 600 }}>
+                <span style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(44,118,237,.16)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}><i className="fa-solid fa-gift" /></span>
+                All plans include a 14-day free trial (30 call minutes)
+              </span>
+            </div>
+          </div>
+          <div className="price-note" style={{ position: "relative", flexShrink: 0, marginTop: 34, marginRight: 26 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid rgba(44,118,237,.3)", borderRadius: 18, padding: "12px 24px 14px", boxShadow: "0 16px 34px -22px var(--sh2)", fontFamily: "var(--font-caveat), 'Segoe Script', cursive", fontSize: 24, lineHeight: 1.2, color: "var(--blue-ink)" }}>
+              Start free.<br />Upgrade anytime.<br />Cancel anytime.
+            </div>
+            <i className="fa-regular fa-heart" aria-hidden="true" style={{ position: "absolute", right: -16, bottom: -12, fontSize: 20, color: "var(--blue-ink)", transform: "rotate(14deg)" }} />
+            <svg aria-hidden="true" viewBox="0 0 48 52" style={{ position: "absolute", left: -50, bottom: -40, width: 44, height: 48, overflow: "visible" }}>
+              <path d="M44 4 C 28 10, 16 22, 12 40" stroke="var(--blue-ink)" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+              <path d="M4 32 L 12 42 L 21 37" stroke="var(--blue-ink)" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         </div>
         <div data-rv className="price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42, alignItems: "stretch" }}>
+          {/* card par overflow:hidden hataya — floating badge top border par straddle karta hai (reference UI) */}
           {PLANS.map((p) => (
-            <div key={p.name} className={p.popular ? "" : "lift"} style={{ position: "relative", display: "flex", flexDirection: "column", background: "var(--surface)", border: p.popular ? "1.5px solid rgba(44,118,237,.55)" : "1.5px solid var(--w14)", borderRadius: 22, overflow: "hidden", boxShadow: p.popular ? "0 30px 70px -34px rgba(44,118,237,.45)" : "0 10px 30px -24px var(--sh2)" }}>
-              {p.popular && <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", background: "var(--lime)", color: "#fff", fontSize: 11.5, fontWeight: 800, padding: "6px 16px", borderRadius: "0 0 12px 12px", textTransform: "uppercase", letterSpacing: ".07em" }}>Most popular</div>}
+            <div key={p.name} className={p.popular ? "" : "lift"} style={{ position: "relative", display: "flex", flexDirection: "column", background: "var(--surface)", border: p.popular ? "1.5px solid rgba(44,118,237,.55)" : "1.5px solid var(--w14)", borderRadius: 22, boxShadow: p.popular ? "0 30px 70px -34px rgba(44,118,237,.45)" : "0 10px 30px -24px var(--sh2)" }}>
+              {p.popular && (
+                <>
+                  <div style={{ position: "absolute", top: -15, left: "50%", transform: "translateX(-50%)", background: "var(--lime)", color: "#fff", fontSize: 11.5, fontWeight: 800, padding: "7px 18px", borderRadius: 999, textTransform: "uppercase", letterSpacing: ".07em", whiteSpace: "nowrap", boxShadow: "0 10px 22px -10px rgba(44,118,237,.65)" }}>Most popular</div>
+                  <svg aria-hidden="true" viewBox="0 0 30 30" style={{ position: "absolute", top: -24, right: 26, width: 22, height: 22, overflow: "visible" }}>
+                    <path d="M8 24 L14 13" stroke="var(--blue-ink)" strokeWidth="2.4" strokeLinecap="round" />
+                    <path d="M18 22 L26 9" stroke="var(--blue-ink)" strokeWidth="2.4" strokeLinecap="round" />
+                  </svg>
+                </>
+              )}
               <div style={{ padding: "38px 24px 0", display: "flex", flexDirection: "column", flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
                   <span style={{ width: 46, height: 46, borderRadius: "50%", flexShrink: 0, background: p.violet ? "rgba(157,139,255,.16)" : "rgba(44,118,237,.12)", border: p.violet ? "1px solid rgba(157,139,255,.32)" : "1px solid rgba(44,118,237,.28)", color: p.violet ? "var(--violet)" : "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}><i className={p.icon} aria-hidden="true" /></span>
@@ -2073,23 +2242,26 @@ export default function Hello22Site() {
                 <div style={{ display: "flex", alignItems: "baseline", gap: 7, margin: "18px 0 14px" }}><span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 17, color: "var(--tx3)" }}>AUD</span><span style={{ fontFamily: SUB, fontWeight: 700, fontSize: 42, color: "var(--tx)", letterSpacing: "-.02em", lineHeight: 1 }}>{p.price}</span><span style={{ fontSize: 15, fontWeight: 600, color: "var(--mut)" }}>/ month</span></div>
                 <div className="plan-caps" style={{ display: "flex", flexWrap: "wrap", alignContent: "flex-start", gap: 8, marginBottom: 18, minHeight: 82 }}>
                   {p.caps.map((c) => (
-                    <span key={c.label} style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 12.5, fontWeight: 700, padding: "7px 12px", borderRadius: 999, background: c.blue ? "rgba(44,118,237,.12)" : "var(--w05)", border: c.blue ? "1px solid rgba(44,118,237,.28)" : "1px solid var(--w10)", color: c.blue ? "var(--blue-ink)" : "var(--tx3)" }}><i className={c.icon} aria-hidden="true" />{c.label}</span>
+                    <span key={c.label} style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 12.5, fontWeight: 700, padding: "7px 12px", borderRadius: 999, background: c.blue ? "rgba(44,118,237,.12)" : "var(--w05)", border: c.blue ? "1px solid rgba(44,118,237,.28)" : "1px solid var(--w10)", color: c.blue ? "var(--blue-ink)" : "var(--tx3)" }}><i className={c.icon} aria-hidden="true" style={c.ic ? { color: c.ic } : undefined} />{c.label}</span>
                   ))}
                 </div>
                 <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={p.popular
-                  ? { display: "block", textAlign: "center", textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 16px", borderRadius: 14, boxShadow: "0 14px 30px -14px rgba(44,118,237,.7)" }
-                  : { display: "block", textAlign: "center", textDecoration: "none", background: "transparent", color: "var(--blue-ink)", fontWeight: 700, fontSize: 15, padding: "13px 16px", borderRadius: 14, border: "1.5px solid rgba(44,118,237,.5)" }}>Start 14-day free trial</a>
+                  ? { position: "relative", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 42px 13px 16px", borderRadius: 14, boxShadow: "0 14px 30px -14px rgba(44,118,237,.7)" }
+                  : { position: "relative", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", background: "transparent", color: "var(--blue-ink)", fontWeight: 700, fontSize: 15, padding: "13px 42px 13px 16px", borderRadius: 14, border: "1.5px solid rgba(44,118,237,.5)" }}>
+                  Start 14-day free trial<i className="fa-solid fa-arrow-right" aria-hidden="true" style={{ position: "absolute", right: 18, fontSize: 13 }} />
+                </a>
                 <div style={{ height: 1, background: "var(--w08)", margin: "18px 0 16px" }} />
                 <div style={{ display: "flex", flexDirection: "column", gap: 11, flex: 1, paddingBottom: 20 }}>
                   {p.feats.map((f) => (
                     <div key={f.t} style={{ display: "flex", gap: 10, fontSize: 13.5, fontWeight: 600, alignItems: "flex-start", color: f.on ? "var(--tx)" : "var(--dim)" }}>
                       <span style={{ width: 20, height: 20, flexShrink: 0, marginTop: 1, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9, background: f.on ? "var(--lime)" : "var(--w06)", border: f.on ? "none" : "1px solid var(--w12)", color: f.on ? "#fff" : "var(--dim)" }}><i className={`fa-solid ${f.on ? "fa-check" : "fa-xmark"}`} aria-hidden="true" /></span>
-                      <span style={{ lineHeight: 1.45, textDecoration: f.on ? "none" : "line-through" }}>{f.t}</span>
+                      {/* strikethrough hataya — reference UI mein excluded items sirf gray hain */}
+                      <span style={{ lineHeight: 1.45 }}>{f.t}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div style={{ background: "rgba(44,118,237,.07)", borderTop: "1px solid rgba(44,118,237,.16)", padding: "13px 16px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 13, fontWeight: 700, color: "var(--blue-ink)" }}>
+              <div style={{ background: "rgba(44,118,237,.07)", borderTop: "1px solid rgba(44,118,237,.16)", borderRadius: "0 0 20px 20px", padding: "13px 16px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 13, fontWeight: 700, color: "var(--blue-ink)" }}>
                 <i className="fa-solid fa-shield-halved" style={{ fontSize: 12 }} aria-hidden="true" />14-day free trial · Cancel anytime
               </div>
             </div>
@@ -2311,8 +2483,8 @@ export default function Hello22Site() {
             </div>
             {([
               { t: "Product", l: [{ n: "Features", h: "#features" }, { n: "Voices", h: "#voices" }, { n: "Pricing", h: "#pricing" }, { n: "Live demo", h: "#demo" }, { n: "FAQ", h: "#faq" }] },
-              // About/Contact pages naye design mein ban gaye (2026-07-10) — ab linked; Blog abhi nahi bana.
-              { t: "Company", l: [{ n: "About us", h: "/about" }, { n: "Contact", h: "/contact" }, { n: "Blog" }, { n: "Reviews", h: "#testimonials" }, { n: "Support", h: `mailto:${SUPPORT_EMAIL}` }] },
+              // About/Contact pages naye design mein ban gaye (2026-07-10); Blog 2026-07-13 ko bana.
+              { t: "Company", l: [{ n: "About us", h: "/about" }, { n: "Contact", h: "/contact" }, { n: "Blog", h: "/blog" }, { n: "Reviews", h: "#testimonials" }, { n: "Support", h: `mailto:${SUPPORT_EMAIL}` }] },
             ] as { t: string; l: { n: string; h?: string }[] }[]).map((col) => (
               <div key={col.t}>
                 <div style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".1em", color: "var(--dim)", marginBottom: 16 }}>{col.t}</div>
@@ -2330,6 +2502,7 @@ export default function Hello22Site() {
                 { ic: "fa-instagram", href: "https://www.instagram.com/hello22.ai" },
                 { ic: "fa-pinterest-p", href: "https://www.pinterest.com/hello22_ai" },
                 { ic: "fa-linkedin-in", href: "https://www.linkedin.com/company/hello22-ai" },
+                { ic: "fa-youtube", href: "https://www.youtube.com/@hello22ai" },
               ].map((s) => {
                 const st: React.CSSProperties = { width: 38, height: 38, borderRadius: "50%", background: "var(--w05)", border: "1px solid var(--w10)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--mut)", fontSize: 14, cursor: "pointer", textDecoration: "none" };
                 return <a key={s.ic} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.ic} style={st}><i className={`fa-brands ${s.ic}`} /></a>;
