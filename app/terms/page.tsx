@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Terms of Service",
   description:
     "The terms of service for using hello22 — our 24/7 AI voice agent platform for inbound and outbound calls.",
+  alternates: { canonical: "/terms" },
 };
 
 const INTRO = `Before using hello22 (https://www.hello22.ai/), read this page to understand the terms and conditions for our platform. You accept the terms listed below by registering, logging in, or using any portion of the platform. Please get in touch if something doesn't feel right before continuing — sorting it out early is much simpler than untangling it later.`;

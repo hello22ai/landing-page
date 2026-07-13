@@ -1,5 +1,13 @@
 import Hello22Site from "@/components/site22/Hello22Site";
 
+// WebSite schema (user-provided 2026-07-10) — site-level identity for Google.
+const WEBSITE_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Hello22 AI",
+  url: "https://www.hello22.ai/",
+};
+
 // Structured data (Google rich results) — homepage-only, isliye layout ke bajaye yahan.
 // Reviews/pricing Hello22Site ke TESTIMONIALS/PLANS se match karte hain — wahan content
 // badle to ise bhi sync karna hai.
@@ -87,6 +95,7 @@ const JSONLD = {
 export default function HomePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_LD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD) }} />
       <Hello22Site />
     </>

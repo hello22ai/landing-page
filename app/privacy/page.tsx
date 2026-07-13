@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "How hello22 collects, uses, and protects your data — including call recordings, transcripts, and customer information handled by our AI receptionist.",
+  alternates: { canonical: "/privacy" },
 };
 
 type Body = { sub?: string; p?: string };

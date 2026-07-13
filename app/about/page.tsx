@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "hello22.ai is an Australian AI voice technology company helping businesses across Australia, USA, UK, Canada, and New Zealand answer every call, capture more leads, and deliver better customer experiences.",
+  alternates: { canonical: "/about" },
 };
 
 const MISSION_POINTS = [

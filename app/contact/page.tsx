@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Have a question about hello22 AI, our voice agents, features or pricing? Email connect@hello22.ai — we'll respond to your enquiry as soon as we can.",
+  alternates: { canonical: "/contact" },
 };
 
 const HELP_TOPICS = [

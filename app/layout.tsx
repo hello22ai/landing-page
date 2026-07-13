@@ -41,6 +41,8 @@ export const metadata: Metadata = {
   title: "hello22 — AI Voice Agents That Sound Human",
   description:
     "hello22 builds voice AI agents that answer calls, book appointments, and resolve customer issues in 22+ languages. Deploy in 22 minutes.",
+  // Canonical (SEO reviewer 2026-07-10) — child pages apna canonical khud set karte hain
+  alternates: { canonical: "/" },
   other: {
     "facebook-domain-verification": "4a9knjqdo3240smec39psb3j91dxtj"
   },
