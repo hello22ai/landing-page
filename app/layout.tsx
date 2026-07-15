@@ -81,22 +81,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-MGM4L8SG');`,
           }}
         />
-        {/* Google Analytics 4 (gtag.js) */}
-        <Script
-          id="ga4"
-          src="https://www.googletagmanager.com/gtag/js?id=G-YV6WEQRGJP"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="ga4-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-YV6WEQRGJP');`,
-          }}
-        />
         {/* Meta Pixel */}
         <Script
           id="meta-pixel"
