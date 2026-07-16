@@ -116,11 +116,13 @@ const ptComponents: PortableTextComponents = {
   },
   marks: {
     strong: ({ children }) => <strong style={{ color: "var(--tx)", fontWeight: 700 }}>{children}</strong>,
+    highlight: ({ children }) => <span style={{ background: "rgba(44,118,237,.16)", borderRadius: 3, padding: "0 3px" }}>{children}</span>,
     link: ({ children, value }) => {
       const href: string = value?.href || "#";
-      const external = href.startsWith("http");
+      // Studio ke "Open in new tab" toggle ki respect; external http links bhi new tab
+      const blank = value?.blank ?? href.startsWith("http");
       return (
-        <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} style={{ color: "var(--num)", fontWeight: 600 }}>
+        <a href={href} target={blank ? "_blank" : undefined} rel={blank ? "noopener noreferrer" : undefined} style={{ color: "var(--num)", fontWeight: 600 }}>
           {children}
         </a>
       );
@@ -129,9 +131,41 @@ const ptComponents: PortableTextComponents = {
   types: {
     image: ({ value }) =>
       value?.asset ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={urlFor(value).width(1400).auto("format").url()} alt={value.alt || ""} loading="lazy" style={{ width: "100%", borderRadius: 18, border: "1px solid var(--line2)", margin: "28px 0 0", display: "block" }} />
+        <figure style={{ margin: "28px 0 0" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={urlFor(value).width(1400).auto("format").url()} alt={value.alt || ""} loading="lazy" style={{ width: "100%", borderRadius: 18, border: "1px solid var(--line2)", display: "block" }} />
+          {value.caption && <figcaption style={{ marginTop: 10, fontSize: 13.5, color: "var(--dim)", textAlign: "center" }}>{value.caption}</figcaption>}
+        </figure>
       ) : null,
+    // Studio ka @sanity/table block — pehli row header ban'ti hai; narrow screens par
+    // wrapper horizontally scroll karta hai taaki page layout na toote
+    table: ({ value }) => {
+      const rows: { _key?: string; cells?: string[] }[] = value?.rows ?? [];
+      if (!rows.length) return null;
+      const [head, ...body] = rows;
+      return (
+        <div style={{ overflowX: "auto", margin: "28px 0 0", border: "1px solid var(--line2)", borderRadius: 16 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15, lineHeight: 1.6 }}>
+            <thead>
+              <tr>
+                {(head.cells ?? []).map((c, i) => (
+                  <th key={i} style={{ textAlign: "left", fontFamily: SUB, fontWeight: 700, fontSize: 13.5, letterSpacing: ".02em", color: "var(--tx)", background: "var(--tint)", padding: "12px 16px", borderBottom: "1px solid var(--line2)", whiteSpace: "nowrap" }}>{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {body.map((r, ri) => (
+                <tr key={r._key ?? ri}>
+                  {(r.cells ?? []).map((c, ci) => (
+                    <td key={ci} style={{ padding: "12px 16px", color: "var(--mut)", verticalAlign: "top", borderBottom: ri === body.length - 1 ? "none" : "1px solid var(--line)" }}>{c}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    },
   },
 };
 
