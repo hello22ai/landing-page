@@ -9,6 +9,16 @@ export type BlogBlock =
   | { t: "quote"; x: string; by?: string }
   | { t: "tip"; x: string };
 
+// CMS detail-page SEO fields (Sanity Studio ke seoTitle/ogTitle/... se aate hain)
+export type BlogSeo = {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  schemaMarkup?: string; // JSON-LD string — detail page par as-is inject hota hai
+};
+
 export type BlogPost = {
   slug: string;
   title: string;
@@ -19,8 +29,11 @@ export type BlogPost = {
   cover: string;
   short: string; // card thumbnail ka bada 2-3 word label (SoftQA-reference UI, 2026-07-13)
   pastel: keyof typeof PASTELS; // card thumbnail ka pastel bg
-  author: { name: string; role: string; avatar: string };
-  blocks: BlogBlock[];
+  thumb?: string; // listing-card image (CMS: featureImage; sample posts: author portrait fallback)
+  author: { name: string; role: string; avatar: string }; // avatar "" = CMS team-badge fallback
+  blocks?: BlogBlock[]; // sample articles ka hand-written content
+  body?: unknown[]; // Sanity portable text (CMS posts) — blocks ya body, dono mein se ek
+  seo?: BlogSeo;
 };
 
 // Card-thumbnail pastels (reference UI jaise) — fixed light colors, dono themes mein same

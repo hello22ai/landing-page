@@ -1,39 +1,62 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import PageShell, { DISP, SUB } from "@/components/site22/PageShell";
-import { BLOG_POSTS, CATEGORY_STYLE, formatDate, getPost, type BlogBlock } from "@/components/site22/blogData";
+import { CATEGORY_STYLE, formatDate, type BlogBlock } from "@/components/site22/blogData";
+import { getBlogPost, getBlogPosts, urlFor } from "@/lib/sanity";
 
-// Har blog post ka static page — data blogData.ts se aata hai.
-export function generateStaticParams() {
-  return BLOG_POSTS.map((p) => ({ slug: p.slug }));
+// Har blog post ka page — data Sanity CMS se (lib/sanity.ts), sample articles fallback.
+// CMS posts ka content portable text (body) hai, sample articles ka hand-written blocks.
+
+// ISR — Studio mein publish/edit hua post 60s ke andar live (naye slugs on-demand render hote hain)
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  return (await getBlogPosts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getBlogPost(decodeURIComponent(slug));
   if (!post) return { title: "Article not found" };
+  // Studio ke SEO fields (seoTitle/ogTitle/...) bhare hon to wahi jeetein
+  const title = post.seo?.title || post.title;
+  const description = post.seo?.description || post.excerpt;
   return {
-    title: post.title,
-    description: post.excerpt,
-    alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: { title: post.title, description: post.excerpt, type: "article", images: [post.cover] },
+    title,
+    description,
+    alternates: { canonical: post.seo?.canonical || `/blog/${post.slug}` },
+    openGraph: {
+      title: post.seo?.ogTitle || title,
+      description: post.seo?.ogDescription || description,
+      type: "article",
+      images: [post.cover],
+    },
   };
 }
 
 const para: React.CSSProperties = { fontSize: 16.5, lineHeight: 1.8, color: "var(--mut)", margin: "20px 0 0" };
+const h2Style: React.CSSProperties = { fontFamily: SUB, fontWeight: 700, letterSpacing: "-.01em", fontSize: "clamp(20px,2.6vw,25px)", color: "var(--tx)", margin: "40px 0 0" };
+const listStyle: React.CSSProperties = { listStyle: "none", padding: 0, margin: "22px 0 0", display: "flex", flexDirection: "column", gap: 12 };
+const liStyle: React.CSSProperties = { display: "flex", gap: 12, alignItems: "flex-start", fontSize: 15.5, lineHeight: 1.65, color: "var(--tx2)" };
+const checkBadge: React.CSSProperties = { width: 22, height: 22, borderRadius: "50%", flexShrink: 0, marginTop: 2, background: "var(--tint)", border: "1px solid var(--tint-bd)", color: "var(--num)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10 };
+const quoteFigure: React.CSSProperties = { margin: "28px 0 0", padding: "22px 26px", background: "var(--tint)", border: "1px solid var(--tint-bd)", borderLeft: "4px solid #2c76ed", borderRadius: 16 };
+const quoteText: React.CSSProperties = { margin: 0, fontFamily: SUB, fontSize: 17.5, fontWeight: 600, lineHeight: 1.6, color: "var(--tx)" };
 
+// Sample articles ka hand-written content (blogData.ts blocks)
 function Block({ b }: { b: BlogBlock }) {
   switch (b.t) {
     case "h2":
-      return <h2 style={{ fontFamily: SUB, fontWeight: 700, letterSpacing: "-.01em", fontSize: "clamp(20px,2.6vw,25px)", color: "var(--tx)", margin: "40px 0 0" }}>{b.x}</h2>;
+      return <h2 style={h2Style}>{b.x}</h2>;
     case "p":
       return <p style={para}>{b.x}</p>;
     case "list":
       return (
-        <ul style={{ listStyle: "none", padding: 0, margin: "22px 0 0", display: "flex", flexDirection: "column", gap: 12 }}>
+        <ul style={listStyle}>
           {b.items.map((it) => (
-            <li key={it} style={{ display: "flex", gap: 12, alignItems: "flex-start", fontSize: 15.5, lineHeight: 1.65, color: "var(--tx2)" }}>
-              <span style={{ width: 22, height: 22, borderRadius: "50%", flexShrink: 0, marginTop: 2, background: "var(--tint)", border: "1px solid var(--tint-bd)", color: "var(--num)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10 }} aria-hidden="true"><i className="fa-solid fa-check" /></span>
+            <li key={it} style={liStyle}>
+              <span style={checkBadge} aria-hidden="true"><i className="fa-solid fa-check" /></span>
               {it}
             </li>
           ))}
@@ -41,8 +64,8 @@ function Block({ b }: { b: BlogBlock }) {
       );
     case "quote":
       return (
-        <figure style={{ margin: "28px 0 0", padding: "22px 26px", background: "var(--tint)", border: "1px solid var(--tint-bd)", borderLeft: "4px solid #2c76ed", borderRadius: 16 }}>
-          <blockquote style={{ margin: 0, fontFamily: SUB, fontSize: 17.5, fontWeight: 600, lineHeight: 1.6, color: "var(--tx)" }}>&ldquo;{b.x}&rdquo;</blockquote>
+        <figure style={quoteFigure}>
+          <blockquote style={quoteText}>&ldquo;{b.x}&rdquo;</blockquote>
           {b.by && <figcaption style={{ marginTop: 10, fontSize: 13.5, fontWeight: 600, color: "var(--num)" }}>— {b.by}</figcaption>}
         </figure>
       );
@@ -59,14 +82,68 @@ function Block({ b }: { b: BlogBlock }) {
   }
 }
 
+// CMS content (Sanity portable text) — styles Block ke saath 1:1 match, taaki dono
+// source ka article ek jaisa dikhe.
+const ptComponents: PortableTextComponents = {
+  block: {
+    normal: ({ children }) => <p style={para}>{children}</p>,
+    h2: ({ children }) => <h2 style={h2Style}>{children}</h2>,
+    h3: ({ children }) => <h3 style={{ ...h2Style, fontSize: "clamp(17.5px,2.2vw,20px)", margin: "32px 0 0" }}>{children}</h3>,
+    h4: ({ children }) => <h4 style={{ ...h2Style, fontSize: 17, margin: "28px 0 0" }}>{children}</h4>,
+    blockquote: ({ children }) => (
+      <figure style={quoteFigure}>
+        <blockquote style={quoteText}>{children}</blockquote>
+      </figure>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => <ul style={listStyle}>{children}</ul>,
+    number: ({ children }) => <ol style={{ ...listStyle, counterReset: "pt-ol" }}>{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }) => (
+      <li style={liStyle}>
+        <span style={checkBadge} aria-hidden="true"><i className="fa-solid fa-check" /></span>
+        <span>{children}</span>
+      </li>
+    ),
+    number: ({ children, index }) => (
+      <li style={liStyle}>
+        <span style={{ ...checkBadge, fontSize: 11.5, fontWeight: 700 }} aria-hidden="true">{index + 1}</span>
+        <span>{children}</span>
+      </li>
+    ),
+  },
+  marks: {
+    strong: ({ children }) => <strong style={{ color: "var(--tx)", fontWeight: 700 }}>{children}</strong>,
+    link: ({ children, value }) => {
+      const href: string = value?.href || "#";
+      const external = href.startsWith("http");
+      return (
+        <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} style={{ color: "var(--num)", fontWeight: 600 }}>
+          {children}
+        </a>
+      );
+    },
+  },
+  types: {
+    image: ({ value }) =>
+      value?.asset ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={urlFor(value).width(1400).auto("format").url()} alt={value.alt || ""} loading="lazy" style={{ width: "100%", borderRadius: 18, border: "1px solid var(--line2)", margin: "28px 0 0", display: "block" }} />
+      ) : null,
+  },
+};
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getBlogPost(decodeURIComponent(slug));
   if (!post) notFound();
 
   const cat = CATEGORY_STYLE[post.category];
   // 4 related — 3 cards wide container mein row aadha khali chhod rahe the (user feedback 2026-07-13)
-  const related = BLOG_POSTS.filter((p) => p.slug !== post.slug).sort((a, b) => (a.category === post.category ? -1 : 0) - (b.category === post.category ? -1 : 0)).slice(0, 4);
+  const allPosts = await getBlogPosts();
+  const related = allPosts.filter((p) => p.slug !== post.slug).sort((a, b) => (a.category === post.category ? -1 : 0) - (b.category === post.category ? -1 : 0)).slice(0, 4);
   const shareUrl = `https://www.hello22.ai/blog/${post.slug}`;
   const shareTitle = encodeURIComponent(post.title);
 
@@ -74,6 +151,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     // maxWidth 1536 = homepage sections ka container (user feedback 2026-07-13: 860/1200 dono
     // wide screens par narrow lage); header/cover container-wide, article text readable width par.
     <PageShell current="/blog" maxWidth={1536}>
+      {/* Studio ka schemaMarkup field (JSON-LD) — bhara ho to as-is inject */}
+      {post.seo?.schemaMarkup && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: post.seo.schemaMarkup }} />}
+
       {/* ===== BREADCRUMB ===== */}
       <a href="/blog" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", fontFamily: SUB, fontSize: 13.5, fontWeight: 700, color: "var(--mut)" }}>
         <i className="fa-solid fa-arrow-left" aria-hidden="true" style={{ fontSize: 11 }} /> All articles
@@ -86,11 +166,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <span style={{ fontSize: 13.5, color: "var(--dim)" }}>{formatDate(post.date)} · {post.readMins} min read</span>
         </div>
         <h1 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.025em", fontSize: "clamp(27px,4vw,46px)", lineHeight: 1.15, maxWidth: 980, margin: "22px auto 0" }}>{post.title}</h1>
-        <p style={{ fontFamily: SUB, fontSize: "clamp(16px,2vw,19px)", fontWeight: 500, lineHeight: 1.6, color: "var(--mut)", maxWidth: 760, margin: "18px auto 0" }}>{post.excerpt}</p>
-        {/* author row */}
+        {post.excerpt && <p style={{ fontFamily: SUB, fontSize: "clamp(16px,2vw,19px)", fontWeight: 500, lineHeight: 1.6, color: "var(--mut)", maxWidth: 760, margin: "18px auto 0" }}>{post.excerpt}</p>}
+        {/* author row — CMS posts ka avatar nahi hota, brand badge dikhta hai */}
         <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginTop: 28, textAlign: "left" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={post.author.avatar} alt="" style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", border: "1px solid var(--line2)", display: "block" }} />
+          {post.author.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={post.author.avatar} alt="" style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", border: "1px solid var(--line2)", display: "block" }} />
+          ) : (
+            <span style={{ width: 46, height: 46, borderRadius: "50%", background: "var(--tint)", border: "1px solid var(--tint-bd)", color: "var(--num)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 17 }} aria-hidden="true"><i className="fa-solid fa-headset" /></span>
+          )}
           <span>
             <span style={{ display: "block", fontFamily: SUB, fontSize: 15, fontWeight: 700, color: "var(--tx)" }}>{post.author.name}</span>
             <span style={{ display: "block", fontSize: 13, color: "var(--dim)", marginTop: 2 }}>{post.author.role}</span>
@@ -108,7 +192,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {/* ===== BODY — FULL container width, no centered column (user ka clear order 2026-07-13:
           "content width mein karo taaki left-right space cover ho") ===== */}
       <article style={{ margin: "30px 0 0" }}>
-        {post.blocks.map((b, i) => <Block key={i} b={b} />)}
+        {post.body ? (
+          <PortableText value={post.body as PortableTextBlock[]} components={ptComponents} />
+        ) : (
+          post.blocks?.map((b, i) => <Block key={i} b={b} />)
+        )}
 
         {/* share */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginTop: 48, paddingTop: 26, borderTop: "1px solid var(--line2)" }}>
@@ -128,28 +216,30 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </article>
 
       {/* ===== KEEP READING ===== */}
-      <div style={{ marginTop: 72 }}>
-        <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(19px,2.4vw,24px)", margin: 0 }}>Keep Reading</h2>
-        {/* auto-fit (not auto-fill) — khali tracks collapse hote hain, cards poori row bharte hain */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,240px),1fr))", gap: 16, marginTop: 20 }}>
-          {related.map((p) => {
-            const rc = CATEGORY_STYLE[p.category];
-            return (
-              <a key={p.slug} href={`/blog/${p.slug}`} style={{ background: "var(--surface)", border: "1px solid var(--line2)", borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit" }}>
-                <span style={{ position: "relative", display: "block", aspectRatio: "16 / 9", overflow: "hidden", borderBottom: "1px solid var(--line)" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.cover} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                </span>
-                <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1, padding: "16px 18px 18px" }}>
-                  <span style={{ fontFamily: SUB, fontSize: 11, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: rc.c }}>{p.category}</span>
-                  <span style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 15, lineHeight: 1.4, color: "var(--tx)", marginTop: 8 }}>{p.title}</span>
-                  <span style={{ fontSize: 12.5, color: "var(--dim)", marginTop: "auto", paddingTop: 12 }}>{formatDate(p.date)} · {p.readMins} min read</span>
-                </span>
-              </a>
-            );
-          })}
+      {related.length > 0 && (
+        <div style={{ marginTop: 72 }}>
+          <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(19px,2.4vw,24px)", margin: 0 }}>Keep Reading</h2>
+          {/* auto-fit (not auto-fill) — khali tracks collapse hote hain, cards poori row bharte hain */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,240px),1fr))", gap: 16, marginTop: 20 }}>
+            {related.map((p) => {
+              const rc = CATEGORY_STYLE[p.category];
+              return (
+                <a key={p.slug} href={`/blog/${p.slug}`} style={{ background: "var(--surface)", border: "1px solid var(--line2)", borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit" }}>
+                  <span style={{ position: "relative", display: "block", aspectRatio: "16 / 9", overflow: "hidden", borderBottom: "1px solid var(--line)" }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.cover} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  </span>
+                  <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", flexGrow: 1, padding: "16px 18px 18px" }}>
+                    <span style={{ fontFamily: SUB, fontSize: 11, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: rc.c }}>{p.category}</span>
+                    <span style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 15, lineHeight: 1.4, color: "var(--tx)", marginTop: 8 }}>{p.title}</span>
+                    <span style={{ fontSize: 12.5, color: "var(--dim)", marginTop: "auto", paddingTop: 12 }}>{formatDate(p.date)} · {p.readMins} min read</span>
+                  </span>
+                </a>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ===== CTA ===== */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", marginTop: 72, background: "var(--tint)", border: "1px solid var(--tint-bd)", borderRadius: 24, padding: "24px 28px" }}>

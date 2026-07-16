@@ -6,7 +6,7 @@
 // author photos + "Read more →", end mein dark CTA band. Brand = blue (#2c76ed),
 // dono themes supported — hero panel dono mein navy hi rehta hai (reference jaisa).
 import { useMemo, useState } from "react";
-import { BLOG_POSTS, CATEGORY_STYLE, PASTELS, formatDate, type BlogPost } from "./blogData";
+import { CATEGORY_STYLE, PASTELS, formatDate, type BlogPost } from "./blogData";
 import { DISP, SUB } from "./PageShell";
 
 // 2026-07-13 (user feedback): almost-black navy se deep royal blue — brand #2c76ed family.
@@ -23,6 +23,8 @@ const CSS = `
 `;
 
 function Thumb({ post, big }: { post: BlogPost; big?: boolean }) {
+  // CMS posts: featureImage; sample posts: author portrait (pehle jaisa). Dono na hon to sirf pastel card.
+  const img = post.thumb || post.author.avatar;
   // fixed height — minHeight se hero ke dono thumbs alag-alag stretch ho rahe the
   return (
     <span style={{ display: "flex", alignItems: "stretch", gap: 12, background: PASTELS[post.pastel], borderRadius: 14, padding: 14, height: big ? 148 : 124, boxSizing: "border-box" }}>
@@ -30,8 +32,10 @@ function Thumb({ post, big }: { post: BlogPost; big?: boolean }) {
         <span style={{ fontFamily: SUB, fontWeight: 700, fontSize: big ? 21 : 18, lineHeight: 1.25, letterSpacing: "-.01em", color: "#14203c", overflowWrap: "break-word" }}>{post.short}</span>
         <span style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", padding: "4px 10px", borderRadius: 999, background: "rgba(20,32,60,.08)", fontFamily: SUB, fontSize: 10.5, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#37456b" }}>#{post.category}</span>
       </span>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={post.author.avatar} alt="" loading="lazy" style={{ width: big ? 104 : 88, borderRadius: 10, objectFit: "cover", objectPosition: "center top", flexShrink: 0, display: "block" }} />
+      {img && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={img} alt="" loading="lazy" style={{ width: big ? 104 : 88, borderRadius: 10, objectFit: "cover", objectPosition: "center top", flexShrink: 0, display: "block" }} />
+      )}
     </span>
   );
 }
@@ -78,19 +82,20 @@ function GridCard({ post }: { post: BlogPost }) {
 
 const ctrl: React.CSSProperties = { height: 42, borderRadius: 999, border: "1px solid var(--line2)", background: "var(--surface)", color: "var(--tx2)", fontFamily: "inherit", fontSize: 14, padding: "0 16px" };
 
-export default function BlogIndex() {
+// posts server se aate hain (app/blog/page.tsx) — Sanity CMS + sample articles merged
+export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("All");
   const [sort, setSort] = useState<"new" | "old">("new");
 
-  const latest = BLOG_POSTS.slice(0, 2);
+  const latest = posts.slice(0, 2);
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    const list = BLOG_POSTS.filter((p) =>
+    const list = posts.filter((p) =>
       (cat === "All" || p.category === cat) &&
       (!needle || `${p.title} ${p.excerpt} ${p.author.name}`.toLowerCase().includes(needle)));
     return sort === "new" ? list : [...list].reverse();
-  }, [q, cat, sort]);
+  }, [posts, q, cat, sort]);
 
   return (
     <>
@@ -151,7 +156,7 @@ export default function BlogIndex() {
           {filtered.map((p) => <GridCard key={p.slug} post={p} />)}
         </div>
       )}
-      <p style={{ fontSize: 13, color: "var(--dim)", textAlign: "right", margin: "14px 2px 0" }}>Showing {filtered.length} of {BLOG_POSTS.length} articles</p>
+      <p style={{ fontSize: 13, color: "var(--dim)", textAlign: "right", margin: "14px 2px 0" }}>Showing {filtered.length} of {posts.length} articles</p>
 
       {/* ===== CTA — navy band (reference jaisa) ===== */}
       <div style={{ background: NAVY, border: `1px solid ${NAVY_LINE}`, borderRadius: 28, padding: "clamp(28px,4.5vw,48px)", marginTop: 72, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>

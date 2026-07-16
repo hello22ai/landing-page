@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/site22/PageShell";
 import BlogIndex from "@/components/site22/BlogIndex";
+import { getBlogPosts } from "@/lib/sanity";
 
 // Listing UI BlogIndex (client) mein hai — search/category/sort interactive hain.
 // Reference-style redesign 2026-07-13 (navy hero panel + pastel card thumbs).
+// Data Sanity CMS se aata hai (lib/sanity.ts) — sample articles ke saath merged.
 export const metadata: Metadata = {
   title: "Blog",
   description:
@@ -11,11 +13,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
 };
 
-export default function BlogPage() {
+// ISR — Studio mein publish hua naya post 60s ke andar live
+export const revalidate = 60;
+
+export default async function BlogPage() {
+  // body/blocks/seo listing ko nahi chahiye — client payload halka rakho
+  const posts = (await getBlogPosts()).map((p) => ({ ...p, blocks: undefined, body: undefined, seo: undefined }));
   // 1536 = homepage sections ka container — 1200 wide screens par narrow lag raha tha (user feedback)
   return (
     <PageShell current="/blog" maxWidth={1536}>
-      <BlogIndex />
+      <BlogIndex posts={posts} />
     </PageShell>
   );
 }
