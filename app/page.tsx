@@ -41,7 +41,7 @@ const JSONLD = {
       publisher: { "@type": "Organization", name: "Brightside Dental Clinic" },
       datePublished: "2026",
       reviewBody:
-        "We were missing 15 to 20 calls a week—mostly evenings and lunch hours. Since hello22 took over, every call is answered and our bookings are up almost 40%.",
+        "We were missing 15 to 20 calls a week, mostly evenings and lunch hours. Since hello22 AI took over, every call is answered, and our bookings are up almost 40%.",
       reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
     },
     {
@@ -68,7 +68,7 @@ const JSONLD = {
       publisher: { "@type": "Organization", name: "Reynolds Plumbing Co." },
       datePublished: "2026",
       reviewBody:
-        "hello22 answers our after-hours emergency calls now. Last month it booked two big jobs that would have gone straight to voicemail.",
+        "We are so happy because hello22 AI is remarkable, and last month it booked two big jobs that would have gone straight to voicemail.",
       reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
     },
     {
@@ -77,7 +77,7 @@ const JSONLD = {
       publisher: { "@type": "Organization", name: "SparkRight Electrical" },
       datePublished: "2026",
       reviewBody:
-        "Our team is on the tools all day. The AI takes every call, sorts urgent from routine, and the summary lands on WhatsApp before we're off the ladder.",
+        "It has transformed how we operate with focus towards other important tasks; in the meantime, the AI takes every call, sorts urgent from routine, and the summary lands on WhatsApp, which is sweet.",
       reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
     },
     {
@@ -86,7 +86,7 @@ const JSONLD = {
       publisher: { "@type": "Organization", name: "FreshNest Cleaning" },
       datePublished: "2026",
       reviewBody:
-        "Quotes used to slip through whenever we missed a call. Now every enquiry is captured, and half our bookings happen while we're still on another job.",
+        "It does everything brilliantly as per expectations. We are delighted because every enquiry is captured, and half our bookings happen while we're still on another job.",
       reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5", worstRating: "1" },
     },
   ],

@@ -24,7 +24,7 @@ export function urlFor(src: SanityImageSource) {
 const POST_FIELDS = `
   _id, title, "slug": slug.current, description,
   "date": coalesce(publishedAt, _createdAt),
-  body, featureImage, tags,
+  contentHtml, body, featureImage, tags,
   seoTitle, seoDescription, canonicalUrl, ogTitle, ogDescription, schemaMarkup
 `;
 const POSTS_QUERY = `*[_type == "post" && defined(slug.current)] | order(coalesce(publishedAt, _createdAt) desc){${POST_FIELDS}}`;
@@ -36,6 +36,7 @@ type RawPost = {
   slug: string;
   description?: string;
   date: string;
+  contentHtml?: string; // WYSIWYG editor ka HTML (naya primary content field)
   body?: PortableTextBlock[];
   featureImage?: SanityImageSource;
   tags?: string[];
@@ -63,17 +64,24 @@ function toPastel(slug: string): keyof typeof PASTELS {
   return PASTEL_KEYS[h % PASTEL_KEYS.length];
 }
 
-function toReadMins(body?: PortableTextBlock[]): number {
-  if (!body?.length) return 2;
+const clampMins = (words: number) => Math.min(12, Math.max(2, Math.round(words / 200)));
+
+function toReadMins(raw: RawPost): number {
+  // WYSIWYG posts: HTML ke tags/entities hata kar words gino
+  if (raw.contentHtml) {
+    const words = raw.contentHtml.replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/gi, " ").split(/\s+/).filter(Boolean).length;
+    return clampMins(words);
+  }
+  if (!raw.body?.length) return 2;
   let words = 0;
-  for (const block of body) {
+  for (const block of raw.body) {
     const children = (block as { children?: { text?: unknown }[] }).children;
     if (!Array.isArray(children)) continue;
     for (const child of children) {
       if (typeof child.text === "string") words += child.text.split(/\s+/).filter(Boolean).length;
     }
   }
-  return Math.min(12, Math.max(2, Math.round(words / 200)));
+  return clampMins(words);
 }
 
 const TEAM_AUTHOR = { name: "hello22 Team", role: "hello22.ai", avatar: "" } as const;
@@ -86,7 +94,7 @@ function mapPost(raw: RawPost): BlogPost {
     excerpt: raw.description ?? "",
     category: toCategory(raw.tags),
     date: raw.date.slice(0, 10),
-    readMins: toReadMins(raw.body),
+    readMins: toReadMins(raw),
     cover: raw.featureImage
       ? urlFor(raw.featureImage).width(1680).height(720).fit("crop").auto("format").url()
       : "/images/office-reception.jpg",
@@ -96,6 +104,7 @@ function mapPost(raw: RawPost): BlogPost {
     short: title.split(/\s+/).slice(0, 3).join(" "),
     pastel: toPastel(raw.slug),
     author: TEAM_AUTHOR,
+    html: raw.contentHtml || undefined,
     body: raw.body ?? [],
     seo: {
       title: raw.seoTitle,

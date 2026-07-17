@@ -127,7 +127,7 @@ const VOICES: V[] = [
 
 type UC = { name: string; icon: string; kpi: string; title: string; body: string; stats: { v: string; l: string }[]; tags: string[] };
 const USECASES: UC[] = [
-  { name: "HVAC Business", icon: "fa-fan", kpi: "4m 12s avg call duration", title: "Never Miss Another Emergency Service Call.", body: "Answer every incoming call, schedule installations, book repair appointments, qualify emergency requests, and dispatch technicians instantly — 24/7, even after business hours.", stats: [{ v: "4m 12s", l: "Avg call" }, { v: "91%", l: "Appointments booked" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Emergency Dispatch", "Maintenance Booking", "Service Scheduling", "Quote Requests"] },
+  { name: "HVAC Business", icon: "fa-fan", kpi: "4m 12s avg call duration", title: "Never Miss Another Emergency Service Call.", body: "Answer every incoming call, schedule installations, book repair appointments, qualify emergency requests, and dispatch technicians instantly, 24/7, even after business hours.", stats: [{ v: "4m 12s", l: "Avg call" }, { v: "91%", l: "Appointments booked" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Emergency Dispatch", "Maintenance Booking", "Service Scheduling", "Quote Requests"] },
   { name: "Cleaning Business", icon: "fa-broom", kpi: "2m 56s avg call duration", title: "Book More Cleaning Jobs Without Hiring More Staff.", body: "Capture every enquiry, schedule residential and commercial cleaning, provide instant quotes, answer common questions, and send confirmations automatically.", stats: [{ v: "2m 56s", l: "Avg call" }, { v: "89%", l: "Leads captured" }, { v: "4.8/5", l: "Customer rating" }], tags: ["Instant Quotes", "Recurring Cleaning", "Booking Confirmation", "Lead Qualification"] },
   { name: "Electrical Services", icon: "fa-bolt", kpi: "3m 28s avg call duration", title: "Every Urgent Electrical Call Answered Instantly.", body: "Handle emergency service requests, schedule inspections, qualify electrical issues, route priority jobs, and keep customers informed without missing a single call.", stats: [{ v: "3m 28s", l: "Avg call" }, { v: "93%", l: "Calls answered" }, { v: "4.9/5", l: "Customer satisfaction" }], tags: ["Emergency Callouts", "Inspection Booking", "Service Dispatch", "Customer Updates"] },
   { name: "Plumbing Business", icon: "fa-faucet-drip", kpi: "3m 47s avg call duration", title: "Turn Plumbing Emergencies into Booked Jobs Automatically.", body: "Answer urgent plumbing enquiries, schedule repairs, prioritize emergency leaks, collect customer details, and dispatch technicians immediately.", stats: [{ v: "3m 47s", l: "Avg call" }, { v: "95%", l: "Jobs scheduled" }, { v: "4.9/5", l: "Customer rating" }], tags: ["Emergency Plumbing", "Leak Detection", "Appointment Booking", "Technician Dispatch"] },
@@ -179,7 +179,7 @@ const TRANSCRIPT: Line[] = [
 // Purane real screenshots public/images/screenshots/ mein hi hain agar kabhi wapas chahiye hon.
 type Shot = { kind: "dash" | "logs" | "brain" | "billing"; title: string; desc: string; ic: string; c: string; bg: string; pts: string[] };
 const SHOTS: Shot[] = [
-  { kind: "dash", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls & minutes at a glance", "Intent & sentiment tracking", "Daily performance trends"] },
+  { kind: "dash", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls and minutes at a glance", "Intent and sentiment tracking", "Daily performance trends"] },
   { kind: "logs", title: "Call Logs", desc: "Review conversations and outcomes instantly.", ic: "fa-solid fa-file-lines", c: "var(--violet)", bg: "rgba(157,139,255,.16)", pts: ["Full transcripts & recordings", "Outcome tags on every call", "Search & filter by caller"] },
   { kind: "brain", title: "AI Agent Builder", desc: "Create and customize your AI agent in minutes.", ic: "fa-solid fa-wand-magic-sparkles", c: "var(--cyan)", bg: "rgba(86,224,224,.15)", pts: ["Set greeting, services & hours", "Pick your agent's voice & style", "Changes go live instantly"] },
   { kind: "billing", title: "Plans & Billing", desc: "Track minutes, switch plans, and control auto-renew.", ic: "fa-solid fa-credit-card", c: "#22b573", bg: "rgba(34,197,94,.14)", pts: ["Live minute usage meter", "Upgrade or switch anytime", "Full control over auto-renew"] },
@@ -190,15 +190,15 @@ const SHOTS: Shot[] = [
 type Plat = { ic: string; tb: string; tbd: string; tc: string; t: string; d: string; img: string; bic: string; bc: string };
 const PLAT_COLS: Plat[][] = [
   [
-    { ic: "fa-solid fa-comments", tb: "rgba(44,118,237,.14)", tbd: "rgba(44,118,237,.3)", tc: "var(--lime)", t: "Conversational, Not Scripted", d: "Responds to what the caller actually says and keeps track of the conversation as it goes — holding context across the whole call.", img: "/images/feat-conversational.jpg", bic: "fa-solid fa-ellipsis", bc: "var(--lime)" },
-    { ic: "fa-solid fa-language", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "English Today — More Coming", d: "Answers in natural English now, with more languages on the roadmap.", img: "/images/feat-english.jpg", bic: "fa-solid fa-globe", bc: "#22b573" },
+    { ic: "fa-solid fa-comments", tb: "rgba(44,118,237,.14)", tbd: "rgba(44,118,237,.3)", tc: "var(--lime)", t: "Conversational, Not Scripted", d: "Rather than reading from a script, it responds to what the caller says and records the conversation as it progresses.", img: "/images/feat-conversational.jpg", bic: "fa-solid fa-ellipsis", bc: "var(--lime)" },
+    { ic: "fa-solid fa-language", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "English Today, More Coming", d: "Your AI receptionist speaks natural English today, with more languages on the way to help you serve customers everywhere.", img: "/images/feat-english.jpg", bic: "fa-solid fa-globe", bc: "#22b573" },
     { ic: "fa-solid fa-shield-halved", tb: "rgba(157,139,255,.16)", tbd: "rgba(157,139,255,.32)", tc: "var(--violet)", t: "Your Data, Protected", d: "Encrypted in transit, secrets encrypted at rest, and never sold.", img: "/images/feat-security.jpg", bic: "fa-solid fa-shield-halved", bc: "var(--violet)" },
-    { ic: "fa-solid fa-arrows-rotate", tb: "rgba(245,158,11,.14)", tbd: "rgba(245,158,11,.32)", tc: "#f59e0b", t: "CRM & Calendar", d: "Connect Google Calendar and push leads to your CRM or any webhook.", img: "/images/feat-calendar.jpg", bic: "fa-regular fa-calendar", bc: "#f59e0b" },
+    { ic: "fa-solid fa-arrows-rotate", tb: "rgba(245,158,11,.14)", tbd: "rgba(245,158,11,.32)", tc: "#f59e0b", t: "CRM & Calendar", d: "Link Google Calendar and send leads information to your CRM or any webhook.", img: "/images/feat-calendar.jpg", bic: "fa-regular fa-calendar", bc: "#f59e0b" },
   ],
   [
     { ic: "fa-solid fa-microphone-lines", tb: "rgba(157,139,255,.16)", tbd: "rgba(157,139,255,.32)", tc: "var(--violet)", t: "Studio Voices", d: "Choose from a library of studio-grade English voices to match your brand.", img: "/images/feat-voices.jpg", bic: "fa-solid fa-wave-square", bc: "var(--violet)" },
-    { ic: "fa-solid fa-wand-magic-sparkles", tb: "rgba(44,118,237,.12)", tbd: "rgba(44,118,237,.28)", tc: "var(--lime)", t: "Post-Call Automations", d: "After every call, details are captured and pushed to your inbox, CRM, and notifications automatically.", img: "/images/feat-automations.jpg", bic: "fa-solid fa-bolt", bc: "var(--lime)" },
-    { ic: "fa-solid fa-chart-line", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "Call Analytics & Transcripts", d: "Every call transcribed, summarised, and tagged with intent and sentiment — the summary delivered by email, SMS, and WhatsApp after the call.", img: "/images/feat-analytics.jpg", bic: "fa-solid fa-chart-column", bc: "#14a3a3" },
+    { ic: "fa-solid fa-wand-magic-sparkles", tb: "rgba(44,118,237,.12)", tbd: "rgba(44,118,237,.28)", tc: "var(--lime)", t: "Post-Call Automations", d: "After every call, the details are captured and pushed to your inbox, CRM, and notifications automatically.", img: "/images/feat-automations.jpg", bic: "fa-solid fa-bolt", bc: "var(--lime)" },
+    { ic: "fa-solid fa-chart-line", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "Call Analytics & Transcripts", d: "Each call is summarised, sent to you via email, SMS, and WhatsApp, and tagged with intent and sentiment.", img: "/images/feat-analytics.jpg", bic: "fa-solid fa-chart-column", bc: "#14a3a3" },
     // 4th card (2026-07-13): right column 3 cards par gap chhod raha tha — 4/4 balance.
     { ic: "fa-solid fa-headset", tb: "rgba(34,197,94,.14)", tbd: "rgba(34,197,94,.32)", tc: "#22b573", t: "Smart Human Handoff", d: "Set your rules — urgent or complex calls transfer straight to your team, with the conversation context passed along.", img: "/images/demo-agent.jpg", bic: "fa-solid fa-user-check", bc: "#22b573" },
   ],
@@ -207,34 +207,40 @@ const PLAT_COLS: Plat[][] = [
 // FAQ — edit/add questions here. `a` supports **bold** markup (rendered below).
 type Faq = { q: string; a: string };
 const FAQS: Faq[] = [
-  { q: "What is hello22.ai?", a: "hello22.ai is a 24/7 AI voice receptionist that answers your business phone calls, captures caller details, books appointments or jobs, and sends you a call summary via email, SMS, and WhatsApp (depending on your plan) — so you never miss a lead." },
-  { q: "How does the AI receptionist work?", a: "When a customer calls your assigned number, your AI receptionist answers in a natural voice, asks questions based on your business, captures the caller's details, and sends you a complete call summary as soon as the call ends." },
-  { q: "Can I customise what the AI says?", a: "Yes. Go to the **AI Brain** section in your dashboard to customise your receptionist's name, greeting, business information, services, business hours, and call-handling rules. Changes take effect instantly." },
-  { q: "What happens after a call ends?", a: "As soon as a call finishes, you'll receive a summary that includes the caller's name, call duration, and a transcript or summary of the conversation. Notifications are delivered via email, SMS, and WhatsApp, depending on your plan." },
-  { q: "Will I receive SMS and WhatsApp notifications after every call?", a: "Yes, on eligible paid plans. To receive SMS and WhatsApp notifications, make sure your mobile number is added in **Account Settings**." },
-  { q: "How does the CRM integration work?", a: "After each call, the caller's details are automatically sent to your connected CRM as a new lead. You can connect supported CRMs or configure a custom webhook from the **Connect CRM** section of your dashboard." },
-  { q: "What voices are available?", a: "Choose from a range of natural-sounding AI voices with multiple accents. Free trials include a limited selection of voices, while paid plans unlock the full voice library." },
-  { q: "What happens if I run out of minutes?", a: "If you use all of your included minutes, your subscription will automatically renew, and the payment method on file will be charged for the next billing cycle so your AI receptionist continues answering calls without interruption.\n\nYou can monitor your remaining minutes anytime from the **Plans & Billing** page in your dashboard.\n\n**Free Trial:** Your trial ends when you reach **30 minutes of usage** or **14 days**, whichever comes first. At that point, your selected plan will begin automatically unless you cancel before the trial ends." },
-  { q: "Can I change or upgrade my plan?", a: "Yes. You can change your plan at any time from the **Plans & Billing** page in your dashboard. If you're on a free trial, your newly selected plan will start when the trial ends. If you're already on a paid subscription, you can switch to a different plan at any time." },
-  { q: "Is my data secure?", a: "Yes. Your data is encrypted both in transit and at rest. We never share your call recordings, transcripts, or customer information with third parties." },
-  { q: "Can I listen to call recordings?", a: "Yes. When call recording is enabled, recordings are available in the **Call Inbox** section of your dashboard." },
-  { q: "How do I update my mobile number or email address?", a: "Go to **Account Settings** in your dashboard to update your mobile number, email address, or password at any time." },
+  { q: "Will my customers know they're talking to AI?", a: "Not unless you want them to. Hello22 AI speaks naturally, understands conversational English, and responds in real time. Many callers simply think they're speaking with a professional receptionist because the conversation feels smooth and helpful." },
+  { q: "Can I choose what the AI says?", a: "Yes. You control exactly how your AI receptionist answers calls. Customise greetings, services, FAQs, business hours, pricing, booking rules, and more through your **AI Brain**." },
+  { q: "What if the AI doesn't know the answer?", a: "Hello22 AI never makes up information. If it doesn't have an answer, it can ask follow-up questions, collect the caller's details, transfer the call, or let the caller know someone from your team will follow up." },
+  { q: "Can Hello22 AI book appointments for me?", a: "Yes. Connect **Google Calendar** and hello22 AI can check availability, schedule appointments, confirm bookings, and notify both you and your customer automatically." },
+  { q: "Does hello22 AI answer calls after business hours?", a: "Yes. Your AI receptionist works 24 hours a day, 7 days a week, including weekends and public holidays, so you never miss another opportunity." },
+  { q: "Can it transfer calls to me or my staff?", a: "Yes. You decide exactly when calls should be transferred — for example, emergency jobs, VIP customers, existing clients, or anyone requesting a human." },
+  { q: "Can it answer multiple callers at once?", a: "Yes. Unlike a human receptionist, hello22 AI can handle multiple incoming calls simultaneously without putting anyone on hold." },
+  { q: "Do I need to change my existing phone number?", a: "No. Simply forward your existing business number to your hello22 AI number. Your customers continue calling the same number they've always used." },
+  { q: "How long does setup take?", a: "Most businesses are ready in just 3–7 minutes. Sarah guides you through every step, so there's no technical setup or coding required." },
+  { q: "Can I test everything before forwarding my calls?", a: "Yes. You can make test calls, update your **AI Brain**, change responses, and hear exactly how your AI receptionist sounds before going live." },
+  { q: "What happens if someone calls in an emergency?", a: "You decide. Hello22 AI can immediately transfer the call, notify your team, or follow whatever emergency workflow you've configured." },
+  { q: "Can Hello22 AI collect leads even if someone doesn't book?", a: "Yes. It captures the caller's name, phone number, enquiry, preferred callback time, and any notes, so you never lose potential customers." },
+  { q: "Does hello22 AI integrate with my CRM?", a: "Yes. Hello22 AI supports **Google Calendar** and webhook integrations, allowing you to automatically send leads and bookings into your CRM or internal systems." },
+  { q: "What if someone asks to speak with a real person?", a: "No problem. Hello22 AI can transfer the call immediately, schedule a callback, or collect the caller's details so your team can respond quickly." },
+  { q: "Do I need any special hardware or phone system?", a: "No. hello22 is completely cloud-based. If you can forward calls, you can use hello22. There's nothing to install or maintain." },
 ];
 
 // FAQ items ke icon tiles (user mockup 2026-07-10) — index FAQS ke order se match karta hai
 const FAQ_ICS: { ic: string; c: string; bg: string }[] = [
   { ic: "fa-regular fa-comment-dots", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
-  { ic: "fa-solid fa-wand-magic-sparkles", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
   { ic: "fa-solid fa-sliders", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
-  { ic: "fa-solid fa-phone-volume", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
-  { ic: "fa-regular fa-message", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
-  { ic: "fa-solid fa-link", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
-  { ic: "fa-solid fa-microphone-lines", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
-  { ic: "fa-regular fa-clock", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
-  { ic: "fa-solid fa-arrows-rotate", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
-  { ic: "fa-solid fa-shield-halved", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
+  { ic: "fa-regular fa-circle-question", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
+  { ic: "fa-regular fa-calendar-check", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
+  { ic: "fa-regular fa-clock", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
+  { ic: "fa-solid fa-people-arrows", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
+  { ic: "fa-solid fa-clone", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
+  { ic: "fa-solid fa-phone", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
+  { ic: "fa-solid fa-bolt", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
   { ic: "fa-solid fa-headphones", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
-  { ic: "fa-solid fa-user-pen", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
+  { ic: "fa-solid fa-bell", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
+  { ic: "fa-solid fa-user-plus", c: "#f59e0b", bg: "rgba(245,158,11,.14)" },
+  { ic: "fa-solid fa-link", c: "var(--lime)", bg: "rgba(44,118,237,.12)" },
+  { ic: "fa-solid fa-headset", c: "#14a3a3", bg: "rgba(20,163,163,.12)" },
+  { ic: "fa-solid fa-cloud", c: "var(--violet)", bg: "rgba(157,139,255,.14)" },
 ];
 
 type Cap = { icon: string; label: string; blue?: boolean; ic?: string }; // ic = icon color (reference UI: WhatsApp green etc.)
@@ -290,11 +296,11 @@ const PLANS: Plan[] = [
 // Human vs AI comparison table — orbit section ki jagah (client reference).
 type CmpRow = { f: string; ic: string; h: string; a: string; chip: string };
 const COMPARE: CmpRow[] = [
-  { f: "Availability", ic: "fa-regular fa-clock", h: "9am–5pm, weekdays", a: "24/7, 365 days a year", chip: "Always on" },
-  { f: "Sick Days & Leave", ic: "fa-solid fa-umbrella-beach", h: "Of course! They're human.", a: "Never. Always on duty.", chip: "No days off" },
+  { f: "Availability", ic: "fa-regular fa-clock", h: "9am–5pm, weekdays", a: "365 days a year, 24/7", chip: "Always on" },
+  { f: "Sick Days & Leave", ic: "fa-solid fa-umbrella-beach", h: "Of course, they're human", a: "Never, always on duty", chip: "No days off" },
   { f: "Cost", ic: "fa-solid fa-sack-dollar", h: "Salary, super, leave", a: "One simple flat rate", chip: "Predictable" },
   { f: "Setup Time", ic: "fa-solid fa-bolt", h: "Weeks of hiring & training", a: "Live in minutes", chip: "Quick & easy" },
-  { f: "3 Calls at Once?", ic: "fa-solid fa-phone-volume", h: "\u201CPlease hold.\u201D", a: "Easily.", chip: "Unlimited" },
+  { f: "3 Calls at Once?", ic: "fa-solid fa-phone-volume", h: "\u201CPlease hold.\u201D", a: "Easily", chip: "Unlimited" },
   { f: "Integration", ic: "fa-solid fa-plug", h: "Manual note-taking", a: "Connects to your tools", chip: "Seamless" },
 ];
 
@@ -303,12 +309,12 @@ const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=hello22.ai+reviews";
 // img optional — photo na ho to card initials avatar dikhata hai. Pehle 3 preview me, baaki "Show all" se.
 type Testi = { quote: string; name: string; role: string; img?: string; stars: number };
 const TESTIMONIALS: Testi[] = [
-  { quote: "We were missing 15 to 20 calls a week — mostly evenings and lunch hours. Since hello22 took over, every call is answered and our bookings are up almost 40%.", name: "Dr. Melissa Tran", role: "Brightside Dental Clinic", img: "/images/portrait-melissa.jpg", stars: 4.5 },
+  { quote: "We were missing 15 to 20 calls a week, mostly evenings and lunch hours. Since hello22 AI took over, every call is answered, and our bookings are up almost 40%.", name: "Dr. Melissa Tran", role: "Brightside Dental Clinic", img: "/images/portrait-melissa.jpg", stars: 4.5 },
   { quote: "I'm in showings half the day. Now every enquiry is answered instantly, and the caller's details are texted to me before I'm even out of the building.", name: "James Carter", role: "Carter Realty Group", img: "/images/portrait-james.jpg", stars: 5 },
   { quote: "The AI handles appointment calls so smoothly that most clients don't realise they weren't talking to our staff. Our front desk finally has room to breathe.", name: "Priya Sharma", role: "Sharma Immigration Services", img: "/images/portrait-priya.jpg", stars: 5 },
-  { quote: "hello22 answers our after-hours emergency calls now. Last month it booked two big jobs that would have gone straight to voicemail.", name: "Mark Reynolds", role: "Reynolds Plumbing Co.", stars: 5 },
-  { quote: "Our team is on the tools all day. The AI takes every call, sorts urgent from routine, and the summary lands on WhatsApp before we're off the ladder.", name: "Sophie Nguyen", role: "SparkRight Electrical", stars: 4.5 },
-  { quote: "Quotes used to slip through whenever we missed a call. Now every enquiry is captured, and half our bookings happen while we're still on another job.", name: "David Okafor", role: "FreshNest Cleaning", stars: 5 },
+  { quote: "We are so happy because hello22 AI is remarkable, and last month it booked two big jobs that would have gone straight to voicemail.", name: "Mark Reynolds", role: "Reynolds Plumbing Co.", stars: 5 },
+  { quote: "It has transformed how we operate with focus towards other important tasks; in the meantime, the AI takes every call, sorts urgent from routine, and the summary lands on WhatsApp, which is sweet.", name: "Sophie Nguyen", role: "SparkRight Electrical", stars: 4.5 },
+  { quote: "It does everything brilliantly as per expectations. We are delighted because every enquiry is captured, and half our bookings happen while we're still on another job.", name: "David Okafor", role: "FreshNest Cleaning", stars: 5 },
 ];
 
 const CSS = `
@@ -1142,17 +1148,17 @@ export default function Hello22Site() {
                 <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "var(--lime)" }} />
                 <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "var(--lime)", animation: "h22ring 1.8s ease-out infinite" }} />
               </span>
-              <span style={{ fontWeight: 600, color: "var(--tx3)", letterSpacing: ".02em" }}>24/7 AI voice receptionist</span>
+              <span style={{ fontWeight: 600, color: "var(--tx3)", letterSpacing: ".02em" }}>24/7 AI receptionist</span>
             </div>
-            {/* "hello." greeting headline — user ki choice (2026-07-10), mockup ke 2-line headline par revert nahi karna */}
-            <h1 className="hero-h1 hin" style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0", animationDelay: ".06s" }}>
+            {/* "hello." wordmark decorative rehta hai (user ki choice 2026-07-10, hatana nahi) — semantic H1 ab neeche SEO headline hai (client content update 2026-07-17) */}
+            <div className="hero-h1 hin" aria-hidden="true" style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0", animationDelay: ".06s" }}>
               <span style={{ display: "inline-flex", alignItems: "baseline", perspective: "600px" }}>
                 <span key={greet} style={{ display: "inline-block", animation: "h22greet .65s cubic-bezier(.2,.8,.2,1) both" }}>{GREETS[greet]}</span>
                 <span style={{ color: "var(--lime)" }}>.</span>
               </span>
-            </h1>
-            <p className="hin" style={{ fontFamily: SUB, fontSize: "clamp(18px,2vw,25px)", fontWeight: 600, color: "var(--tx2)", margin: "14px 0 0", letterSpacing: "-.01em", lineHeight: 1.35, animationDelay: ".12s" }}>I&apos;m Your AI Voice Agent —<br /><span style={HL}>Ready to Talk.</span></p>
-            <p className="hero-sub hin" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 520, margin: "20px 0 0", animationDelay: ".18s" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 answers every call,</strong> books appointments, qualifies leads, and resolves questions — sounding <span style={HL}>natural and human</span>, in English, 24/7.</p>
+            </div>
+            <h1 className="hin" style={{ fontFamily: SUB, fontSize: "clamp(18px,2vw,25px)", fontWeight: 600, color: "var(--tx2)", margin: "14px 0 0", letterSpacing: "-.01em", lineHeight: 1.35, animationDelay: ".12s" }}>hello22 AI — AI Receptionist & Voice Agents<br /><span style={HL}>Built for Real Conversations</span></h1>
+            <p className="hero-sub hin" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 520, margin: "20px 0 0", animationDelay: ".18s" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Never miss another customer call with Hello22 AI.</strong> Our AI receptionist and voice agents respond instantly, book appointments, capture leads, and provide <span style={HL}>human-like support 24/7</span>.</p>
             <div className="hero-ctas hin" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap", animationDelay: ".24s" }}>
               <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 18px 44px -12px rgba(44,118,237,.75)" }}><span aria-hidden style={{ fontSize: 15, lineHeight: 1 }}>✦</span><BtnTxt t="Start free — setup in minutes" /></a>
               <a href="#demo" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--surface)", color: "var(--blue-ink)", fontWeight: 700, fontSize: 16, padding: "14px 24px", borderRadius: 999, border: "1.5px solid rgba(44,118,237,.5)", boxShadow: "0 10px 26px -18px rgba(44,118,237,.6)" }}>
@@ -1230,7 +1236,7 @@ export default function Hello22Site() {
 
       {/* TRUST MARQUEE */}
       <section className="full-bleed" style={{ position: "relative", zIndex: 1, padding: "76px 0 56px" }}>
-        <p style={{ textAlign: "center", fontSize: 13, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--tx3)", margin: "0 0 38px", padding: "0 18px" }}>Built on best-in-class voice & infrastructure</p>
+        <p style={{ textAlign: "center", fontSize: 13, fontWeight: 700, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--tx3)", margin: "0 0 38px", padding: "0 18px" }}>Constructed Using the Best Voice and Infrastructure Available</p>
         <div style={{ position: "relative", overflow: "hidden", WebkitMaskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)", maskImage: "linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)" }}>
           {/* Logo tiles (user mockup 2026-07-10) — flat row ki jagah white pill cards */}
           <div className="h22marquee" style={{ display: "flex", gap: 18, width: "max-content", animation: "h22marq 36s linear infinite", paddingRight: 18, willChange: "transform" }}>
@@ -1251,15 +1257,15 @@ export default function Hello22Site() {
         <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,600px)", gap: 24, alignItems: "center" }}>
           <div>
             <div data-rv style={eyebrow}><span aria-hidden="true" style={{ marginRight: 8, fontSize: 12 }}>✦</span>AI phone agent</div>
-            <h2 data-rv style={{ ...h2, maxWidth: 760 }}><b style={BD}>Press Play.</b> Hear hello22 Handle a{" "}
+            <h2 data-rv style={{ ...h2, maxWidth: 760 }}><b style={BD}>Hear Hello22 AI</b> Voice Agent Handle a <span style={HL}>Real</span>{" "}
               <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
-                <span style={HL}>Real Call</span>
+                <span style={HL}>Customer Call</span>
                 {/* underline swoosh (mockup) */}
                 <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
-              </span>.
+              </span>
             </h2>
-            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Experience how natural conversations flow</strong> with hello22. It listens, understands, and responds — <span style={HL}>just like a human</span>.</p>
-            <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 13, color: "var(--mut3)" }}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-volume-high" /></span>Hit play — hear the real recorded conversation between the caller and the hello22 agent.</div>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 620, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>See how Hello22 AI delivers human-like conversations</strong> through intelligent voice agents that listen, understand, and respond <span style={HL}>naturally to every customer</span>.</p>
+            <div data-rv style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 13, color: "var(--mut3)" }}><span style={{ display: "inline-flex", width: 20, height: 20, borderRadius: "50%", background: "rgba(44,118,237,.14)", border: "1px solid rgba(44,118,237,.3)", color: "var(--lime)", alignItems: "center", justifyContent: "center", fontSize: 10 }}><i className="fa-solid fa-volume-high" /></span>Hit play to hear the recorded call between the caller and the Hello22 AI agent.</div>
           </div>
           {/* illustration: blob + photos + chat bubbles (user mockup 2026-07-10; photos AI-generated to match) */}
           <div className="demo-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 350 }}>
@@ -1279,7 +1285,7 @@ export default function Hello22Site() {
             <div style={{ position: "absolute", top: 138, left: 4, maxWidth: 350, background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: "20px 20px 20px 6px", padding: "15px 19px", boxShadow: "0 16px 36px -20px var(--sh1)", animation: "h22floatSm 7.5s ease-in-out -4s infinite" }}>
               <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <span style={{ width: 34, height: 34, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>✦</span>
-                <span style={{ fontSize: 14.5, lineHeight: 1.5, color: "var(--tx2)", fontWeight: 600 }}>Of course! We can send a technician this Friday at 9 AM. Does that work for you?</span>
+                <span style={{ fontSize: 14.5, lineHeight: 1.5, color: "var(--tx2)", fontWeight: 600 }}>Of course. We can send a technician this Friday at 9 AM. Does that work for you?</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 2.5, height: 18, marginTop: 10, paddingLeft: 46 }}>
                 {Array.from({ length: 30 }).map((_, i) => {
@@ -1403,10 +1409,10 @@ export default function Hello22Site() {
           <div data-rv>
             <span style={{ display: "inline-flex", alignItems: "center", padding: "7px 16px 7px 8px", borderRadius: 999, border: "1px solid rgba(44,118,237,.35)", background: "rgba(44,118,237,.07)", fontFamily: DISP, fontSize: 11.5, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--lime)", fontWeight: 700 }}>
               <span style={{ width: 20, height: 20, borderRadius: "50%", background: "var(--lime)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 8, marginRight: 9, flexShrink: 0 }}><i className="fa-solid fa-play" style={{ marginLeft: 1 }} aria-hidden="true" /></span>
-              See hello22 in action
+              See hello22 AI in action
             </span>
             <h2 style={{ ...h2, maxWidth: 700 }}><b style={BD}>One Platform.</b><br /><span style={HL}>Endless Possibilities.</span></h2>
-            <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 520, margin: "16px 0 0", lineHeight: 1.6 }}>Everything you need to build, manage, and scale AI voice agents that deliver real results.</p>
+            <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 520, margin: "16px 0 0", lineHeight: 1.6 }}>Everything you need to build, manage, and scale intelligent AI voice agents that handle real customer conversations and deliver measurable results.</p>
           </div>
           {/* illustration cluster: photos + stat card + chips + dashed arrows (user mockup 2026-07-10) */}
           <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 300 }}>
@@ -1512,7 +1518,8 @@ export default function Hello22Site() {
         <div data-rv style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div>
             <div style={eyebrow}>Natural AI voices</div>
-            <h2 style={{ ...h2, maxWidth: 660 }}><b style={BD}>Pick a Voice.</b><br />Click to <span style={HL}>Hear It Speak</span>.</h2>
+            <h2 style={{ ...h2, maxWidth: 860 }}><b style={BD}>Choose Your AI Receptionist Voice.</b><br />Hear <span style={HL}>Human-Like Conversations</span> in Action.</h2>
+            <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 620, margin: "16px 0 0", lineHeight: 1.6 }}>Choose the voice that fits your brand, then press to hear it speak before you commit. Each one is studio-grade quality, and your AI voice agent keeps that same voice on every single call.</p>
           </div>
           <button
             onClick={() => {
@@ -1558,13 +1565,13 @@ export default function Hello22Site() {
         <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
           <div>
             <div data-rv style={eyebrow}><span aria-hidden="true" style={{ marginRight: 8, fontSize: 12 }}>✦</span>The platform</div>
-            <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Everything You Need</b> to Talk to{" "}
+            <h2 data-rv style={{ ...h2, maxWidth: 720 }}><b style={BD}>Everything You Need</b> to Build Smarter <span style={HL}>AI Voice</span>{" "}
               <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
-                <span style={HL}>Everyone</span>
+                <span style={HL}>Conversations</span>
                 <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
-              </span>.
+              </span>
             </h2>
-            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 560, margin: "18px 0 0", lineHeight: 1.6 }}>Built to feel human, work smarter, and scale with you — so every conversation delivers <span style={HL}>real impact</span>.</p>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 560, margin: "18px 0 0", lineHeight: 1.6 }}>Built to feel human, work smarter, and grow with you, so every conversation your AI voice agents handle turns into a <span style={HL}>real outcome</span>. Trusted by hundreds of businesses worldwide.</p>
           </div>
           {/* illustration: woman photo in blob + trusted card (user mockup 2026-07-10) */}
           <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 290 }}>
@@ -1620,11 +1627,11 @@ export default function Hello22Site() {
         <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
           <div>
             <div data-rv style={eyebrow}><span aria-hidden="true" style={{ marginRight: 8, fontSize: 12 }}>✦</span>How it works</div>
-            <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Set Up, Sign Up,</b> Go Live — With{" "}
+            <h2 data-rv style={{ ...h2, maxWidth: 720 }}><b style={BD}>Set Up, Sign Up,</b> Go Live — With <span style={HL}>hello22 AI</span>.<br />Within{" "}
               <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
-                <span style={HL}>hello22</span>
+                <span style={HL}>Minutes Only</span>
                 <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
-              </span>.
+              </span>
             </h2>
             <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No code, no telephony setup,</strong> no flowcharts. Sarah walks you through every step — confirm your business, create your account, and take your first real call.</p>
           </div>
@@ -1654,9 +1661,9 @@ export default function Hello22Site() {
         <div style={{ position: "relative" }}>
           <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 42 }}>
             {([
-              { n: "01", c: "var(--lime)", cb: "rgba(44,118,237,.12)", t: "Set up", h: "Sarah Builds Your Agent", d: "hello22 finds your business and sets up your AI receptionist with you — just review the details and confirm.", ic: "fa-regular fa-user", step: 1 },
-              { n: "02", c: "var(--violet)", cb: "rgba(157,139,255,.14)", t: "Account", h: "Create Your Account", d: "Add your name, email, and mobile so hello22 can route your calls and text you a summary after every one.", ic: "fa-solid fa-user-plus", step: 2 },
-              { n: "03", c: "#22b573", cb: "rgba(34,197,94,.12)", t: "Go live", h: "Pick a Number & Go Live", d: "Claim your dedicated AI number, point your calls to it, and start handling real conversations in minutes.", ic: "fa-solid fa-phone-volume", step: 3 },
+              { n: "01", c: "var(--lime)", cb: "rgba(44,118,237,.12)", t: "Set up", h: "Hello22 AI Builds Your Agent", d: "Hello22 AI finds your business with the help of your website or information entered by you and sets up your AI receptionist.", ic: "fa-regular fa-user", step: 1 },
+              { n: "02", c: "var(--violet)", cb: "rgba(157,139,255,.14)", t: "Account", h: "Create Your Account", d: "Add your name, email, and mobile so hello22 AI can route your calls and text you a summary after every one.", ic: "fa-solid fa-user-plus", step: 2 },
+              { n: "03", c: "#22b573", cb: "rgba(34,197,94,.12)", t: "Go live", h: "Select a Number and Go Live", d: "Your AI voice agent will begin managing actual conversations in a matter of minutes after you get your unique AI number and direct your calls to it.", ic: "fa-solid fa-phone-volume", step: 3 },
             ] as { n: string; c: string; cb: string; t: string; h: string; d: string; ic: string; step: 1 | 2 | 3 }[]).map((s) => (
               <div key={s.n} data-rv className="lift" style={{ ...card, padding: "24px 24px 20px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
@@ -1703,13 +1710,13 @@ export default function Hello22Site() {
         <div className="demo-header-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,520px)", gap: 24, alignItems: "center" }}>
           <div>
             <div data-rv style={eyebrow}><i className="fa-regular fa-building" style={{ marginRight: 8, fontSize: 11 }} aria-hidden="true" />Industries</div>
-            <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Built for the Trades</b> That Run on{" "}
+            <h2 data-rv style={{ ...h2, maxWidth: 640 }}><b style={BD}>Built for the Businesses</b> That Rely on{" "}
               <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
                 <span style={HL}>Phone Calls</span>
                 <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -9, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3.5" strokeLinecap="round" opacity=".8" /></svg>
               </span>.
             </h2>
-            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>It&apos;s the same <span style={HL}>hello22 agent</span></strong> — you just configure it for your business in the AI Brain. No separate setup per industry.</p>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 640, margin: "18px 0 0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Hello22 AI uses the same powerful <span style={HL}>AI voice agent</span></strong> for every business. Just configure your AI Brain with your services, policies, and workflows, and your AI receptionist handles calls as if it were part of your team.</p>
           </div>
           {/* illustration: photo + "One agent. Any trade." card (user mockup 2026-07-10) */}
           <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 280 }}>
@@ -1802,7 +1809,7 @@ export default function Hello22Site() {
           </h2>
           {/* sparkle heading ke paas (user mockup 2026-07-10) */}
           <svg viewBox="0 0 26 24" aria-hidden="true" style={{ position: "absolute", left: 300, top: 44, width: 24, height: 22 }}><path d="M4 20 L 10 10 M 12 22 L 16 12" fill="none" stroke="rgba(44,118,237,.5)" strokeWidth="2" strokeLinecap="round" /></svg>
-          <p style={{ fontSize: 17.5, color: "var(--mut)", margin: "24px 0 0", maxWidth: 460, lineHeight: 1.65 }}>AI receptionists are changing the way Australian businesses handle calls — <strong style={{ fontWeight: 700, color: "var(--tx2)" }}>saving time, cutting costs, and never missing an opportunity.</strong></p>
+          <p style={{ fontSize: 17.5, color: "var(--mut)", margin: "24px 0 0", maxWidth: 460, lineHeight: 1.65 }}>AI voice receptionists are changing the way service businesses handle calls, and it <strong style={{ fontWeight: 700, color: "var(--tx2)" }}>saves time, cuts costs, and stops good leads from slipping away.</strong></p>
           {/* join card */}
           <div style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(44,118,237,.07)", border: "1px solid rgba(44,118,237,.18)", borderRadius: 16, padding: "16px 20px", marginTop: 28, maxWidth: 440 }}>
             <span style={{ display: "inline-flex", flexShrink: 0 }}>
@@ -1811,7 +1818,7 @@ export default function Hello22Site() {
                 <img key={p} src={p} alt="" width={34} height={34} loading="lazy" style={{ width: 34, height: 34, borderRadius: "50%", objectFit: "cover", border: "2.5px solid var(--surface)", marginLeft: i === 0 ? 0 : -11 }} />
               ))}
             </span>
-            <span style={{ fontSize: 14.5, lineHeight: 1.5, color: "var(--mut)" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Join 1,000+ Australian businesses</strong> already using hello22 every day.</span>
+            <span style={{ fontSize: 14.5, lineHeight: 1.5, color: "var(--mut)" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Join hundreds of delighted businesses</strong> already using Hello22 AI every day.</span>
           </div>
           {/* curly dashed arrow table ki taraf */}
           <svg viewBox="0 0 120 60" aria-hidden="true" className="cmp-squig" style={{ position: "absolute", left: 240, bottom: -58, width: 110, height: 56 }}>
@@ -1825,11 +1832,11 @@ export default function Hello22Site() {
             <div className="cmp-fh" style={{ padding: "18px 24px", display: "flex", alignItems: "center", fontSize: 12.5, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--dim)", background: "var(--w04)" }}>Feature</div>
             <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 10, background: "var(--w04)" }}>
               <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "var(--w06)", border: "1px solid var(--w10)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--mut)", fontSize: 12 }}><i className="fa-solid fa-user" /></span>
-              <span style={{ fontFamily: SUB, fontSize: 14.5, fontWeight: 600, color: "var(--tx2)" }}>Traditional Receptionist</span>
+              <span style={{ fontFamily: SUB, fontSize: 14.5, fontWeight: 600, color: "var(--tx2)" }}>Human Receptionist</span>
             </div>
             <div className="cmp-ai" style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 10 }}>
               <span style={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, background: "var(--lime)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 12, boxShadow: "0 8px 18px -8px rgba(44,118,237,.7)" }}><i className="fa-solid fa-headset" /></span>
-              <span style={{ fontFamily: SUB, fontSize: 14.5, fontWeight: 700, color: "var(--blue-ink)" }}>Our AI Receptionist</span>
+              <span style={{ fontFamily: SUB, fontSize: 14.5, fontWeight: 700, color: "var(--blue-ink)" }}>Your AI Receptionist</span>
             </div>
           </div>
           {COMPARE.map((r, i) => (
@@ -1855,10 +1862,10 @@ export default function Hello22Site() {
         {/* bottom band — 4 quick-value items (user mockup 2026-07-10) */}
         <div data-rv className="plat-stats" style={{ background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 18, marginTop: 28, padding: "20px 22px", display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 18 }}>
           {[
-            { ic: "fa-solid fa-phone-volume", c: "#fff", bg: "var(--lime)", t: "The Smarter Way to Answer.", d: "Save time. Reduce costs. Deliver a better caller experience.", big: true },
-            { ic: "fa-solid fa-dollar-sign", c: "#1a9a5c", bg: "rgba(34,197,94,.13)", t: "Save Up to 80%", d: "compared to hiring in-house staff." },
+            { ic: "fa-solid fa-phone-volume", c: "#fff", bg: "var(--lime)", t: "The Smarter Way to Answer.", d: "Save time, reduce costs, and give callers a better experience.", big: true },
+            { ic: "fa-solid fa-dollar-sign", c: "#1a9a5c", bg: "rgba(34,197,94,.13)", t: "Save Up to 80%", d: "Compared to hiring in-house staff." },
             { ic: "fa-regular fa-clock", c: "var(--violet)", bg: "rgba(157,139,255,.15)", t: "Never Miss a Call", d: "Capture every lead, every time." },
-            { ic: "fa-regular fa-face-smile", c: "#f59e0b", bg: "rgba(245,158,11,.14)", t: "Delight Your Callers", d: "Fast, friendly, human-like conversations." },
+            { ic: "fa-regular fa-face-smile", c: "#f59e0b", bg: "rgba(245,158,11,.14)", t: "Delight Your Callers", d: "With fast, friendly, accurate, human-like conversations." },
           ].map((x) => (
             <div key={x.t} style={{ display: "flex", alignItems: "center", gap: 13, minWidth: 0 }}>
               <span style={{ width: x.big ? 52 : 44, height: x.big ? 52 : 44, borderRadius: "50%", flexShrink: 0, background: x.bg, color: x.c, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: x.big ? 18 : 16, boxShadow: x.big ? "0 12px 26px -12px rgba(44,118,237,.7)" : "none" }}><i className={x.ic} aria-hidden="true" /></span>
@@ -1879,7 +1886,7 @@ export default function Hello22Site() {
           <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.12fr) minmax(0,.88fr)", gap: "clamp(28px,4vw,56px)", alignItems: "center" }}>
             {/* left — text */}
             <div>
-              <div style={eyebrow}><i className="fa-solid fa-heart" style={{ marginRight: 8, fontSize: 10 }} aria-hidden="true" />Why hello22</div>
+              <div style={eyebrow}><i className="fa-solid fa-heart" style={{ marginRight: 8, fontSize: 10 }} aria-hidden="true" />Why Hello22 AI</div>
               <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(23px,4.2vw,40px)", lineHeight: 1.16, margin: "14px 0 0" }}>
                 <b style={BD}>Every Missed Call</b> Is a{" "}
                 <span style={{ position: "relative", display: "inline-block", whiteSpace: "nowrap" }}>
@@ -1887,7 +1894,7 @@ export default function Hello22Site() {
                   <svg aria-hidden="true" viewBox="0 0 220 12" style={{ position: "absolute", left: "2%", bottom: -12, width: "96%", height: 12, overflow: "visible" }}><path d="M4 9 C 62 3, 152 2, 216 6" stroke="var(--blue-ink)" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".85" /></svg>
                 </span>.
               </h2>
-              <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 500, margin: "26px 0 0", lineHeight: 1.75 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 picks up every time</strong> — turning your phone into booked jobs, captured leads, and happy callers instead of voicemail.</p>
+              <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 500, margin: "26px 0 0", lineHeight: 1.75 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Hello22 AI answers every call like a professional receptionist</strong> — books appointments, captures leads, answers customer questions, and collects feedback, so your customers never end up in voicemail and your business never misses an opportunity.</p>
             </div>
             {/* right — photo blob + notification card + doodles */}
             <div className="why-photo" style={{ position: "relative", width: "100%", maxWidth: 430, justifySelf: "center", aspectRatio: "1 / 0.96" }}>
@@ -1918,11 +1925,18 @@ export default function Hello22Site() {
             </div>
           </div>
           {/* cards — white surface, status pill, corner illustrations */}
-          <div className="stat4" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 44, maxWidth: 980, marginLeft: "auto", marginRight: "auto" }}>
+          <div className="stat4" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(225px,1fr))", gap: 18, marginTop: 44 }}>
             {[
-              { ic: "fa-phone-volume", t: "Answers 24/7", d: "Never sends a caller to voicemail again — day, night, weekends, holidays.", pill: "Always here" },
-              { ic: "fa-user-plus", t: "Captures Every Lead", d: "Gets the caller's name, number, and what they need on every call — so you never lose a lead.", pill: "Never miss a lead" },
-              { ic: "fa-comment-dots", t: "Summary Every Call", d: "Texts and emails you the caller's details and a summary the moment they hang up.", pill: "Instant updates" },
+              { ic: "fa-phone-volume", t: "Answers 24/7", d: "Never miss a call, even after hours, on weekends, or during holidays.", pill: "Always here" },
+              { ic: "fa-clone", t: "Handles Multiple Calls Simultaneously", d: "Answer multiple callers at the same time, with no busy signals or long wait times.", pill: "No busy signals" },
+              { ic: "fa-user-plus", t: "Captures Every Lead", d: "Records caller details, enquiries, and contact information on every call.", pill: "Never miss a lead" },
+              { ic: "fa-comment-dots", t: "Call Summaries Instantly", d: "Receive a text or email summary as soon as each call ends.", pill: "Instant updates" },
+              { ic: "fa-tags", t: "Affordable Pricing", d: "Budget-friendly plans designed specifically for small businesses.", pill: "Fair & predictable" },
+              { ic: "fa-stopwatch", t: "3-Minute Setup", d: "No setup fees, no hidden charges. Be live in minutes or let us set it up for you for free.", pill: "Live in minutes" },
+              { ic: "fa-gauge-high", t: "Manage Your Own Dashboard", d: "Update business information, review calls, and customise your AI receptionist anytime from your dashboard.", pill: "You're in control" },
+              { ic: "fa-people-arrows", t: "Seamless Call Transfer", d: "Transfer callers to a human team member whenever needed.", pill: "Human handoff" },
+              { ic: "fa-brain", t: "Learns Your Business", d: "Trained on your business and becomes smarter as you train it over time.", pill: "Smarter over time" },
+              { ic: "fa-language", t: "Multilingual Support", d: "Communicate with customers in multiple languages using natural-sounding regional accents.", pill: "Natural accents" },
             ].map((x, i) => (
               <div key={x.t} style={{ position: "relative", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 20, padding: "30px 22px 26px", textAlign: "center", boxShadow: "0 14px 34px -26px var(--sh2)" }}>
                 <div style={{ width: 56, height: 56, margin: "0 auto", borderRadius: "50%", background: "rgba(44,118,237,.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 20 }}><i className={`fa-solid ${x.ic}`} /></div>
@@ -1944,7 +1958,7 @@ export default function Hello22Site() {
                     </svg>
                   </span>
                 )}
-                {i === 1 && (
+                {i === 4 && (
                   <span className="why-deco" aria-hidden="true">
                     <svg viewBox="0 0 70 60" style={{ position: "absolute", right: -30, bottom: -20, width: 60, height: 52, overflow: "visible" }}>
                       <path d="M4 52 C 22 50, 26 40, 18 36 C 10 32, 12 22, 28 18 C 44 14, 56 10, 66 6" stroke="var(--blue-ink)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
@@ -1952,7 +1966,7 @@ export default function Hello22Site() {
                     </svg>
                   </span>
                 )}
-                {i === 2 && (
+                {i === 9 && (
                   <span className="why-deco" aria-hidden="true">
                     <svg viewBox="0 0 64 52" style={{ position: "absolute", right: -18, bottom: -12, width: 58, height: 47, overflow: "visible", transform: "rotate(8deg)" }}>
                       <rect x="6" y="14" width="48" height="32" rx="4" fill="#f3e7d3" stroke="#d9c4a4" strokeWidth="1.6" />
@@ -1990,7 +2004,7 @@ export default function Hello22Site() {
                 </svg>
               </span>.
             </h2>
-            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 is in early access.</strong> Here&apos;s exactly what your AI receptionist does the moment you go live — no inflated claims.</p>
+            <p data-rv style={{ fontSize: 18, color: "var(--mut)", maxWidth: 600, margin: "0", lineHeight: 1.6 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>hello22 AI is in early access,</strong> so here is exactly what your AI receptionist software will start performing the moment you go live.</p>
           </div>
           {/* illustration: photo + "Always here" card (user mockup 2026-07-10) */}
           <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 280 }}>
@@ -2016,9 +2030,9 @@ export default function Hello22Site() {
         </div>
         <div className="uc-grid snap-x" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }}>
           {([
-            { ic: "fa-phone-volume", t: "Answers Every Call", d: "24/7 — no missed calls, no hold music, no voicemail. Every caller gets a real, natural conversation.", bg: "rgba(44,118,237,.16)", c: "var(--lime)", doodle: 1 },
-            { ic: "fa-bolt", t: "Live in Minutes", d: "Describe your agent, connect your tools, pick a number. No code, no telephony setup, no flowcharts.", bg: "rgba(86,224,224,.16)", c: "var(--cyan)", doodle: 2 },
-            { ic: "fa-file-lines", t: "Every Call Captured", d: "Transcribed, summarised, and analysed automatically — delivered by SMS, WhatsApp, and email the moment the call ends.", bg: "rgba(157,139,255,.16)", c: "var(--violet)", doodle: 3 },
+            { ic: "fa-phone-volume", t: "Answers Every Call", d: "24/7, with no missed calls, no hold music, and no voicemail. Every caller experiences a real, natural conversation.", bg: "rgba(44,118,237,.16)", c: "var(--lime)", doodle: 1 },
+            { ic: "fa-bolt", t: "Live in Minutes", d: "Pick your particular AI voice agent, make it knowledgeable by connecting your site, and pick a number. No code, no telephony setup, and no flowcharts.", bg: "rgba(86,224,224,.16)", c: "var(--cyan)", doodle: 2 },
+            { ic: "fa-file-lines", t: "Every Call Captured", d: "Your calls are transcribed, summarised, and analysed automatically, and then you receive details by SMS, WhatsApp, and email instantly.", bg: "rgba(157,139,255,.16)", c: "var(--violet)", doodle: 3 },
           ] as { ic: string; t: string; d: string; bg: string; c: string; doodle: 1 | 2 | 3 }[]).map((t) => (
             <div key={t.t} data-rv className="lift" style={{ ...card, padding: 28, display: "flex", flexDirection: "column" }}>
               <div style={{ width: 46, height: 46, borderRadius: 13, background: t.bg, color: t.c, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 19 }}><i className={`fa-solid ${t.ic}`} /></div>
@@ -2090,7 +2104,7 @@ export default function Hello22Site() {
                 </svg>
               </span>
             </h2>
-            <p style={{ fontSize: 18, color: "var(--mut)", margin: "26px 0 0", maxWidth: 520, lineHeight: 1.65 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>We&apos;re proud</strong> of every call we answer. Here&apos;s what business owners had to say after putting hello22 on their front desk.</p>
+            <p style={{ fontSize: 18, color: "var(--mut)", margin: "26px 0 0", maxWidth: 520, lineHeight: 1.65 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>We are proud</strong> of every call we answer, so here is what business owners told us after putting hello22 AI on their front desk.</p>
           </div>
           {/* right — handwritten note + photo blob + doodles */}
           <div className="testi-hero" style={{ position: "relative", display: "flex", alignItems: "center", gap: 10, justifySelf: "center", width: "100%", maxWidth: 500 }}>
@@ -2136,7 +2150,7 @@ export default function Hello22Site() {
                 </div>
               </div>
             </div>
-            <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: 0 }}>Real reviews from businesses using hello22 as their 24/7 front desk.<br /><span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontWeight: 700, color: "var(--tx2)", marginTop: 4 }}>Thank you! <i className="fa-regular fa-heart" aria-hidden="true" style={{ color: "var(--blue-ink)", fontSize: 14 }} /></span></p>
+            <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: 0 }}>Real reviews from businesses using hello22 AI as their 24/7 front desk.<br /><span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontWeight: 700, color: "var(--tx2)", marginTop: 4 }}>Thank you! <i className="fa-regular fa-heart" aria-hidden="true" style={{ color: "var(--blue-ink)", fontSize: 14 }} /></span></p>
             <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 24px", borderRadius: 999, boxShadow: "0 14px 30px -14px rgba(44,118,237,.7)" }}><BtnTxt t="Read Google Reviews" /> <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: 12 }} aria-hidden="true" /></a>
             {/* slider arrows */}
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4 }}>
@@ -2196,7 +2210,7 @@ export default function Hello22Site() {
           <div style={{ maxWidth: 560 }}>
             <div style={eyebrow}><i className="fa-solid fa-tag" aria-hidden="true" style={{ marginRight: 8, fontSize: 10 }} />Pricing</div>
             <h2 style={{ ...h2 }}>
-              <b style={BD}>Simple Plans.</b>{" "}
+              <b style={BD}>Simple &amp; Cheap Plans.</b>{" "}
               <span style={{ position: "relative", display: "inline-block", whiteSpace: "nowrap" }}>
                 <span style={HL}>Cancel Anytime.</span>
                 <svg aria-hidden="true" viewBox="0 0 220 12" style={{ position: "absolute", left: "2%", bottom: -12, width: "96%", height: 12, overflow: "visible" }}><path d="M4 9 C 62 3, 152 2, 216 6" stroke="var(--blue-ink)" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".85" /></svg>
@@ -2206,11 +2220,11 @@ export default function Hello22Site() {
                 </svg>
               </span>
             </h2>
-            <p id="pricing" style={{ fontSize: 18, color: "var(--mut)", margin: "22px 0 0", maxWidth: 520, lineHeight: 1.6, scrollMarginTop: 90 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>No setup fees, no contracts.</strong> Pick a plan and go live today — secure checkout powered by Stripe.</p>
+            <p id="pricing" style={{ fontSize: 18, color: "var(--mut)", margin: "22px 0 0", maxWidth: 520, lineHeight: 1.6, scrollMarginTop: 90 }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>There are no setup fees,</strong> and you can choose one of the cheapest AI receptionist plans you can find online and get up and running in just a few minutes.</p>
             <div style={{ display: "flex", justifyContent: "flex-start", marginTop: 20 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 18px 8px 9px", borderRadius: 999, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.24)", color: "var(--blue-ink)", fontSize: 14, fontWeight: 600 }}>
                 <span style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(44,118,237,.16)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}><i className="fa-solid fa-gift" /></span>
-                All plans include a 14-day free trial (30 call minutes)
+                Every plan includes a 14-day free trial with 30 call minutes (cancel anytime)
               </span>
             </div>
           </div>
@@ -2307,7 +2321,7 @@ export default function Hello22Site() {
                 </svg>
               </span>
             </h2>
-            <p style={{ fontSize: 18, color: "var(--mut)", margin: "22px 0 0", maxWidth: 520, lineHeight: 1.65 }}>Everything you need to know about hello22.<br />Can&apos;t find your answer? <a href="/contact" style={{ color: "var(--blue-ink)", textDecoration: "none", fontWeight: 700 }}>Get in touch →</a></p>
+            <p style={{ fontSize: 18, color: "var(--mut)", margin: "22px 0 0", maxWidth: 520, lineHeight: 1.65 }}>Get to know about hello22 AI with the help of the following FAQs.<br />Can&apos;t find your answer? <a href="/contact" style={{ color: "var(--blue-ink)", textDecoration: "none", fontWeight: 700 }}>Get in touch →</a></p>
           </div>
           {/* illustration: photo + "Still have questions?" bubble (user mockup 2026-07-10) */}
           <div className="prod-illus" data-rv="right" aria-hidden="true" style={{ position: "relative", minHeight: 280 }}>
@@ -2406,12 +2420,12 @@ export default function Hello22Site() {
               <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", fontSize: "clamp(44px,6vw,80px)", lineHeight: .95, margin: "18px 0 0" }}>say hello<span style={{ color: "var(--lime)" }}>.</span></h2>
               <p style={{ fontFamily: SUB, fontSize: "clamp(20px,2.2vw,26px)", fontWeight: 600, color: "var(--tx2)", margin: "12px 0 0" }}>to your new{" "}
                 <span style={{ position: "relative", whiteSpace: "nowrap", display: "inline-block" }}>
-                  <span style={HL}>voice agent</span>
+                  <span style={HL}>AI Receptionist</span>
                   <svg viewBox="0 0 120 12" aria-hidden="true" style={{ position: "absolute", left: 0, bottom: -8, width: "100%", height: 10, overflow: "visible" }}><path d="M3 9 C 30 3, 90 3, 117 7" fill="none" stroke="var(--lime)" strokeWidth="3" strokeLinecap="round" opacity=".8" /></svg>
                 </span>.
               </p>
-              {/* Note: mockup mein "no card required" likha tha — current policy wording (card required) rakhi hai */}
-              <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 440, margin: "22px 0 0", lineHeight: 1.65 }}>Deploy your <strong style={{ fontWeight: 800, color: "var(--tx2)" }}>first voice agent</strong> in minutes.<br />14-day free trial with 30 call minutes —<br />a card is required to activate.</p>
+              {/* Note: card-required policy wording ab neeche chip mein hai — "no card required" par revert nahi karna */}
+              <p style={{ fontSize: 17, color: "var(--mut)", maxWidth: 440, margin: "22px 0 0", lineHeight: 1.65 }}>Deploy your <strong style={{ fontWeight: 800, color: "var(--tx2)" }}>AI voice agents</strong> in minutes and let them answer while you work. Your 14-day free trial comes along with 30 free call minutes.</p>
               {/* illustration: photo + greeting bubble + squiggles (user mockup 2026-07-10) */}
               <div className="prod-illus" aria-hidden="true" style={{ position: "relative", minHeight: 250, marginTop: 18, maxWidth: 520 }}>
                 <div style={{ position: "absolute", left: 150, top: 8, width: 250, height: 240, background: "radial-gradient(circle at 55% 45%, rgba(44,118,237,.14), rgba(44,118,237,.05) 62%, transparent 80%)", borderRadius: "50%" }} />
@@ -2430,7 +2444,7 @@ export default function Hello22Site() {
               </div>
               <div style={{ display: "flex", gap: 20, marginTop: 26, flexWrap: "wrap", fontSize: 13.5, color: "var(--mut)" }}>
                 {[
-                  { ic: "fa-regular fa-calendar-check", t: "14-day free trial" },
+                  { ic: "fa-regular fa-calendar-check", t: "14-day free trial (credit card required)" },
                   { ic: "fa-solid fa-rotate-left", t: "Cancel anytime" },
                   { ic: "fa-solid fa-lock", t: "Encrypted & never sold" },
                 ].map((x) => (
@@ -2449,7 +2463,7 @@ export default function Hello22Site() {
                 <span aria-hidden="true" style={{ width: 48, height: 48, borderRadius: 14, flexShrink: 0, background: "rgba(44,118,237,.12)", color: "var(--blue-ink)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 19 }}><i className="fa-regular fa-calendar-check" /></span>
                 <span>
                   <h3 style={{ fontFamily: SUB, fontWeight: 700, fontSize: 24, margin: 0 }}>Book a <span style={HL}>Free Demo</span></h3>
-                  <p style={{ fontSize: 14, color: "var(--mut)", margin: "5px 0 0" }}>See hello22 in action and get your questions answered.</p>
+                  <p style={{ fontSize: 14, color: "var(--mut)", margin: "5px 0 0" }}>See your AI voice agent in action to hear how it sounds and performs while answering questions.</p>
                 </span>
               </div>
               {demoStatus === "ok" ? (
@@ -2500,7 +2514,7 @@ export default function Hello22Site() {
           <div className="footer-grid" style={{ padding: "44px 40px 36px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1fr", gap: 40, alignItems: "start" }}>
             <div>
               {/* eslint-disable-next-line @next/next/no-img-element */}<img src={isLight ? LOGO_LIGHT : LOGO} alt="hello22.ai" style={{ height: 34, width: "auto", display: "block", filter: "var(--logo-filter)" }} />
-              <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "16px 0 0", maxWidth: 280 }}>Your 24/7 AI voice receptionist — answers every call, books appointments, and never misses a customer.</p>
+              <p style={{ fontSize: 14.5, color: "var(--mut)", lineHeight: 1.6, margin: "16px 0 0", maxWidth: 280 }}>Your 24/7 AI receptionist, answering every call, booking appointments, and never missing a customer.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 18, fontSize: 14 }}>
                 <a href={`mailto:${SUPPORT_EMAIL}`} className="nl" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i className="fa-regular fa-envelope" style={{ color: "var(--blue-ink)", fontSize: 14 }} aria-hidden="true" />{SUPPORT_EMAIL}</a>
               </div>

@@ -32,7 +32,8 @@ export type BlogPost = {
   thumb?: string; // listing-card image (CMS: featureImage; sample posts: author portrait fallback)
   author: { name: string; role: string; avatar: string }; // avatar "" = CMS team-badge fallback
   blocks?: BlogBlock[]; // sample articles ka hand-written content
-  body?: unknown[]; // Sanity portable text (CMS posts) — blocks ya body, dono mein se ek
+  body?: unknown[]; // Sanity portable text (purane CMS posts)
+  html?: string; // Sanity WYSIWYG editor ka HTML (naya primary content) — teeno mein se ek
   seo?: BlogSeo;
 };
 

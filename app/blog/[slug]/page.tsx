@@ -169,6 +169,38 @@ const ptComponents: PortableTextComponents = {
   },
 };
 
+// WYSIWYG (SunEditor) posts ka HTML content — styles Block/ptComponents se 1:1 match,
+// taaki teeno content sources (sample blocks / portable text / HTML) ka article same dikhe.
+// Raw HTML hai isliye CSS rules — editor ke inline styles (colors etc.) upar carry hote hain.
+const CMS_CSS = `
+.cms-html{font-size:16.5px;line-height:1.8;color:var(--mut);overflow-wrap:break-word}
+.cms-html>*:first-child{margin-top:0}
+.cms-html p{margin:20px 0 0}
+.cms-html h1{font-family:${SUB};font-weight:700;letter-spacing:-.015em;font-size:clamp(24px,3.2vw,30px);line-height:1.25;color:var(--tx);margin:44px 0 0}
+.cms-html h2{font-family:${SUB};font-weight:700;letter-spacing:-.01em;font-size:clamp(20px,2.6vw,25px);color:var(--tx);margin:40px 0 0}
+.cms-html h3{font-family:${SUB};font-weight:700;letter-spacing:-.01em;font-size:clamp(17.5px,2.2vw,20px);color:var(--tx);margin:32px 0 0}
+.cms-html h4{font-family:${SUB};font-weight:700;font-size:17px;color:var(--tx);margin:28px 0 0}
+.cms-html h5{font-family:${SUB};font-weight:700;font-size:15.5px;color:var(--tx);margin:26px 0 0}
+.cms-html h6{font-family:${SUB};font-weight:700;font-size:13.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--tx2);margin:24px 0 0}
+.cms-html strong,.cms-html b{color:var(--tx);font-weight:700}
+.cms-html a{color:var(--num);font-weight:600}
+.cms-html ul,.cms-html ol{margin:22px 0 0;padding-left:26px;color:var(--tx2);font-size:15.5px;line-height:1.65}
+.cms-html li{margin-top:10px}
+.cms-html li p{margin:0}
+.cms-html blockquote{margin:28px 0 0;padding:22px 26px;background:var(--tint);border:1px solid var(--tint-bd);border-left:4px solid #2c76ed;border-radius:16px;font-family:${SUB};font-size:17.5px;font-weight:600;line-height:1.6;color:var(--tx)}
+.cms-html blockquote p{margin:0}
+.cms-html img{max-width:100%;height:auto;border-radius:18px;border:1px solid var(--line2);margin:28px 0 0}
+.cms-html figure{margin:28px 0 0}
+.cms-html figure img{margin:0}
+.cms-html figcaption{margin-top:10px;font-size:13.5px;color:var(--dim);text-align:center}
+.cms-html hr{border:0;border-top:1px solid var(--line2);margin:36px 0 0}
+.cms-html table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse;margin:28px 0 0;font-size:15px;line-height:1.6}
+.cms-html table td,.cms-html table th{border:1px solid var(--line2);padding:11px 15px;color:var(--mut);vertical-align:top;min-width:90px}
+.cms-html table th{font-family:${SUB};font-weight:700;font-size:13.5px;color:var(--tx);background:var(--tint);text-align:left}
+.cms-html iframe{max-width:100%;border:0;border-radius:14px}
+.cms-html .se-component{margin:28px 0 0}
+`;
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getBlogPost(decodeURIComponent(slug));
@@ -226,7 +258,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {/* ===== BODY — FULL container width, no centered column (user ka clear order 2026-07-13:
           "content width mein karo taaki left-right space cover ho") ===== */}
       <article style={{ margin: "30px 0 0" }}>
-        {post.body ? (
+        {post.html ? (
+          <>
+            <style dangerouslySetInnerHTML={{ __html: CMS_CSS }} />
+            <div className="cms-html" dangerouslySetInnerHTML={{ __html: post.html }} />
+          </>
+        ) : post.body ? (
           <PortableText value={post.body as PortableTextBlock[]} components={ptComponents} />
         ) : (
           post.blocks?.map((b, i) => <Block key={i} b={b} />)

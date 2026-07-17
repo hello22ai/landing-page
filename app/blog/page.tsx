@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function BlogPage() {
-  // body/blocks/seo listing ko nahi chahiye — client payload halka rakho
-  const posts = (await getBlogPosts()).map((p) => ({ ...p, blocks: undefined, body: undefined, seo: undefined }));
+  // body/blocks/html/seo listing ko nahi chahiye — client payload halka rakho
+  const posts = (await getBlogPosts()).map((p) => ({ ...p, blocks: undefined, body: undefined, html: undefined, seo: undefined }));
   // 1536 = homepage sections ka container — 1200 wide screens par narrow lag raha tha (user feedback)
   return (
     <PageShell current="/blog" maxWidth={1536}>
