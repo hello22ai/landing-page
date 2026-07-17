@@ -179,10 +179,10 @@ const TRANSCRIPT: Line[] = [
 // Purane real screenshots public/images/screenshots/ mein hi hain agar kabhi wapas chahiye hon.
 type Shot = { kind: "dash" | "logs" | "brain" | "billing"; title: string; desc: string; ic: string; c: string; bg: string; pts: string[] };
 const SHOTS: Shot[] = [
-  { kind: "dash", title: "Call Dashboard", desc: "Monitor calls, performance, and insights in real time.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls and minutes at a glance", "Intent and sentiment tracking", "Daily performance trends"] },
+  { kind: "dash", title: "Call Dashboard", desc: "Monitor calls, performance, and insights.", ic: "fa-solid fa-chart-column", c: "var(--lime)", bg: "rgba(44,118,237,.14)", pts: ["Answered calls and minutes at a glance", "Intent and sentiment tracking", "Daily performance trends"] },
   { kind: "logs", title: "Call Logs", desc: "Review conversations and outcomes instantly.", ic: "fa-solid fa-file-lines", c: "var(--violet)", bg: "rgba(157,139,255,.16)", pts: ["Full transcripts & recordings", "Outcome tags on every call", "Search & filter by caller"] },
   { kind: "brain", title: "AI Agent Builder", desc: "Create and customize your AI agent in minutes.", ic: "fa-solid fa-wand-magic-sparkles", c: "var(--cyan)", bg: "rgba(86,224,224,.15)", pts: ["Set greeting, services & hours", "Pick your agent's voice & style", "Changes go live instantly"] },
-  { kind: "billing", title: "Plans & Billing", desc: "Track minutes, switch plans, and control auto-renew.", ic: "fa-solid fa-credit-card", c: "#22b573", bg: "rgba(34,197,94,.14)", pts: ["Live minute usage meter", "Upgrade or switch anytime", "Full control over auto-renew"] },
+  { kind: "billing", title: "Plans & Billing", desc: "Track minutes,plans, and control auto-renew.", ic: "fa-solid fa-credit-card", c: "#22b573", bg: "rgba(34,197,94,.14)", pts: ["Live minute usage meter", "Upgrade or switch anytime", "Full control over auto-renew"] },
 ];
 
 // Platform features — horizontal cards with thumbnails (user mockup 2026-07-10).
@@ -191,8 +191,8 @@ type Plat = { ic: string; tb: string; tbd: string; tc: string; t: string; d: str
 const PLAT_COLS: Plat[][] = [
   [
     { ic: "fa-solid fa-comments", tb: "rgba(44,118,237,.14)", tbd: "rgba(44,118,237,.3)", tc: "var(--lime)", t: "Conversational, Not Scripted", d: "Rather than reading from a script, it responds to what the caller says and records the conversation as it progresses.", img: "/images/feat-conversational.jpg", bic: "fa-solid fa-ellipsis", bc: "var(--lime)" },
-    { ic: "fa-solid fa-language", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "English Today, More Coming", d: "Your AI receptionist speaks natural English today, with more languages on the way to help you serve customers everywhere.", img: "/images/feat-english.jpg", bic: "fa-solid fa-globe", bc: "#22b573" },
-    { ic: "fa-solid fa-shield-halved", tb: "rgba(157,139,255,.16)", tbd: "rgba(157,139,255,.32)", tc: "var(--violet)", t: "Your Data, Protected", d: "Encrypted in transit, secrets encrypted at rest, and never sold.", img: "/images/feat-security.jpg", bic: "fa-solid fa-shield-halved", bc: "var(--violet)" },
+    { ic: "fa-solid fa-language", tb: "rgba(86,224,224,.14)", tbd: "rgba(86,224,224,.3)", tc: "var(--cyan)", t: "English Now, More Coming", d: "Your AI receptionist speaks natural English, with more languages on the way to help you serve customers better.", img: "/images/feat-english.jpg", bic: "fa-solid fa-globe", bc: "#22b573" },
+    { ic: "fa-solid fa-shield-halved", tb: "rgba(157,139,255,.16)", tbd: "rgba(157,139,255,.32)", tc: "var(--violet)", t: "Your Data, Protected", d: "Your data is encrypted in transit, remains confidential, and never sold.", img: "/images/feat-security.jpg", bic: "fa-solid fa-shield-halved", bc: "var(--violet)" },
     { ic: "fa-solid fa-arrows-rotate", tb: "rgba(245,158,11,.14)", tbd: "rgba(245,158,11,.32)", tc: "#f59e0b", t: "CRM & Calendar", d: "Link Google Calendar and send leads information to your CRM or any webhook.", img: "/images/feat-calendar.jpg", bic: "fa-regular fa-calendar", bc: "#f59e0b" },
   ],
   [
@@ -1663,7 +1663,7 @@ export default function Hello22Site() {
             {([
               { n: "01", c: "var(--lime)", cb: "rgba(44,118,237,.12)", t: "Set up", h: "Hello22 AI Builds Your Agent", d: "Hello22 AI finds your business with the help of your website or information entered by you and sets up your AI receptionist.", ic: "fa-regular fa-user", step: 1 },
               { n: "02", c: "var(--violet)", cb: "rgba(157,139,255,.14)", t: "Account", h: "Create Your Account", d: "Add your name, email, and mobile so hello22 AI can route your calls and text you a summary after every one.", ic: "fa-solid fa-user-plus", step: 2 },
-              { n: "03", c: "#22b573", cb: "rgba(34,197,94,.12)", t: "Go live", h: "Select a Number and Go Live", d: "Your AI voice agent will begin managing actual conversations in a matter of minutes after you get your unique AI number and direct your calls to it.", ic: "fa-solid fa-phone-volume", step: 3 },
+              { n: "03", c: "#22b573", cb: "rgba(34,197,94,.12)", t: "Go live", h: "Select a Number and Go Live", d: "Your AI agent can manage conversations in minutes after you get your unique number and direct your calls to it.", ic: "fa-solid fa-phone-volume", step: 3 },
             ] as { n: string; c: string; cb: string; t: string; h: string; d: string; ic: string; step: 1 | 2 | 3 }[]).map((s) => (
               <div key={s.n} data-rv className="lift" style={{ ...card, padding: "24px 24px 20px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
@@ -1927,22 +1927,23 @@ export default function Hello22Site() {
           {/* cards — white surface, status pill, corner illustrations */}
           <div className="stat4" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(225px,1fr))", gap: 18, marginTop: 44 }}>
             {[
-              { ic: "fa-phone-volume", t: "Answers 24/7", d: "Never miss a call, even after hours, on weekends, or during holidays.", pill: "Always here" },
-              { ic: "fa-clone", t: "Handles Multiple Calls Simultaneously", d: "Answer multiple callers at the same time, with no busy signals or long wait times.", pill: "No busy signals" },
+              { ic: "fa-phone-volume", t: "Answers 24/7", d: "Never miss a call, even after hours, on weekends, or even on holidays.", pill: "Always here" },
+              { ic: "fa-clone", t: "Handles Multiple Calls", d: "It answers multiple callers simultaneously, with no busy signals or long wait times.", pill: "No busy signals" },
               { ic: "fa-user-plus", t: "Captures Every Lead", d: "Records caller details, enquiries, and contact information on every call.", pill: "Never miss a lead" },
-              { ic: "fa-comment-dots", t: "Call Summaries Instantly", d: "Receive a text or email summary as soon as each call ends.", pill: "Instant updates" },
-              { ic: "fa-tags", t: "Affordable Pricing", d: "Budget-friendly plans designed specifically for small businesses.", pill: "Fair & predictable" },
-              { ic: "fa-stopwatch", t: "3-Minute Setup", d: "No setup fees, no hidden charges. Be live in minutes or let us set it up for you for free.", pill: "Live in minutes" },
-              { ic: "fa-gauge-high", t: "Manage Your Own Dashboard", d: "Update business information, review calls, and customise your AI receptionist anytime from your dashboard.", pill: "You're in control" },
-              { ic: "fa-people-arrows", t: "Seamless Call Transfer", d: "Transfer callers to a human team member whenever needed.", pill: "Human handoff" },
-              { ic: "fa-brain", t: "Learns Your Business", d: "Trained on your business and becomes smarter as you train it over time.", pill: "Smarter over time" },
-              { ic: "fa-language", t: "Multilingual Support", d: "Communicate with customers in multiple languages using natural-sounding regional accents.", pill: "Natural accents" },
+              { ic: "fa-comment-dots", t: "Call Summaries", d: "Receive a text or email with a complete call summary and transcript.", pill: "Instant updates" },
+              { ic: "fa-tags", t: "Affordable Pricing", d: "Choose from budget-friendly plans designed specifically for the needs of small businesses.", pill: "Fair & predictable" },
+              { ic: "fa-stopwatch", t: "3-Minute Setup", d: "No setup fees, no hidden charges. Be live in minutes, or let us set it up for you for free.", pill: "Live in minutes" },
+              { ic: "fa-gauge-high", t: "Dashboard Control", d: "Update business information, review calls, and train your AI from the dashboard.", pill: "You're in control" },
+              { ic: "fa-people-arrows", t: "Seamless Call Transfer", d: "Another excellent feature is that it can transfer callers to a human team member whenever needed.", pill: "Human handoff" },
+              { ic: "fa-brain", t: "Learns Your Business", d: "Trained on your business and becomes smarter with every update over time.", pill: "Smarter over time" },
+              { ic: "fa-language", t: "Multilingual Support", d: "Communicate with customers in multiple languages with natural regional accents.", pill: "Natural accents" },
             ].map((x, i) => (
-              <div key={x.t} style={{ position: "relative", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 20, padding: "30px 22px 26px", textAlign: "center", boxShadow: "0 14px 34px -26px var(--sh2)" }}>
-                <div style={{ width: 56, height: 56, margin: "0 auto", borderRadius: "50%", background: "rgba(44,118,237,.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 20 }}><i className={`fa-solid ${x.ic}`} /></div>
+              <div key={x.t} style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", background: "var(--surface)", border: "1px solid var(--w09)", borderRadius: 20, padding: "30px 22px 26px", textAlign: "center", boxShadow: "0 14px 34px -26px var(--sh2)" }}>
+                <div style={{ width: 56, height: 56, borderRadius: "50%", flexShrink: 0, background: "rgba(44,118,237,.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--lime)", fontSize: 20 }}><i className={`fa-solid ${x.ic}`} /></div>
                 <div style={{ fontFamily: SUB, fontWeight: 700, fontSize: 18, marginTop: 18 }}>{x.t}</div>
-                <p style={{ fontSize: 14, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 0" }}>{x.d}</p>
-                <span className="why-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 18, padding: "9px 18px", borderRadius: 999, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.22)", color: "var(--blue-ink)", fontSize: 13.5, fontWeight: 700 }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22b573" }} />{x.pill}</span>
+                <p style={{ fontSize: 14, color: "var(--mut)", lineHeight: 1.6, margin: "10px 0 18px" }}>{x.d}</p>
+                {/* marginTop:auto — pill har card ke bottom pe pin rehti hai, row aligned dikhti hai */}
+                <span className="why-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: "auto", padding: "9px 18px", borderRadius: 999, background: "rgba(44,118,237,.1)", border: "1px solid rgba(44,118,237,.22)", color: "var(--blue-ink)", fontSize: 13.5, fontWeight: 700 }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22b573" }} />{x.pill}</span>
                 {i === 0 && (
                   <span className="why-deco" aria-hidden="true">
                     <svg viewBox="0 0 56 66" style={{ position: "absolute", left: -16, bottom: -10, width: 50, height: 60, overflow: "visible" }}>
