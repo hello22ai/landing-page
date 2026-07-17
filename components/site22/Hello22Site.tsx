@@ -17,7 +17,7 @@ const SUPPORT_EMAIL = "connect@hello22.ai";
 const WEB3FORMS_ACCESS_KEY = "42827426-7f8f-4a99-98a9-7aabe3ed8000";
 
 
-const GREETS = ["hello"];
+const GREETS = ["Hello22.AI"];
 
 // Light/Dark palettes — every colour on the page resolves through these vars.
 const THEMES: Record<"dark" | "light", Record<string, string>> = {
@@ -475,7 +475,7 @@ const CSS = `
  .h22 .nav-cta{padding:9px 13px!important;font-size:13px!important}
  .h22 .nav-logo{height:32px!important}
  .h22 .theme-toggle{width:36px!important;height:36px!important;font-size:13px!important}
- .h22 .hero-h1{font-size:clamp(54px,19vw,88px)!important}
+ .h22 .hero-h1{font-size:clamp(34px,10.5vw,52px)!important}
  .h22 .hero-ctas a{width:100%;display:inline-flex;align-items:center;justify-content:center;text-align:center;box-sizing:border-box}
  .h22 .form-row{grid-template-columns:minmax(0,1fr)!important}
 }
@@ -485,7 +485,7 @@ const CSS = `
 }
 @media(max-height:520px) and (orientation:landscape){
  .h22 #top{padding-top:34px!important;padding-bottom:24px!important}
- .h22 .hero-h1{font-size:clamp(48px,9vw,84px)!important}
+ .h22 .hero-h1{font-size:clamp(34px,6vw,60px)!important}
 }
 @media(prefers-reduced-motion:reduce){
  .h22 *,.h22 *::before,.h22 *::after{animation:none!important;transition:none!important}
@@ -1150,19 +1150,18 @@ export default function Hello22Site() {
               </span>
               <span style={{ fontWeight: 600, color: "var(--tx3)", letterSpacing: ".02em" }}>24/7 AI receptionist</span>
             </div>
-            {/* Poora headline ek hi H1 mein (user request 2026-07-17, SEO keywords): "hello." wordmark + keyword line.
-                H1 text = "hello. hello22 AI — AI Receptionist & Voice Agents Built for Real Conversations". Wordmark hatana nahi (user choice 2026-07-10). */}
+            {/* Poora headline ek hi H1 mein (user request 2026-07-17, SEO keywords): "Hello22.AI" wordmark + keyword line.
+                H1 text = "Hello22.AI Receptionist & Voice Agents Built for Real Conversations". */}
             <h1 style={{ margin: 0 }}>
-              <span className="hero-h1 hin" style={{ display: "block", fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(72px,11vw,150px)", margin: "26px 0 0", animationDelay: ".06s" }}>
+              <span className="hero-h1 hin" style={{ display: "block", fontFamily: DISP, fontWeight: 600, letterSpacing: "-.04em", lineHeight: .92, fontSize: "clamp(36px,5.5vw,72px)", margin: "26px 0 0", animationDelay: ".06s" }}>
                 <span style={{ display: "inline-flex", alignItems: "baseline", perspective: "600px" }}>
                   <span key={greet} style={{ display: "inline-block", animation: "h22greet .65s cubic-bezier(.2,.8,.2,1) both" }}>{GREETS[greet]}</span>
-                  <span style={{ color: "var(--lime)" }}>.</span>
                 </span>
               </span>
               {" "}
-              <span className="hin" style={{ display: "block", fontFamily: SUB, fontSize: "clamp(18px,2vw,25px)", fontWeight: 600, color: "var(--tx2)", margin: "14px 0 0", letterSpacing: "-.01em", lineHeight: 1.35, animationDelay: ".12s" }}>hello22 AI — AI Receptionist & Voice Agents <br /><span style={HL}>Built for Real Conversations</span></span>
+              <span className="hin" style={{ display: "block", fontFamily: SUB, fontSize: "clamp(19px,2.2vw,27px)", fontWeight: 600, color: "var(--tx2)", margin: "16px 0 0", letterSpacing: "-.01em", lineHeight: 1.35, animationDelay: ".12s" }}>Receptionist & Voice Agents <br /><span style={HL}>Built for Real Conversations</span></span>
             </h1>
-            <p className="hero-sub hin" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 520, margin: "20px 0 0", animationDelay: ".18s" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Never miss another customer call with Hello22 AI.</strong> Our AI receptionist and voice agents respond instantly, book appointments, capture leads, and provide <span style={HL}>human-like support 24/7</span>.</p>
+            <p className="hero-sub hin" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 640, margin: "20px 0 0", animationDelay: ".18s" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Never miss another customer call with Hello22 AI.</strong> Our AI receptionist and voice agents respond instantly, book appointments, capture leads, and provide <span style={HL}>human-like support 24/7</span>.</p>
             <div className="hero-ctas hin" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap", animationDelay: ".24s" }}>
               <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 16, padding: "16px 26px", borderRadius: 999, boxShadow: "0 18px 44px -12px rgba(44,118,237,.75)" }}><span aria-hidden style={{ fontSize: 15, lineHeight: 1 }}>✦</span><BtnTxt t="Start free — setup in minutes" /></a>
               <a href="#demo" className="btnp" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, background: "var(--surface)", color: "var(--blue-ink)", fontWeight: 700, fontSize: 16, padding: "14px 24px", borderRadius: 999, border: "1.5px solid rgba(44,118,237,.5)", boxShadow: "0 10px 26px -18px rgba(44,118,237,.6)" }}>
