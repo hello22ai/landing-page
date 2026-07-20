@@ -40,11 +40,16 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.hello22.ai"),
-  title: "hello22 — AI Voice Agents That Sound Human",
+  title: "AI Receptionist and AI Voice Agent That Books Customers 24/7",
   description:
-    "hello22 builds voice AI agents that answer calls, book appointments, and resolve customer issues in 22+ languages. Deploy in 22 minutes.",
+    "Never miss another customer call with Hello22 AI. Our AI receptionist & AI voice agent answers 24/7, books appointments, captures leads. From AUD $49/month.",
   // Canonical (SEO reviewer 2026-07-10) — child pages apna canonical khud set karte hain
   alternates: { canonical: "/" },
+  // SVG favicon (user-provided 2026-07-20); app/icon.png raster fallback bana rehta hai
+  icons: {
+    icon: { url: "https://www.hello22.ai/images/hello22-logo-color.svg", type: "image/svg+xml" },
+    apple: "https://www.hello22.ai/images/hello22-logo-color.svg",
+  },
   other: {
     "facebook-domain-verification": "4a9knjqdo3240smec39psb3j91dxtj"
   },

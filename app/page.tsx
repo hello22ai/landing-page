@@ -1,4 +1,26 @@
+import type { Metadata } from "next";
 import Hello22Site from "@/components/site22/Hello22Site";
+
+// Social share tags (user-provided 2026-07-20) — og:url "/" hai isliye layout ke bajaye yahan;
+// title/description/canonical layout se merge hote hain.
+export const metadata: Metadata = {
+  openGraph: {
+    type: "website",
+    siteName: "Hello22 AI",
+    url: "https://www.hello22.ai/",
+    title: "Never Miss Another Customer Call with Hello22 AI",
+    description:
+      "Answer every call with a human-like AI receptionist & AI voice agent. Book appointments, capture leads, and stay available 24/7. From AUD $49/month.",
+    images: [{ url: "https://www.hello22.ai/images/hello22-logo-color.svg", alt: "Hello22 AI Logo" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Never Miss Another Customer Call with Hello22 AI",
+    description:
+      "AI receptionist & AI voice agent that answers every call, books appointments, captures leads, and works 24/7. From AUD $49/month.",
+    images: ["https://www.hello22.ai/images/hello22-logo-color.svg"],
+  },
+};
 
 // WebSite schema (user-provided 2026-07-10) — site-level identity for Google.
 const WEBSITE_LD = {
