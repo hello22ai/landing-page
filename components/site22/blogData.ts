@@ -25,12 +25,16 @@ export type BlogPost = {
   excerpt: string;
   category: "Growth" | "Product" | "Guides" | "Industries";
   date: string; // ISO yyyy-mm-dd
+  updated?: string; // CMS _updatedAt (yyyy-mm-dd) — detail page "Updated ..." meta (reference UI)
   readMins: number;
   cover: string;
+  coverAlt?: string; // CMS featureImage.alt — cover ke neeche caption + img alt (reference UI)
   short: string; // card thumbnail ka bada 2-3 word label (SoftQA-reference UI, 2026-07-13)
   pastel: keyof typeof PASTELS; // card thumbnail ka pastel bg
   thumb?: string; // listing-card image (CMS: featureImage; sample posts: author portrait fallback)
-  author: { name: string; role: string; avatar: string }; // avatar "" = CMS team-badge fallback
+  tags?: string[]; // CMS tags — detail page ke cover-overlay + "Tagged:" chips (sample posts mein optional)
+  author: { name: string; role: string; avatar: string; bio?: string }; // avatar "" = CMS team-badge fallback
+  reviewedBy?: { name: string; role: string; avatar: string; bio?: string }; // "Reviewed by" card (reference UI) — sample posts only
   blocks?: BlogBlock[]; // sample articles ka hand-written content
   body?: unknown[]; // Sanity portable text (purane CMS posts)
   html?: string; // Sanity WYSIWYG editor ka HTML (naya primary content) — teeno mein se ek
@@ -62,11 +66,13 @@ export function formatDate(iso: string): string {
   return `${months[m - 1]} ${d}, ${y}`;
 }
 
+// bios detail page ke "Written by" / sidebar author cards mein dikhte hain (reference UI) —
+// role-based copy hai, koi invented metrics nahi (no-inflated-claims rule)
 const AUTHORS = {
-  melissa: { name: "Melissa Grant", role: "Growth at hello22", avatar: "/images/portrait-melissa.jpg" },
-  james: { name: "James Carter", role: "Customer Success at hello22", avatar: "/images/portrait-james.jpg" },
-  priya: { name: "Priya Sharma", role: "Product at hello22", avatar: "/images/portrait-priya.jpg" },
-  sarah: { name: "Sarah Mitchell", role: "Content at hello22", avatar: "/images/avatar-sarah.jpg" },
+  melissa: { name: "Melissa Grant", role: "Growth at hello22", avatar: "/images/portrait-melissa.jpg", bio: "Melissa looks after growth at hello22, helping service businesses turn every missed call into a booked job. She writes practical guides on call handling, lead capture and front-desk automation." },
+  james: { name: "James Carter", role: "Customer Success at hello22", avatar: "/images/portrait-james.jpg", bio: "James works with hello22 customers every day — from tradies to clinics — getting their AI receptionists live and tuned. He writes about what actually works on real business phone lines." },
+  priya: { name: "Priya Sharma", role: "Product at hello22", avatar: "/images/portrait-priya.jpg", bio: "Priya builds the hello22 product and voice experience. She writes about how AI voice agents work under the hood and how to get the most out of them." },
+  sarah: { name: "Sarah Mitchell", role: "Content at hello22", avatar: "/images/avatar-sarah.jpg", bio: "Sarah writes hello22's guides and customer stories, translating AI reception into plain business language for busy owners." },
 } as const;
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -82,6 +88,7 @@ export const BLOG_POSTS: BlogPost[] = [
     short: "Missed Calls = Lost Money",
     pastel: "pink",
     author: AUTHORS.melissa,
+    reviewedBy: AUTHORS.james,
     blocks: [
       { t: "p", x: "Most business owners think of a missed call as a small inconvenience. The customer will call back, or they'll leave a voicemail, or they'll try the contact form. In reality, research across service industries consistently shows the opposite: the majority of callers who reach voicemail simply hang up — and most of them call a competitor within the hour." },
       { t: "p", x: "That means a missed call isn't a delayed conversation. It's usually a finished one. The customer had a need, they picked up the phone, and someone else answered it." },
@@ -114,6 +121,7 @@ export const BLOG_POSTS: BlogPost[] = [
     short: "AI vs. Answering Service",
     pastel: "lavender",
     author: AUTHORS.james,
+    reviewedBy: AUTHORS.priya,
     blocks: [
       { t: "p", x: "If you're researching ways to stop missing calls, you've probably narrowed it down to two options: a traditional answering service with human operators, or an AI voice receptionist. Both will pick up the phone. The difference is everything that happens next." },
       { t: "h2", x: "What an answering service actually does" },
@@ -148,6 +156,7 @@ export const BLOG_POSTS: BlogPost[] = [
     short: "Live in 22 Minutes",
     pastel: "mint",
     author: AUTHORS.priya,
+    reviewedBy: AUTHORS.melissa,
     blocks: [
       { t: "p", x: "The biggest myth about AI voice technology is that it's complicated to set up — that you'll need a developer, weeks of training calls, and a binder of scripts. We built hello22 around the opposite idea: if you can paste a link, you can launch a receptionist. Here's the actual process, minute by minute." },
       { t: "h2", x: "Minutes 0–5: Teach it your business" },
@@ -180,6 +189,7 @@ export const BLOG_POSTS: BlogPost[] = [
     short: "Open After Hours",
     pastel: "lemon",
     author: AUTHORS.sarah,
+    reviewedBy: AUTHORS.james,
     blocks: [
       { t: "p", x: "Think about when you handle your own life admin. Booking the dentist, chasing a plumber quote, finding a lawyer — it happens after work, once the kids are down, on a Sunday morning. Your customers are no different. Their day job ends, and their calling starts." },
       { t: "p", x: "That's why after-hours callers are often the most serious buyers of the day: they have an unsolved problem and finally have the time to solve it. And in most businesses, they're greeted by voicemail." },
@@ -210,6 +220,7 @@ export const BLOG_POSTS: BlogPost[] = [
     short: "More Jobs, Less Phone",
     pastel: "sky",
     author: AUTHORS.james,
+    reviewedBy: AUTHORS.priya,
     blocks: [
       { t: "p", x: "There's a cruel irony in the trades: the better your week is going, the more calls you miss. Fully booked means head-down on site, hands full, phone buzzing in the ute. And every buzz you ignore might be next month's work going to whoever answered." },
       { t: "h2", x: "The job-site dilemma" },
@@ -240,6 +251,7 @@ export const BLOG_POSTS: BlogPost[] = [
     short: "22 Languages, One Voice",
     pastel: "cream",
     author: AUTHORS.priya,
+    reviewedBy: AUTHORS.melissa,
     blocks: [
       { t: "p", x: "In Australia alone, more than one in five people speak a language other than English at home. The numbers are similar or higher across the US, UK, and Canada. For a local business, that's not a demographic footnote — it's a customer base that most competitors quietly turn away every time the phone is answered in English only." },
       { t: "h2", x: "Language is trust" },
@@ -274,6 +286,7 @@ BLOG_POSTS.push(
     short: "Every Patient, Answered",
     pastel: "mint",
     author: AUTHORS.sarah,
+    reviewedBy: AUTHORS.james,
     blocks: [
       { t: "p", x: "Walk past any clinic's front desk at 9am on a Monday and you'll see the same scene: two phones ringing, a patient checking in at the counter, and a receptionist doing their best to be three people at once. Every ring that goes unanswered is a patient who may book elsewhere — and in healthcare, they usually don't call back." },
       { t: "h2", x: "Why clinic calls are different" },
@@ -304,6 +317,7 @@ BLOG_POSTS.push(
     short: "Choose the Right AI",
     pastel: "lavender",
     author: AUTHORS.james,
+    reviewedBy: AUTHORS.priya,
     blocks: [
       { t: "p", x: "The AI receptionist market is crowded, and every landing page sounds identical: natural voice, 24/7 answering, happy customers. The differences only show up after you've signed up — unless you know what to ask first. Here are the ten questions we'd ask any vendor, including us." },
       { t: "h2", x: "Setup and knowledge" },

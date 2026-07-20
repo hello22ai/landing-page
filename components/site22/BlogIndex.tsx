@@ -57,9 +57,12 @@ function HeroCard({ post }: { post: BlogPost }) {
       <span style={{ display: "block", width: "100%" }}><Thumb post={post} big /></span>
       <span style={{ marginTop: 14 }}><MetaRow post={post} /></span>
       <span style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 18.5, lineHeight: 1.35, color: "#10131c", marginTop: 10 }}>{post.title}</span>
-      <span style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 14, lineHeight: 1.6, color: "#4a5266", marginTop: 8 }}>{post.excerpt}</span>
-      <span style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 16, background: NAVY, color: "#fff", fontFamily: SUB, fontWeight: 700, fontSize: 13.5, padding: "10px 20px", borderRadius: 999 }}>
-        Read article <i className="fa-solid fa-arrow-right" aria-hidden="true" style={{ fontSize: 11 }} />
+      {post.excerpt && <span style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 14, lineHeight: 1.6, color: "#4a5266", marginTop: 8 }}>{post.excerpt}</span>}
+      {/* marginTop auto wrapper — dono hero cards ke buttons ek hi baseline par pin hon (polish 2026-07-20) */}
+      <span style={{ marginTop: "auto", paddingTop: 16, display: "inline-flex" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 8, background: NAVY, color: "#fff", fontFamily: SUB, fontWeight: 700, fontSize: 13.5, padding: "10px 20px", borderRadius: 999 }}>
+          Read article <i className="fa-solid fa-arrow-right" aria-hidden="true" style={{ fontSize: 11 }} />
+        </span>
       </span>
     </a>
   );
@@ -72,7 +75,7 @@ function GridCard({ post }: { post: BlogPost }) {
       <span style={{ display: "block", width: "100%" }}><Thumb post={post} /></span>
       <span style={{ marginTop: 14 }}><MetaRow post={post} /></span>
       <span className="bx-title" style={{ display: "block", fontFamily: SUB, fontWeight: 700, fontSize: 17, lineHeight: 1.35, color: "var(--tx)", marginTop: 10 }}>{post.title}</span>
-      <span style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 14, lineHeight: 1.6, color: "var(--mut)", marginTop: 8 }}>{post.excerpt}</span>
+      {post.excerpt && <span style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", fontSize: 14, lineHeight: 1.6, color: "var(--mut)", marginTop: 8 }}>{post.excerpt}</span>}
       <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: SUB, fontSize: 13.5, fontWeight: 700, color: "var(--num)", marginTop: "auto", paddingTop: 16 }}>
         Read more <i className="fa-solid fa-arrow-right" aria-hidden="true" style={{ fontSize: 11 }} />
       </span>

@@ -24,6 +24,7 @@ export function urlFor(src: SanityImageSource) {
 const POST_FIELDS = `
   _id, title, "slug": slug.current, description,
   "date": coalesce(publishedAt, _createdAt),
+  "updated": _updatedAt, "coverAlt": featureImage.alt,
   contentHtml, body, featureImage, tags,
   seoTitle, seoDescription, canonicalUrl, ogTitle, ogDescription, schemaMarkup
 `;
@@ -36,6 +37,8 @@ type RawPost = {
   slug: string;
   description?: string;
   date: string;
+  updated?: string;
+  coverAlt?: string;
   contentHtml?: string; // WYSIWYG editor ka HTML (naya primary content field)
   body?: PortableTextBlock[];
   featureImage?: SanityImageSource;
@@ -84,7 +87,7 @@ function toReadMins(raw: RawPost): number {
   return clampMins(words);
 }
 
-const TEAM_AUTHOR = { name: "hello22 Team", role: "hello22.ai", avatar: "" } as const;
+const TEAM_AUTHOR = { name: "hello22 Team", role: "hello22.ai", avatar: "", bio: "Product, support and growth people at hello22, writing practical guides on AI reception and never missing a customer call." } as const;
 
 function mapPost(raw: RawPost): BlogPost {
   const title = raw.title ?? "Untitled";
@@ -94,9 +97,13 @@ function mapPost(raw: RawPost): BlogPost {
     excerpt: raw.description ?? "",
     category: toCategory(raw.tags),
     date: raw.date.slice(0, 10),
+    updated: raw.updated?.slice(0, 10),
+    coverAlt: raw.coverAlt || undefined,
     readMins: toReadMins(raw),
+    // fit("max") — uploaded aspect ratio preserve (client 2026-07-20: feature image crop na ho);
+    // detail page natural height par dikhata hai, cards CSS objectFit se khud crop karte hain
     cover: raw.featureImage
-      ? urlFor(raw.featureImage).width(1680).height(720).fit("crop").auto("format").url()
+      ? urlFor(raw.featureImage).width(1680).fit("max").auto("format").url()
       : "/images/office-reception.jpg",
     thumb: raw.featureImage
       ? urlFor(raw.featureImage).width(440).height(320).fit("crop").auto("format").url()
@@ -104,6 +111,7 @@ function mapPost(raw: RawPost): BlogPost {
     short: title.split(/\s+/).slice(0, 3).join(" "),
     pastel: toPastel(raw.slug),
     author: TEAM_AUTHOR,
+    tags: raw.tags,
     html: raw.contentHtml || undefined,
     body: raw.body ?? [],
     seo: {

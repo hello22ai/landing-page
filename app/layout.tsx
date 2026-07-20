@@ -45,10 +45,11 @@ export const metadata: Metadata = {
     "Never miss another customer call with Hello22 AI. Our AI receptionist & AI voice agent answers 24/7, books appointments, captures leads. From AUD $49/month.",
   // Canonical (SEO reviewer 2026-07-10) — child pages apna canonical khud set karte hain
   alternates: { canonical: "/" },
-  // SVG favicon (user-provided 2026-07-20); app/icon.png raster fallback bana rehta hai
+  // Favicon = blue phone tile (app/icon.png) — software (app subdomain) ke tab-icon se match
+  // (client 2026-07-20; pehle wala SVG wordmark favicon size par squeeze hota tha)
   icons: {
-    icon: { url: "https://www.hello22.ai/images/hello22-logo-color.svg", type: "image/svg+xml" },
-    apple: "https://www.hello22.ai/images/hello22-logo-color.svg",
+    icon: { url: "/icon.png", type: "image/png" },
+    apple: "/icon.png",
   },
   other: {
     "facebook-domain-verification": "4a9knjqdo3240smec39psb3j91dxtj"

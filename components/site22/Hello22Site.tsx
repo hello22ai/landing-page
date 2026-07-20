@@ -17,7 +17,7 @@ const SUPPORT_EMAIL = "connect@hello22.ai";
 const WEB3FORMS_ACCESS_KEY = "42827426-7f8f-4a99-98a9-7aabe3ed8000";
 
 
-const GREETS = ["Hello22.AI"];
+const GREETS = ["Hello22"];
 
 // Light/Dark palettes — every colour on the page resolves through these vars.
 const THEMES: Record<"dark" | "light", Record<string, string>> = {
@@ -1159,7 +1159,7 @@ export default function Hello22Site() {
                 </span>
               </span>
               {" "}
-              <span className="hin" style={{ display: "block", fontFamily: SUB, fontSize: "clamp(19px,2.2vw,27px)", fontWeight: 600, color: "var(--tx2)", margin: "16px 0 0", letterSpacing: "-.01em", lineHeight: 1.35, animationDelay: ".12s" }}>Receptionist & Voice Agents <br /><span style={HL}>Built for Real Conversations</span></span>
+              <span className="hin" style={{ display: "block", fontFamily: SUB, fontSize: "clamp(19px,2.2vw,27px)", fontWeight: 600, color: "var(--tx2)", margin: "16px 0 0", letterSpacing: "-.01em", lineHeight: 1.35, animationDelay: ".12s" }}>AI Receptionist & Voice Agents <br /><span style={HL}>Built for Real Conversations</span></span>
             </h1>
             <p className="hero-sub hin" style={{ fontSize: 18, lineHeight: 1.6, color: "var(--mut)", maxWidth: 640, margin: "20px 0 0", animationDelay: ".18s" }}><strong style={{ fontWeight: 800, color: "var(--tx2)" }}>Never miss another customer call with Hello22 AI.</strong> Our AI receptionist and voice agents respond instantly, book appointments, capture leads, and provide <span style={HL}>human-like support 24/7</span>.</p>
             <div className="hero-ctas hin" style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap", animationDelay: ".24s" }}>
