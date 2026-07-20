@@ -329,7 +329,11 @@ const BLOG_CSS = `
 /* align-items yahan STRETCH hi rehna chahiye (default) — start karne par aside content-height
    tak sikud jata hai aur .bp-sticky ke paas stick hone ki travel-room nahi bachti */
 .bp-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:44px;margin-top:46px}
-.bp-sticky{position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh - 112px);overflow-y:auto;scrollbar-width:thin}
+/* container par overflow NAHI — usse TOC ke neeche wale cards clip ho ke chhup jate the
+   (client report 2026-07-20). Sirf TOC ki list internally scroll hoti hai (.bp-toc-list),
+   max-height aise ki author + recent posts hamesha viewport mein poore fit hon. */
+.bp-sticky{position:sticky;top:96px;display:flex;flex-direction:column;gap:16px}
+.bp-toc-list{overflow-y:auto;max-height:max(160px,calc(100vh - 775px));scrollbar-width:thin}
 .bp-toc a{display:block;padding:7px 0 7px 14px;border-left:2px solid var(--line2);font-size:14px;line-height:1.45;font-weight:600;color:var(--mut);text-decoration:none;transition:color .25s ease,border-color .25s ease,background .25s ease;border-radius:0 8px 8px 0}
 .bp-toc a:hover{color:var(--tx)}
 .bp-toc a.on{color:var(--num);border-left-color:var(--num);background:var(--tint)}
@@ -353,7 +357,7 @@ const BLOG_CSS = `
 .bp-meta-row{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:26px}
 @media(max-width:1080px){
  .bp-grid{grid-template-columns:minmax(0,1fr)}
- .bp-sticky{position:static;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:stretch;max-height:none;overflow:visible}
+ .bp-sticky{position:static;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:stretch}
  .bp-toc{display:none}
 }
 @media(max-width:640px){
@@ -685,14 +689,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <div className="bp-cta" style={{ marginTop: 76, background: "radial-gradient(ellipse at 50% -30%, rgba(44,118,237,.3), transparent 55%), #0c1122", borderRadius: 28, padding: "52px 40px", textAlign: "center" }}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "rgba(44,118,237,.16)", border: "1px solid rgba(44,118,237,.35)", color: "#8ab4f8", fontFamily: SUB, fontSize: 12, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", padding: "7px 16px", borderRadius: 999 }}><i className="fa-solid fa-hand-sparkles" aria-hidden="true" />Say hello</span>
         <h2 style={{ fontFamily: DISP, fontWeight: 600, letterSpacing: "-.02em", fontSize: "clamp(24px,3.6vw,38px)", lineHeight: 1.15, color: "#fff", margin: "18px auto 0", maxWidth: 640 }}>to your new AI receptionist<span style={{ color: "#4d8ef5" }}>.</span></h2>
-        <p style={{ fontSize: 15.5, lineHeight: 1.65, color: "rgba(244,244,247,.75)", maxWidth: 520, margin: "14px auto 0" }}>Launch your AI receptionist in 22 minutes and let it answer while you work — every call, every language, every hour.</p>
+        <p style={{ fontSize: 15.5, lineHeight: 1.65, color: "rgba(244,244,247,.75)", maxWidth: 520, margin: "14px auto 0" }}>Launch your AI receptionist and let it answer while you work — every call, every language, every hour.</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap", marginTop: 26 }}>
           <a href={APP_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", background: "#2c76ed", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 26px", borderRadius: 999, boxShadow: "0 14px 30px -14px rgba(44,118,237,.8)" }}>Start free trial <i className="fa-solid fa-arrow-right" aria-hidden="true" style={{ fontSize: 12 }} /></a>
           <a href="/#demo" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", background: "transparent", color: "#e4e4ec", fontWeight: 700, fontSize: 15, padding: "12px 24px", borderRadius: 999, border: "1.5px solid rgba(255,255,255,.25)" }}>Hear a live call</a>
         </div>
         <div style={{ display: "flex", justifyContent: "center", gap: 28, flexWrap: "wrap", marginTop: 30, fontSize: 13.5, color: "rgba(244,244,247,.65)" }}>
           {[
-            { ic: "fa-regular fa-clock", x: "22-minute setup" },
+            // setup-time claim hataya (client 2026-07-20) — "22-minute setup" wapas na lana
+            { ic: "fa-regular fa-calendar-check", x: "Books appointments" },
             { ic: "fa-solid fa-language", x: "22+ languages" },
             { ic: "fa-solid fa-phone-volume", x: "24/7 answering" },
           ].map((s) => (

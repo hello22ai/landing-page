@@ -34,11 +34,11 @@ export default function BlogToc({ headings }: { headings: TocHeading[] }) {
     };
   }, [headings]);
 
-  // active item ko sidebar ke scrollable container (.bp-sticky) ke andar visible rakho —
-  // 16+ headings par active link card se bahar nikal jata tha
+  // active item ko TOC ki apni scrollable list (.bp-toc-list) ke andar visible rakho —
+  // 16+ headings par active link list se bahar nikal jata tha
   useEffect(() => {
     const link = navRef.current?.querySelector<HTMLAnchorElement>("a.on");
-    const box = navRef.current?.closest(".bp-sticky") as HTMLElement | null;
+    const box = navRef.current?.querySelector<HTMLElement>(".bp-toc-list");
     if (!link || !box || box.scrollHeight <= box.clientHeight) return;
     const br = box.getBoundingClientRect();
     const lr = link.getBoundingClientRect();
@@ -52,7 +52,7 @@ export default function BlogToc({ headings }: { headings: TocHeading[] }) {
       <span style={{ display: "flex", alignItems: "center", gap: 9, fontFamily: SUB, fontSize: 12.5, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--dim)" }}>
         <i className="fa-solid fa-list-check" aria-hidden="true" style={{ color: "var(--num)" }} />On this page
       </span>
-      <div style={{ display: "flex", flexDirection: "column", marginTop: 14 }}>
+      <div className="bp-toc-list" style={{ display: "flex", flexDirection: "column", marginTop: 14 }}>
         {headings.map((h) => (
           <a
             key={h.id}
