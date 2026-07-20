@@ -81,6 +81,31 @@ function injectHeadingIds(html: string): string {
   );
 }
 
+// SunEditor mein headings aksar "bada font + bold" paragraph ke roop mein likhi jati hain
+// (real h2 nahi) — TOC khali reh jata tha (client report 2026-07-20, "Top 10 Benefits" post).
+// Aise blocks ko real h2 mein promote karo: font-size >= 18px + pura block strong + chhota text.
+// Do nesting patterns handle hote hain (SunEditor dono banata hai).
+function promoteFakeHeadings(html: string): string {
+  const clean = (s: string) => stripTags(s).replace(/&nbsp;/gi, " ").replace(/ /g, " ").trim();
+  // Har <p> dekho: agar uska SAARA visible text ek big-font bold run hai (aas-paas sirf
+  // whitespace/stray spans — SunEditor highlight-space chhod deta hai), to wo heading hai
+  let out = html.replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, (m, inner: string) => {
+    const run = /<span([^>]*font-size:\s*(\d+)px[^>]*)>\s*<strong>([\s\S]*?)<\/strong>\s*<\/span>/i.exec(inner);
+    if (!run) return m;
+    const size = Number(run[2]);
+    const text = clean(run[3]);
+    const rest = clean(inner.replace(run[0], ""));
+    return size >= 18 && text.length > 0 && text.length <= 120 && rest === "" ? `<h2>${text}</h2>` : m;
+  });
+  // <span font-size><strong><p>text</p></strong></span> — SunEditor ka ulta nesting
+  out = out.replace(/<span([^>]*)>\s*<strong>\s*<p[^>]*>([\s\S]*?)<\/p>\s*<\/strong>\s*<\/span>/gi, (m, attrs: string, t: string) => {
+    const size = Number(/font-size:\s*(\d+)/i.exec(attrs)?.[1] ?? 0);
+    const text = clean(t);
+    return size >= 18 && text.length > 0 && text.length <= 120 ? `<h2>${text}</h2>` : m;
+  });
+  return out;
+}
+
 // Article ka pura text reading order mein — "Listen to this article" (speechSynthesis) ke liye
 function articlePlainText(post: BlogPost): string {
   let body = "";
@@ -324,8 +349,10 @@ const FEATURES = [
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await getBlogPost(decodeURIComponent(slug));
-  if (!post) notFound();
+  const rawPost = await getBlogPost(decodeURIComponent(slug));
+  if (!rawPost) notFound();
+  // fake headings ko pehle hi promote kar do — TOC/anchors/audio sab isi normalized html se chalte hain
+  const post = rawPost.html ? { ...rawPost, html: promoteFakeHeadings(rawPost.html) } : rawPost;
 
   const cat = CATEGORY_STYLE[post.category];
   const allPosts = await getBlogPosts();

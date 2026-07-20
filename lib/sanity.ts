@@ -22,7 +22,7 @@ export function urlFor(src: SanityImageSource) {
 
 // tags/publishedAt Studio mein optional hain — coalesce se _createdAt fallback
 const POST_FIELDS = `
-  _id, title, "slug": slug.current, description,
+  _id, title, shortTitle, "slug": slug.current, description,
   "date": coalesce(publishedAt, _createdAt),
   "updated": _updatedAt, "coverAlt": featureImage.alt,
   contentHtml, body, featureImage, tags,
@@ -34,6 +34,7 @@ const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{${POST_FIELDS
 type RawPost = {
   _id: string;
   title?: string;
+  shortTitle?: string;
   slug: string;
   description?: string;
   date: string;
@@ -68,6 +69,15 @@ function toPastel(slug: string): keyof typeof PASTELS {
 }
 
 const clampMins = (words: number) => Math.min(12, Math.max(2, Math.round(words / 200)));
+
+// Card-thumbnail label fallback — pehle first-3-words tha jo adhura phrase deta tha
+// ("AI Receptionist vs"); ab word boundary par ~26 chars + ellipsis
+function toShort(title: string): string {
+  if (title.length <= 28) return title;
+  const cut = title.slice(0, 27);
+  const atWord = cut.slice(0, cut.lastIndexOf(" "));
+  return `${atWord || cut}…`;
+}
 
 function toReadMins(raw: RawPost): number {
   // WYSIWYG posts: HTML ke tags/entities hata kar words gino
@@ -108,7 +118,7 @@ function mapPost(raw: RawPost): BlogPost {
     thumb: raw.featureImage
       ? urlFor(raw.featureImage).width(440).height(320).fit("crop").auto("format").url()
       : "",
-    short: title.split(/\s+/).slice(0, 3).join(" "),
+    short: raw.shortTitle || toShort(title),
     pastel: toPastel(raw.slug),
     author: TEAM_AUTHOR,
     tags: raw.tags,
