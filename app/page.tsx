@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     title: "Never Miss Another Customer Call with Hello22 AI",
     description:
       "Answer every call with a human-like AI receptionist & AI voice agent. Book appointments, capture leads, and stay available 24/7. From AUD $49/month.",
-    images: [{ url: "https://www.hello22.ai/images/hello22-logo-color.svg", alt: "Hello22 AI Logo" }],
+    // images yahan set NA karein — og:image app/opengraph-image.tsx (1200×630 PNG) se aata hai;
+    // SVG social platforms par render nahi hota
   },
   twitter: {
     card: "summary_large_image",
     title: "Never Miss Another Customer Call with Hello22 AI",
     description:
       "AI receptionist & AI voice agent that answers every call, books appointments, captures leads, and works 24/7. From AUD $49/month.",
-    images: ["https://www.hello22.ai/images/hello22-logo-color.svg"],
   },
 };
 

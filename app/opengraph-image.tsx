@@ -25,16 +25,16 @@ export default function OpengraphImage() {
               width: "56px",
               height: "56px",
               borderRadius: "14px",
-              background: "#FF631F",
+              background: "#2c76ed",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              fontSize: "30px",
+              fontSize: "26px",
               fontWeight: 700,
             }}
           >
-            ☎
+            22
           </div>
           <div style={{ color: "#fff", fontSize: "36px", fontWeight: 700 }}>hello22</div>
         </div>
@@ -51,7 +51,7 @@ export default function OpengraphImage() {
           }}
         >
           <span>Never miss another</span>
-          <span style={{ color: "#FF631F" }}>customer call</span>
+          <span style={{ color: "#2c76ed" }}>customer call</span>
         </div>
         <div style={{ marginTop: "32px", color: "#94A3B8", fontSize: "30px" }}>
           AI Receptionist · 24/7 call answering · Appointment booking
