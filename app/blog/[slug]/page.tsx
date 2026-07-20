@@ -302,9 +302,9 @@ const BLOG_CSS = `
    tak sikud jata hai aur .bp-sticky ke paas stick hone ki travel-room nahi bachti */
 .bp-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:44px;margin-top:46px}
 .bp-sticky{position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh - 112px);overflow-y:auto;scrollbar-width:thin}
-.bp-toc a{display:block;padding:7px 0 7px 14px;border-left:2px solid var(--line2);font-size:14px;line-height:1.45;font-weight:600;color:var(--mut);text-decoration:none}
+.bp-toc a{display:block;padding:7px 0 7px 14px;border-left:2px solid var(--line2);font-size:14px;line-height:1.45;font-weight:600;color:var(--mut);text-decoration:none;transition:color .25s ease,border-color .25s ease,background .25s ease;border-radius:0 8px 8px 0}
 .bp-toc a:hover{color:var(--tx)}
-.bp-toc a.on{color:var(--num);border-left-color:var(--num)}
+.bp-toc a.on{color:var(--num);border-left-color:var(--num);background:var(--tint)}
 .bp-hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.95fr);gap:20px;align-items:start;margin-top:26px}
 @media(max-width:980px){
  .bp-hero{grid-template-columns:minmax(0,1fr)}
