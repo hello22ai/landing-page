@@ -275,8 +275,21 @@ const CMS_CSS = `
 .cms-html h5{font-family:${SUB};font-weight:700;font-size:15.5px;color:var(--tx);margin:26px 0 0}
 .cms-html h6{font-family:${SUB};font-weight:700;font-size:13.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--tx2);margin:24px 0 0}
 .cms-html strong,.cms-html b{color:var(--tx);font-weight:700}
+.cms-html em,.cms-html i{font-style:italic}
+.cms-html u{text-decoration:underline}
+.cms-html s,.cms-html strike,.cms-html del{text-decoration:line-through}
 .cms-html a{color:var(--num);font-weight:600}
-.cms-html ul,.cms-html ol{margin:22px 0 0;padding-left:26px;color:var(--tx2);font-size:16px;line-height:1.65}
+/* Tailwind preflight ul/ol par list-style:none laga deta hai — yahan wapas set
+   karna zaroori hai warna editor ke bullets/numbers website par gayab ho jate hain.
+   Nested types SunEditor ke editor-view se 1:1 match. */
+.cms-html ul,.cms-html ol{list-style-position:outside;margin:22px 0 0;padding-left:26px;color:var(--tx2);font-size:16px;line-height:1.65}
+.cms-html ul{list-style-type:disc}
+.cms-html ol{list-style-type:decimal}
+.cms-html ol ul,.cms-html ul ul{list-style-type:circle}
+.cms-html ol ul ul,.cms-html ul ul ul{list-style-type:square}
+.cms-html ol ol,.cms-html ul ol{list-style-type:lower-alpha}
+.cms-html ol ol ol,.cms-html ul ol ol{list-style-type:upper-roman}
+.cms-html ul ul,.cms-html ul ol,.cms-html ol ul,.cms-html ol ol{margin:6px 0 0;font-size:inherit}
 .cms-html li{margin-top:10px}
 .cms-html li::marker{color:var(--num)}
 .cms-html li p{margin:0}
@@ -287,11 +300,26 @@ const CMS_CSS = `
 .cms-html figure img{margin:0}
 .cms-html figcaption{margin-top:10px;font-size:13.5px;color:var(--dim);text-align:center}
 .cms-html hr{border:0;border-top:1px solid var(--line2);margin:36px 0 0}
+.cms-html hr.__se__dotted{border-top-style:dotted}
+.cms-html hr.__se__dashed{border-top-style:dashed}
 .cms-html table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse;margin:28px 0 0;font-size:15px;line-height:1.6}
+.cms-html table.se-table-size-100{width:100%}
 .cms-html table td,.cms-html table th{border:1px solid var(--line2);padding:11px 15px;color:var(--mut);vertical-align:top;min-width:90px}
 .cms-html table th{font-family:${SUB};font-weight:700;font-size:13.5px;color:var(--tx);background:var(--tint);text-align:left}
 .cms-html iframe{max-width:100%;border:0;border-radius:14px}
+/* SunEditor ke image/video components: figure inline padding-bottom ratio use karta
+   hai, iframe/video usme absolute bharta hai. Float classes editor ke align
+   controls (left/center/right) se aati hain. */
 .cms-html .se-component{margin:28px 0 0}
+.cms-html .se-component figure{position:relative;margin:0}
+.cms-html .se-image-container,.cms-html .se-video-container{width:auto;height:auto;max-width:100%}
+.cms-html .se-video-container figure{left:0;width:100%;max-width:100%}
+.cms-html .se-video-container iframe,.cms-html .se-video-container video{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:14px}
+.cms-html .__se__float-left{float:left;margin-right:18px}
+.cms-html .__se__float-right{float:right;margin-left:18px}
+.cms-html .__se__float-none{float:none}
+.cms-html .__se__float-center figure,.cms-html .__se__float-left figure,.cms-html .__se__float-right figure{margin:auto}
+.cms-html::after{content:"";display:block;clear:both}
 `;
 
 // Layout CSS — inline styles media queries nahi kar sakte, isliye grid/sidebar/responsive
