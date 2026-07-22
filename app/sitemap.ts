@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "https://www.hello22.ai/", lastModified, priority: 1.0 },
     { url: "https://www.hello22.ai/about", lastModified, priority: 0.8 },
     { url: "https://www.hello22.ai/contact", lastModified, priority: 0.8 },
+    { url: "https://www.hello22.ai/australia", lastModified, priority: 0.9 },
     { url: "https://www.hello22.ai/blog", lastModified, priority: 0.8 },
     { url: "https://www.hello22.ai/calculator", lastModified, priority: 0.7 },
     ...posts.map((p) => ({

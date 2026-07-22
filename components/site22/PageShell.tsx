@@ -6,6 +6,7 @@
 // Try free ka rasta milna chahiye. Legal pages (LegalPage.tsx) minimal hi hain.
 // Content CSS vars use karta hai (--tx/--mut/--surface/--line/--num) jo theme ke saath badalte hain.
 import { useEffect, useState } from "react";
+import CountryPicker, { CountryChips, COUNTRY_PICKER_CSS } from "./CountryPicker";
 
 export const DISP = "'Conthrax', var(--font-space), 'Space Grotesk', sans-serif";
 export const SUB = "var(--font-space), 'Space Grotesk', sans-serif";
@@ -37,6 +38,10 @@ const PAL = {
     // Homepage footer port (2026-07-13) — Hello22Site THEMES se same values; --w04 CalcCard ke liye
     "--w04": "rgba(255,255,255,.04)", "--w05": "rgba(255,255,255,.05)", "--w07": "rgba(255,255,255,.07)", "--w09": "rgba(255,255,255,.09)", "--w10": "rgba(255,255,255,.1)",
     "--lime": "#2c76ed", "--blue-ink": "#4d8ef5",
+    // Accent palette + section bands — Hello22Site THEMES ka mirror, taake standalone pages
+    // (jaise /australia) homepage jaisi banding aur accent variety use kar saken.
+    "--violet": "#9d8bff", "--cyan": "#56e0e0", "--amber": "#fbbf24", "--rose": "#fb7185", "--green": "#34d399",
+    "--sec-alt": "#10101a", "--sec-tint": "#0c1322",
   },
   light: {
     "--bg": "#f5f6fa", "--tx": "#10131c", "--tx2": "#1d2433", "--tx3": "#3e4658", "--mut": "#4a5266", "--dim": "#6c7488",
@@ -48,6 +53,9 @@ const PAL = {
     "--sh1": "rgba(28,42,84,.16)", "--sh2": "rgba(28,42,84,.12)",
     "--w04": "rgba(13,18,32,.03)", "--w05": "rgba(13,18,32,.04)", "--w07": "rgba(13,18,32,.06)", "--w09": "rgba(13,18,32,.08)", "--w10": "rgba(13,18,32,.09)",
     "--lime": "#2c76ed", "--blue-ink": "#1e63d6",
+    "--violet": "#6d5ae0", "--cyan": "#0e9c9c", "--amber": "#c2740a", "--rose": "#e2564d", "--green": "#1a9a5c",
+    // Light theme flat rehta hai — bands solid white / soft blue tint (koi gradient nahi)
+    "--sec-alt": "#ffffff", "--sec-tint": "#edf3fd",
   },
 } as const;
 
@@ -90,7 +98,7 @@ export default function PageShell({ children, current, maxWidth = 1100 }: { chil
 
   return (
     <div style={{ ...(PAL[theme] as unknown as React.CSSProperties), background: "var(--bg)", color: "var(--tx)", minHeight: "100vh", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", position: "relative", overflowX: "clip" }}>
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: CSS + COUNTRY_PICKER_CSS }} />
       {!isLight && <div style={{ position: "absolute", top: -180, left: "50%", transform: "translateX(-50%)", width: 700, height: 460, borderRadius: "50%", background: "radial-gradient(circle,rgba(44,118,237,.16),transparent 70%)", filter: "blur(30px)", pointerEvents: "none", zIndex: 0 }} />}
 
       {/* HEADER — full navbar (homepage jaisa) */}
@@ -110,6 +118,7 @@ export default function PageShell({ children, current, maxWidth = 1100 }: { chil
                 </a>
               );
             })}
+            <CountryPicker tone="--tx2" />
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
             <a className="ps-signin" href={LOGIN_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--tx)", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
@@ -128,6 +137,7 @@ export default function PageShell({ children, current, maxWidth = 1100 }: { chil
               <a key={l.n} href={l.h} onClick={() => setMenuOpen(false)} style={{ color: current === l.h ? "var(--num)" : "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: current === l.h ? 700 : 600, padding: "13px 4px", borderBottom: "1px solid var(--line)" }}>{l.n}</a>
             ))}
             <a href={LOGIN_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px" }}>Sign in</a>
+            <CountryChips />
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", textAlign: "center", background: "#2c76ed", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 20px", borderRadius: 999, marginTop: 8, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
           </nav>
         )}

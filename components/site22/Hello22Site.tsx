@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import CountryPicker, { CountryChips, COUNTRY_PICKER_CSS } from "./CountryPicker";
 
 // Fonts (Manrope/Space Grotesk/Conthrax) are declared in app/layout.tsx so next/font
 // preloads them — declared here (client component) they emit no preload and LCP suffers.
@@ -1086,7 +1087,7 @@ export default function Hello22Site() {
       className={`h22${rvOn ? " rv" : ""}`}
       style={{ ...(THEMES[theme] as React.CSSProperties), background: "var(--bg)", color: "var(--tx)", fontFamily: "var(--font-manrope), Manrope, sans-serif", WebkitFontSmoothing: "antialiased", overflowX: "clip", position: "relative" }}
     >
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: CSS + COUNTRY_PICKER_CSS }} />
 
       {/* ambient glows — sirf dark mein; light theme clean flat white rehta hai */}
       {!isLight && (
@@ -1114,6 +1115,7 @@ export default function Hello22Site() {
                 </a>
               );
             })}
+            <CountryPicker tone="--tx3" />
           </nav>
           <div style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
             <a className="nav-signin" href={LOGIN_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--tx)", textDecoration: "none", fontSize: 14.5, fontWeight: 600 }}>Sign in</a>
@@ -1132,6 +1134,7 @@ export default function Hello22Site() {
               <a key={l.n} href={l.h} onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px", borderBottom: "1px solid var(--w06)" }}>{l.n}</a>
             ))}
             <a href={LOGIN_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ color: "var(--tx2)", textDecoration: "none", fontSize: 16, fontWeight: 600, padding: "13px 4px" }}>Sign in</a>
+            <CountryChips />
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="btnp" style={{ textDecoration: "none", textAlign: "center", background: "var(--lime)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "13px 20px", borderRadius: 999, marginTop: 8, boxShadow: "0 10px 26px -12px rgba(44,118,237,.7)" }}>Try free</a>
           </nav>
         )}
